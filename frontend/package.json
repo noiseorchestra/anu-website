@@ -1,0 +1,18 @@
+{
+  "name": "heroku-deploy",
+  "private": true,
+  "scripts": {
+    "build": "rm -rf ../server/static/dist/* && vue-cli-service build --no-clean",
+    "serve": "vue-cli-service serve"
+  },
+  "dependencies": {
+    "p5": "^1.1.9",
+    "vue": "^2.6.12",
+    "vue-router": "^3.1.6"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-router": "~4.5.8",
+    "@vue/cli-service": "~4.5.8",
+    "vue-template-compiler": "^2.6.12"
+  }
+}

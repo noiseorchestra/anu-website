@@ -1,0 +1,13 @@
+{% extends "../vue/_vue_base.html" %}
+
+{% block html_tag_attributes %}lang="en"{% endblock %}
+
+{% block content %}
+    {{ data|json_script:"djangoData" }}
+    <noscript>
+        <strong>Please enable JavaScript to continue.</strong>
+    </noscript>
+
+    <div id="app"></div>
+    <p>page template</p>
+{% endblock %}
