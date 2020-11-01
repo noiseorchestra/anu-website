@@ -13,6 +13,8 @@
   "devDependencies": {
     "@vue/cli-plugin-router": "~4.5.8",
     "@vue/cli-service": "~4.5.8",
+    "axe-core": "^4.0.2",
+    "vue-axe": "^2.4.2",
     "vue-template-compiler": "^2.6.12"
   }
 }
