@@ -1,6 +1,6 @@
 <template>
   <div class="vue-container vue-page">
-		<PageContent :pageBody="routeProps.body"></PageContent>
+		<PageContent :pageBody="routeProps"></PageContent>
     <!-- <img src="../assets/anu-background-transparent.png"> -->
   </div>
 </template>

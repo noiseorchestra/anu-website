@@ -1,13 +1,18 @@
 <template>
-  <div class="page-container">
-    <div class="page-content"><div class="page-body" v-html='pageBody'></div></div>
-  </div>
+  <article class="page-container">
+    <div class="page-content">
+      <div class="page-body" tabindex="0">
+        <h1>{{pageBody.title}}</h1>
+        <span v-html="pageBody.body"></span>
+      </div>
+    </div>
+  </article>
 </template>
 
 <script>
 export default {
   name: 'PageContent',
-  props: {pageBody: String},
+  props: {pageBody: Object},
 }
 </script>
 
@@ -29,6 +34,7 @@ export default {
 }
 
 .page-body {
+  overflow-y: auto;
   padding-bottom: 100vh;
 }
 

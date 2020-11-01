@@ -1,10 +1,10 @@
 <template>
-  <div id="app">
+  <main id="app">
     <NavBar :routes="routes"></NavBar>
     <router-view></router-view>
     <P5jsBackground></P5jsBackground>
     <Footer></Footer>
-  </div>
+  </main>
 </template>
 
 <script>
