@@ -39,6 +39,7 @@ class PageTests(TestCase):
             body='Hello, this is some page content',
             nav_position='02',
         )
+        self.page.save()
 
     def test_page_listing(self):
         self.assertEqual(f'{self.page.title}', 'About')
