@@ -91,7 +91,7 @@ DATABASES = {
     "default": env.dj_db_url("DATABASE_URL", default="postgres://postgres@db/postgres")
 }
 
-if env.get('GITHUB_WORKFLOW'):
+if env.bool('GITHUB_WORKFLOW'):
     DATABASES = {
         'default': {
            'ENGINE': 'django.db.backends.postgresql',
