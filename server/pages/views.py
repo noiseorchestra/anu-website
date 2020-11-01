@@ -21,7 +21,7 @@ def get_pages():
     return pages
 
 
-def page(request, slug="home"):
+def page(request, slug=""):
     data = Page.objects.all()
     print(data)
 

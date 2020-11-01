@@ -1,13 +1,13 @@
 from django.test import SimpleTestCase, TestCase
 from django.urls import reverse, resolve
-from .views import HomePageView, PageView
+from .views import HomePageView, page
 from .models import Page
 
 
 class HomepageTests(SimpleTestCase):
 
     def setUp(self):
-        url = reverse('')
+        url = reverse('home')
         self.response = self.client.get(url)
 
     def test_homepage_status_code(self):
@@ -48,15 +48,13 @@ class PageTests(TestCase):
 
     def test_page_view(self):
         response = self.client.get(self.page.get_absolute_url())
-        no_response = self.client.get('/12345/')
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(no_response.status_code, 404)
         self.assertContains(response, 'About')
         self.assertTemplateUsed(response, 'pages/page.html')
 
     def test_page_url_resolves_pageview(self):
-        view = resolve('/pages/about')
+        view = resolve('/about/')
         self.assertEqual(
             view.func.__name__,
-            PageView.as_view().__name__
+            page.__name__
         )
