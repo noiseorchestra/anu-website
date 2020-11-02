@@ -164,6 +164,7 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_MANIFEST_STRICT = False
 
+CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_BROWSE_SHOW_DIRS = True
 SFTP_STORAGE_HOST = 'sftp.storage.memset.com'
 SFTP_STORAGE_ROOT = 'anu-website'
