@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path, include, url
+from django.urls import path, include
 
 urlpatterns = [
     # Django admin
@@ -9,7 +9,7 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
 
     # File uploads
-    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
 
     # Local apps
     path('', include('pages.urls')),
