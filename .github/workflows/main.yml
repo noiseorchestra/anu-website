@@ -40,5 +40,4 @@ jobs:
       working-directory: ./server
       run: python manage.py migrate
     - name: Run tests
-      working-directory: ./server
-      run: python manage.py test
+      run: python server/manage.py test server
