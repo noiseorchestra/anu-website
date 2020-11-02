@@ -17,6 +17,6 @@ jobs:
         run: docker-compose up -d
       - name: Django tests
         run: |
-        docker-compose exec -T server python manage.py collectstatic --noinput
-        docker-compose exec -T server python manage.py migrate
-        docker-compose exec -T server python manage.py test
+          docker-compose exec -T server python manage.py collectstatic --noinput
+          docker-compose exec -T server python manage.py migrate
+          docker-compose exec -T server python manage.py test
