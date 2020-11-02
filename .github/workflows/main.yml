@@ -16,4 +16,4 @@ jobs:
       - name: Build the stack
         run: docker-compose up -d
       - name: Django tests
-        run: docker-compose exec server python manage.py test
+        run: docker-compose exec -T server python manage.py test
