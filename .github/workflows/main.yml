@@ -36,6 +36,8 @@ jobs:
         pip install pipenv
         pipenv install --system
         python manage.py collectstatic --noinput
+    - name: Check GITHUB_CONTEXT
+      run: echo "$GITHUB_CONTEXT"
     - name: Run migrations
       working-directory: ./server
       run: python manage.py migrate
