@@ -1,6 +1,6 @@
 from django.db import models
 from django.urls import reverse
-from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 
 
 class Page(models.Model):
@@ -16,7 +16,7 @@ class Page(models.Model):
     title = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250,
                             unique=True)
-    body = RichTextField()
+    body = RichTextUploadingField()
     nav_position = models.CharField(max_length=20,
                                     choices=NAV_POSITION,
                                     default='01')

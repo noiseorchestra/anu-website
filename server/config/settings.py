@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     # third party apps
     'ckeditor',
+    'ckeditor_uploader',
 
     # local apps
     'accounts',
@@ -162,3 +163,12 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_MANIFEST_STRICT = False
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+SFTP_STORAGE_HOST = 'sftp.storage.memset.com'
+SFTP_STORAGE_ROOT = 'anu-website'
+SFTP_STORAGE_PARAMS = {
+    "port":"22",
+    "username":"user",
+    "password":"pass"
+}
