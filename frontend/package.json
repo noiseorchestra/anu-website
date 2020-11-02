@@ -1,9 +1,10 @@
 {
-  "name": "heroku-deploy",
+  "name": "anu-website-frontend",
   "private": true,
   "scripts": {
+    "serve": "vue-cli-service serve",
     "build": "rm -rf ../server/static/dist/* && vue-cli-service build --no-clean",
-    "serve": "vue-cli-service serve"
+    "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
     "p5": "^1.1.9",
@@ -12,9 +13,12 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-router": "~4.5.8",
+    "@vue/cli-plugin-unit-jest": "^4.5.8",
     "@vue/cli-service": "~4.5.8",
+    "@vue/test-utils": "^1.0.3",
     "axe-core": "^4.0.2",
     "jest-axe": "^4.1.0",
+    "jest-canvas-mock": "^2.3.0",
     "vue-axe": "^2.4.2",
     "vue-template-compiler": "^2.6.12"
   }

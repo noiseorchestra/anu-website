@@ -51,10 +51,25 @@ export default {
   },
   created: function () {
     // build routes and pass in djangoData
-    let jsVariable = JSON.parse(document.getElementById('djangoData').textContent)
+    let jsVariable = {
+      slug: "about",
+      pages: [{
+        slug: "about",
+        title: "About",
+        body: "About stuff",
+        nav_position: "02"
+      }]
+    }
+    if (document.getElementById('djangoData')) {
+      jsVariable = JSON.parse(document.getElementById('djangoData').textContent)
+    }
     this.generate_page_routes(jsVariable.pages)
     this.pages = jsVariable.pages
-    this.$router.push(`/${jsVariable.slug}`)
+    this.$router.push(`/${jsVariable.slug}`).catch(err => {
+      if (err.name !== 'NavigationDuplicated') {
+        throw err;
+      }
+    });
   }
 }
 
