@@ -165,10 +165,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_MANIFEST_STRICT = False
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_BROWSE_SHOW_DIRS = True
 SFTP_STORAGE_HOST = 'sftp.storage.memset.com'
 SFTP_STORAGE_ROOT = 'anu-website'
-SFTP_STORAGE_PARAMS = {
-    "port":"22",
-    "username":"user",
-    "password":"pass"
-}
+SFTP_STORAGE_PARAMS = env.dict("SFTP_STORAGE_PARAMS", default={})
