@@ -8,6 +8,9 @@ urlpatterns = [
     # User management
     path('accounts/', include('django.contrib.auth.urls')),
 
+    # File uploads
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+
     # Local apps
     path('', include('pages.urls')),
 ]

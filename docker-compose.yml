@@ -4,9 +4,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: server-dev
+      target: server-base
     working_dir: /code/server
-    command: gunicorn config.wsgi -b 0.0.0.0:8000
+    command: bash -c "python manage.py collectstatic --noinput && gunicorn config.wsgi -b 0.0.0.0:8000"
     volumes:
       - .:/code
     ports:
@@ -15,6 +15,7 @@ services:
       - db
       - frontend
     environment:
+      - "USE_LOCAL_STORAGE=TRUE"
       - "NODE_ENV=development"
       - "DJANGO_SECRET_KEY=p=4f_cxdno4qj6itdx!@v%7oij3ma%b_y#422*t(dbpk9^pt08"
       - "DJANGO_DEBUG=True"
