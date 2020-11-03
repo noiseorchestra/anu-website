@@ -165,9 +165,14 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_MANIFEST_STRICT = False
 
-USE_S3 = os.getenv('USE_S3') == 'TRUE'
+USE_LOCAL_STORAGE = os.getenv('USE_LOCAL_STORAGE') == 'TRUE'
 
-if USE_S3:
+if USE_LOCAL_STORAGE:
+    STATIC_URL = '/staticfiles/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    MEDIA_URL = '/mediafiles/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+else:
     # Digital Ocean Spaces Access Key
     AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
     # Digital Ocean Spaces Access Key Secret
@@ -188,11 +193,6 @@ if USE_S3:
     AWS_PUBLIC_MEDIA_LOCATION = '{}/media/public'.format(AWS_LOCATION)
     # backend to use for uploaded files
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-else:
-    STATIC_URL = '/staticfiles/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    MEDIA_URL = '/mediafiles/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
 
 AWS_QUERYSTRING_AUTH = False
 CKEDITOR_UPLOAD_PATH = "uploads/"
