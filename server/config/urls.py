@@ -12,5 +12,6 @@ urlpatterns = [
     path('ckeditor/', include('ckeditor_uploader.urls')),
 
     # Local apps
+    path('dashboard/', include('dashboard.urls')),
     path('', include('pages.urls')),
 ]
