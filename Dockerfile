@@ -28,17 +28,9 @@ RUN pip install pipenv && pipenv install --system
 
 COPY . /code/
 
-FROM server-base AS server-dev
-
-RUN python manage.py collectstatic --noinput --clear
-
 WORKDIR /code/server
 
 FROM server-base AS server-prod
 
 COPY --from=frontend-prod /code/server/static/dist /code/server/static/dist
 COPY --from=frontend-prod /code/server/templates/vue /code/server/templates/vue
-
-WORKDIR /code/server
-
-RUN python manage.py collectstatic --noinput --clear
