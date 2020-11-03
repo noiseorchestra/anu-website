@@ -137,18 +137,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_FINDERS = [
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-]
-
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 LOGIN_REDIRECT_URL = 'home'
@@ -162,29 +150,39 @@ SESSION_COOKIE_SECURE = env.bool("DJANGO_SESSION_COOKIE_SECURE", default=True)
 CSRF_COOKIE_SECURE = env.bool("DJANGO_CSRF_COOKIE_SECURE", default=True)
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-WHITENOISE_MANIFEST_STRICT = False
+USE_LOCAL = os.getenv('USE_LOCAL_STORAGE') == "TRUE"
 
-# Digital Ocean Spaces Access Key
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-# Digital Ocean Spaces Access Key Secret
-AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-# Spaces instance name
-AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
-AWS_S3_ENDPOINT_URL = 'https://fra1.digitaloceanspaces.com'
-# root project folder
-AWS_LOCATION = 'anu-website'
-# file permissions when uploaded
-AWS_DEFAULT_ACL = 'public-read'
-# not sure if this is doing anything....
-AWS_STATIC_LOCATION = '{}/static'.format(AWS_LOCATION)
-# backend to use for static files
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATIC_URL = '{}/{}/'.format(AWS_S3_ENDPOINT_URL, AWS_LOCATION)
-# not sure if this is doing anything....
-AWS_PUBLIC_MEDIA_LOCATION = '{}/media/public'.format(AWS_LOCATION)
-# backend to use for uploaded files
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+if USE_LOCAL:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    WHITENOISE_MANIFEST_STRICT = False
+    STATIC_URL = '/static/'
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_FINDERS = [
+        "django.contrib.staticfiles.finders.FileSystemFinder",
+        "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    ]
+else:
+    # Digital Ocean Spaces Access Key
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    # Digital Ocean Spaces Access Key Secret
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+    # Spaces instance name
+    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_ENDPOINT_URL = 'https://fra1.digitaloceanspaces.com'
+    # root project folder
+    AWS_LOCATION = 'anu-website'
+    # file permissions when uploaded
+    AWS_DEFAULT_ACL = 'public-read'
+    # not sure if this is doing anything....
+    AWS_STATIC_LOCATION = '{}/static'.format(AWS_LOCATION)
+    # backend to use for static files
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    STATIC_URL = '{}/{}/'.format(AWS_S3_ENDPOINT_URL, AWS_LOCATION)
+    # not sure if this is doing anything....
+    AWS_PUBLIC_MEDIA_LOCATION = '{}/media/public'.format(AWS_LOCATION)
+    # backend to use for uploaded files
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 AWS_QUERYSTRING_AUTH = False
 CKEDITOR_UPLOAD_PATH = "uploads/"
