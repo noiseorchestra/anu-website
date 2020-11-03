@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     # third party apps
     'ckeditor',
     'ckeditor_uploader',
+    'storages',
 
     # local apps
     'accounts',
@@ -164,8 +165,34 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WHITENOISE_MANIFEST_STRICT = False
 
+USE_S3 = os.getenv('USE_S3') == 'TRUE'
+
+if USE_S3:
+    # Digital Ocean Spaces Access Key
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    # Digital Ocean Spaces Access Key Secret
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+    # Spaces instance name
+    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_ENDPOINT_URL = 'https://fra1.digitaloceanspaces.com'
+    # root project folder
+    AWS_LOCATION = 'anu-website'
+    # file permissions when uploaded
+    AWS_DEFAULT_ACL = 'public-read'
+    # not sure if this is doing anything....
+    AWS_STATIC_LOCATION = '{}/static'.format(AWS_LOCATION)
+    # backend to use for static files
+    STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    STATIC_URL = '{}/{}/'.format(AWS_S3_ENDPOINT_URL, AWS_LOCATION)
+    # not sure if this is doing anything....
+    AWS_PUBLIC_MEDIA_LOCATION = '{}/media/public'.format(AWS_LOCATION)
+    # backend to use for uploaded files
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+else:
+    STATIC_URL = '/staticfiles/'
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    MEDIA_URL = '/mediafiles/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'mediafiles')
+
+AWS_QUERYSTRING_AUTH = False
 CKEDITOR_UPLOAD_PATH = "uploads/"
-CKEDITOR_BROWSE_SHOW_DIRS = True
-SFTP_STORAGE_HOST = 'sftp.storage.memset.com'
-SFTP_STORAGE_ROOT = 'anu-website'
-SFTP_STORAGE_PARAMS = env.dict("SFTP_STORAGE_PARAMS", default={})
