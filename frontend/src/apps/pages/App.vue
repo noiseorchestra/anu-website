@@ -13,7 +13,7 @@ import NavBar from '@/components/NavBar.vue'
 import Footer from '@/components/Footer.vue'
 import P5jsBackground from '@/components/P5jsBackground.vue'
 import PageContent from '../../views/page.vue'
-// import Dashboard from '@/components/Dashboard.vue'
+import Dashboard from '@/components/Dashboard.vue'
 import P5 from 'p5'
 
 export default {

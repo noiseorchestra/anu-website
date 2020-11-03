@@ -5,7 +5,7 @@ import App from '../App.vue'
 
 expect.extend(toHaveNoViolations)
 
-it('should demonstrate this matcher`s usage with vue test utils', async () => {
+it('test pages app with axe', async () => {
 
 	// create router with dummy routes
 	const localVue = createLocalVue()
