@@ -1,0 +1,14 @@
+{% block content %}
+	{% if request.user.is_authenticated %}
+		Hello {{ request.user.username }},
+		{% if "dashboard" in request.path %}
+			<a href="{% url "home" %}">Home</a>
+		{% else %}
+			<!-- TODO implement dashboard -->
+			<a href="{% url "home" %}">My Dashboard</a>
+		{% endif %}
+		<a href="{% url "logout" %}">Logout</a>
+	{% else %}
+		<a href="{% url "login" %}">Log-in</a>
+	{% endif %}
+{% endblock %}

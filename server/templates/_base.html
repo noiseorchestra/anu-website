@@ -14,6 +14,7 @@
     </head>
     <body {% block body_tag_attributes %}{% endblock %}>
         {% block body %}
+            {% include 'navbar/navbar.html' %}
             {% block content %}{% endblock %}
         {% endblock %}
     </body>
