@@ -10,7 +10,7 @@ module.exports = {
         chunks: ["chunk-vendors", "pages"],
       },
       dashboard: {
-        entry: "./src/apps/dashboard/main.js", // matching the new paths created above
+        entry: "src/apps/dashboard/main.js", // matching the new paths created above
         template: "public/index.html",
         filename: '../../templates/dashboard/_vue_base.html', // relative to outputDir!
         chunks: ["chunk-vendors", "dashboard"],

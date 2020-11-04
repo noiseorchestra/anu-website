@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- <NavBar :routes=["home"]></NavBar> -->
     <Dashboard :naw="naw"></Dashboard>
   </div>
 </template>

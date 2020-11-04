@@ -4,8 +4,7 @@
 		{% if "dashboard" in request.path %}
 			<a href="{% url "home" %}">Home</a>
 		{% else %}
-			<!-- TODO implement dashboard -->
-			<a href="{% url "home" %}">My Dashboard</a>
+			<a href="{% url "dashboard:dashboard" "noise-orchestra-web" %}">My Dashboard</a>
 		{% endif %}
 		<a href="{% url "logout" %}">Logout</a>
 	{% else %}

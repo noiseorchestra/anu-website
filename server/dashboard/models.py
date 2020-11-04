@@ -19,5 +19,5 @@ class NoiseAudioWeb(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('vue_frontend:dashboard',
+        return reverse('dashboard',
                        args=[self.slug])

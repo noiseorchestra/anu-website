@@ -18,4 +18,4 @@ def dashboard(request, slug="noise-orchestra-web"):
         'file_storage': data.file_storage,
     }
 
-    return render(request, 'templates/vue/_vue_base_dashboard.html', {'data': {'naw': naw}})
+    return render(request, 'dashboard/dashboard.html', {'data': {'naw': naw}})
