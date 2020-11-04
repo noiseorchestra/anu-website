@@ -13,6 +13,7 @@ import NavBar from '@/components/NavBar.vue'
 import Footer from '@/components/Footer.vue'
 import P5jsBackground from '@/components/P5jsBackground.vue'
 import PageContent from '../../views/page.vue'
+import Home from '@/components/Home.vue'
 import P5 from 'p5'
 
 export default {
@@ -23,7 +24,8 @@ export default {
   components: {
     NavBar,
     P5jsBackground,
-    Footer
+    Footer,
+    Home
   },
   computed: {
     routes() {
@@ -43,6 +45,10 @@ export default {
     },
     generate_page_routes: function (pages) {
       for (const page of pages) {
+        if (page.slug === "home") {
+          this.generate_route(page, Home)
+          continue
+        }
         this.generate_route(page, PageContent)
       }
     },
@@ -63,11 +69,11 @@ export default {
     }
     this.generate_page_routes(jsVariable.pages)
     this.pages = jsVariable.pages
-    this.$router.push(`/${jsVariable.slug}`).catch(err => {
-      if (err.name !== 'NavigationDuplicated') {
-        throw err;
-      }
-    });
+    // this.$router.push(`/${jsVariable.slug}`).catch(err => {
+    //   if (err.name !== 'NavigationDuplicated') {
+    //     throw err;
+    //   }
+    // });
   }
 }
 

@@ -2,9 +2,9 @@
 	{% if request.user.is_authenticated %}
 		Hello {{ request.user.username }},
 		{% if "dashboard" in request.path %}
-			<a href="{% url "home" %}">Home</a>
+			<a href="{% url "pages:page" "home"%}">Home</a>
 		{% else %}
-			<a href="{% url "dashboard:dashboard" "noise-orchestra-web" %}">My Dashboard</a>
+			<a href="{% url "home" "noise-orchestra-web" %}">My Dashboard</a>
 		{% endif %}
 		<a href="{% url "logout" %}">Logout</a>
 	{% else %}
