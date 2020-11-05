@@ -19,5 +19,5 @@ class NoiseAudioWeb(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('dashboard',
+        return reverse('dashboard:dashboard',
                        args=[self.slug])
