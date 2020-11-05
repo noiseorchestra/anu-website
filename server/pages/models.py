@@ -27,5 +27,5 @@ class Page(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('page',
+        return reverse('pages:page',
                        args=[self.slug])

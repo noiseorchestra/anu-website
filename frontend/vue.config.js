@@ -6,15 +6,15 @@ module.exports = {
       pages: {
         entry: "src/apps/pages/main.js", // matching the new paths created above
         template: "public/index.html",
-        filename: '../../templates/vue/_vue_base.html', // relative to outputDir!
+        filename: '../../templates/pages/_vue_base.html', // relative to outputDir!
         chunks: ["chunk-vendors", "pages"],
       },
-    //   dashboard: {
-    //     entry: "./src/pages/dashboard/main.js", // matching the new paths created above
-    //     template: "public/index.html",
-    //     filename: '../../dashboard/templates/base-vue-dashboard.html', // relative to outputDir!
-    //     chunks: ["chunk-vendors", "dashboard"],
-    //   },
+      dashboard: {
+        entry: "src/apps/dashboard/main.js", // matching the new paths created above
+        template: "public/index.html",
+        filename: '../../templates/dashboard/_vue_base.html', // relative to outputDir!
+        chunks: ["chunk-vendors", "dashboard"],
+      },
     },
 
     chainWebpack: config => {
