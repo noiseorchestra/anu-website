@@ -1,8 +1,13 @@
 @import "@/scss/_variables.scss";
 @mixin base-style {
+
+	body {
+		font-family: map-get($font, "main-family");
+		background-color: map-get($colors, "dark");
+	}
+
 	#app {
 		position: absolute;
-	  background-color: map-get($colors, "dark");
 	  width: 100vw;
 	  left:0px;
 	  top: 0px;
@@ -10,12 +15,17 @@
 	}
 
 	.user {
+	  color: map-get($colors, "bright");
 	  display: block;
 	  position: absolute;
 	  top: 0px;
 	  right: 0px;
 	  z-index: 100;
 	  padding: 4px;
+	}
+
+	.user-name {
+		font-weight: bold;
 	}
 
 	a.router-link-exact-active {

@@ -1,6 +1,6 @@
 {% block content %}
 	{% if request.user.is_authenticated %}
-		Hello {{ request.user.username }},
+		<span>Hello <span class="user-name">{{ request.user.username }}</span>!</span>
 		{% if "dashboard" in request.path %}
 			<a href="{% url "pages:page" "home"%}">Home</a>
 		{% else %}
