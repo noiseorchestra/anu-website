@@ -83,19 +83,8 @@ export default {
 
 </script>
 
-<style>
-
-#app {
-  background-color: black;
-  position: absolute;
-  width: 100vw;
-  left:0px;
-  top: 0px;
-  padding: 0px;
-}
-
-img {
-  max-width: 100%;
-}
-
+<style lang="scss">
+@import "@/scss/_variables.scss";
+@import "@/scss/_common.scss";
+@include base-style;
 </style>

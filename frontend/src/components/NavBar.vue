@@ -15,7 +15,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import "@/scss/_variables.scss";
 
 a {
 	margin-right: 5px;
@@ -31,11 +32,11 @@ a {
 
 #nav a.router-link-exact-active {
 	font-weight: bold;
-  color: black;
+  color: map-get($colors, "dark");
 }
 
 #nav a {
-  color: black;
+  color: map-get($colors, "dark");
 }
 
 </style>

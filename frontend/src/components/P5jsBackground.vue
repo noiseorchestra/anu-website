@@ -59,7 +59,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 #canvas {
   overflow: hidden;
   max-width: 100vw;

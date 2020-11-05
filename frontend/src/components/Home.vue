@@ -9,7 +9,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 
 .home-container {
   max-height: 100vh;

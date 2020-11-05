@@ -39,10 +39,8 @@ export default {
 }
 </script>
 
-<style>
-#app {
-  width: 95vw;
-  color:white;
-}
-
+<style lang="scss">
+@import "@/scss/_variables.scss";
+@import "@/scss/_common.scss";
+@include base-style;
 </style>

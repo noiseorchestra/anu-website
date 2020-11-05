@@ -1,0 +1,36 @@
+@import "@/scss/_variables.scss";
+@mixin base-style {
+	#app {
+		position: absolute;
+	  background-color: map-get($colors, "dark");
+	  width: 100vw;
+	  left:0px;
+	  top: 0px;
+	  padding: 0px;
+	}
+
+	.user {
+	  display: block;
+	  position: absolute;
+	  top: 0px;
+	  right: 0px;
+	  z-index: 100;
+	  padding: 4px;
+	}
+
+	a.router-link-exact-active {
+		font-weight: bold;
+	  color: map-get($colors, "dark");
+	}
+
+	a {
+		padding-left: 2px;
+		padding-right: 2px;
+		color: map-get($colors, "dark");
+		background-color: map-get($colors, "highlight");
+	}
+
+	img {
+	  max-width: 100%;
+	}
+}

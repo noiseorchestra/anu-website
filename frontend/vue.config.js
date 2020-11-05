@@ -16,7 +16,6 @@ module.exports = {
         chunks: ["chunk-vendors", "dashboard"],
       },
     },
-
     chainWebpack: config => {
         /*
         The arrow function in writeToDisk(...) tells the dev server to write
