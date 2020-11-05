@@ -28,9 +28,15 @@
 		font-weight: bold;
 	}
 
+	img {
+	  max-width: 100%;
+	}
+}
+
+@mixin link-style {
 	a.router-link-exact-active {
 		font-weight: bold;
-	  color: map-get($colors, "dark");
+		color: map-get($colors, "dark");
 	}
 
 	a {
@@ -38,9 +44,5 @@
 		padding-right: 2px;
 		color: map-get($colors, "dark");
 		background-color: map-get($colors, "highlight");
-	}
-
-	img {
-	  max-width: 100%;
 	}
 }

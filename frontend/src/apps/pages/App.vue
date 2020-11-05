@@ -1,6 +1,7 @@
 <template>
   <main id="app">
-    <NavBar :routes="routes"></NavBar>
+    <span class="desktopNav"><NavBar :routes="routes"></NavBar></span>
+    <span class="mobileNav"><NavBarMobile :routes="routes"></NavBarMobile></span>
     <router-view></router-view>
     <P5jsBackground></P5jsBackground>
     <Footer></Footer>
@@ -10,6 +11,7 @@
 <script>
 // @ is an alias to /src
 import NavBar from '@/components/NavBar.vue'
+import NavBarMobile from '@/components/NavBarMobile.vue'
 import Footer from '@/components/Footer.vue'
 import P5jsBackground from '@/components/P5jsBackground.vue'
 import PageContent from '../../views/page.vue'
@@ -36,6 +38,7 @@ export default {
   },
   components: {
     NavBar,
+    NavBarMobile,
     P5jsBackground,
     Footer,
     Home
@@ -84,7 +87,28 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/scss/_variables.scss";
 @import "@/scss/_common.scss";
 @include base-style;
+@include link-style;
+</style>
+
+<style scoped lang="scss">
+@import "@/scss/_variables.scss";
+
+.mobileNav {
+  display: none;
+}
+.desktopNav {
+  display: block;
+}
+
+@media (max-width: map-get($breakpoints, "small")) {
+  .mobileNav {
+    display: block;
+  }
+  .desktopNav {
+    display: none;
+  }
+}
+
 </style>

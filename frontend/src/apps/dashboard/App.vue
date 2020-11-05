@@ -40,7 +40,10 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/scss/_variables.scss";
 @import "@/scss/_common.scss";
 @include base-style;
+</style>
+
+<style scoped lang="scss">
+@import "@/scss/_variables.scss";
 </style>
