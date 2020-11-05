@@ -3,10 +3,6 @@ from django.views.generic import TemplateView
 from .models import Page
 
 
-class HomePageView(TemplateView):
-    template_name = 'home.html'
-
-
 def get_pages():
     data = Page.objects.all()
 
