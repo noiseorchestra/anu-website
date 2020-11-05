@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
-    <Dashboard :naw="naw"></Dashboard>
-  </div>
+  <main id="app">
+    <Dashboard :naw="djangoData"></Dashboard>
+  </main>
 </template>
 
 <script>
@@ -13,16 +13,28 @@ import Dashboard from '@/components/Dashboard.vue'
 export default {
   name: 'App',
   data: function() {
-    return {naw: {}}
+    return {
+      djangoData: {
+        name: 'Noise Orchestra Web',
+        slug: 'noise-orchestra-web',
+        about: 'About our web',
+        owner: 'Noise Orchestra',
+        jacktrip_hub_server: '123.123.123.123',
+        influxdb: '234.234.243.234',
+        stream_address: 'address_of_stream',
+        file_storage: 'address_of_file_storage'
+      }
+    }
   },
   components: {
     Dashboard,
     NavBar
   },
   created: function () {
-    let jsVariable = JSON.parse(document.getElementById('djangoData').textContent)
-    this.naw = jsVariable.naw
-    console.log(jsVariable.naw)
+    if (document.getElementById('djangoData')) {
+      console.log(JSON.parse(document.getElementById('djangoData').textContent))
+      this.djangoData = JSON.parse(document.getElementById('djangoData').textContent)
+    }
   },
 }
 </script>

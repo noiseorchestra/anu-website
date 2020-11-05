@@ -5,7 +5,7 @@ import App from '../App.vue'
 
 expect.extend(toHaveNoViolations)
 
-it('test pages app with axe', async () => {
+it('tests pages app with axe', async () => {
 
 	// create router with dummy routes
 	const localVue = createLocalVue()
@@ -19,7 +19,6 @@ it('test pages app with axe', async () => {
 	const router = new VueRouter({
     routes
 	})
-	// router.push({name: 'About', params: {}})
 
 	//mount the app
 	const wrapper = mount(App, {

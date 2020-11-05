@@ -18,8 +18,21 @@ import P5 from 'p5'
 
 export default {
   name: 'App',
+  // data: function() {
+  //   return {pages: {}}
+  // },
   data: function() {
-    return {pages: {}}
+    return {
+      djangoData: {
+        slug: "about",
+        pages: [{
+          slug: "about",
+          title: "About",
+          body: "About stuff",
+          nav_position: "02"
+        }]
+      }
+    }
   },
   components: {
     NavBar,
@@ -43,8 +56,8 @@ export default {
       this.$router.options.routes.push(new_route)
       this.$router.addRoutes([new_route])
     },
-    generate_page_routes: function (pages) {
-      for (const page of pages) {
+    generate_page_routes: function () {
+      for (const page of this.djangoData.pages) {
         if (page.slug === "home") {
           this.generate_route(page, Home)
           continue
@@ -55,20 +68,11 @@ export default {
   },
   created: function () {
     // build routes and pass in djangoData
-    let jsVariable = {
-      slug: "about",
-      pages: [{
-        slug: "about",
-        title: "About",
-        body: "About stuff",
-        nav_position: "02"
-      }]
-    }
     if (document.getElementById('djangoData')) {
-      jsVariable = JSON.parse(document.getElementById('djangoData').textContent)
+      this.djangoData = JSON.parse(document.getElementById('djangoData').textContent)
     }
-    this.generate_page_routes(jsVariable.pages)
-    this.pages = jsVariable.pages
+    this.generate_page_routes()
+    // this.pages = jsVariable.pages
     // this.$router.push(`/${jsVariable.slug}`).catch(err => {
     //   if (err.name !== 'NavigationDuplicated') {
     //     throw err;

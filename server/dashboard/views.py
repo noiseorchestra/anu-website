@@ -7,7 +7,7 @@ from dashboard.models import NoiseAudioWeb
 def dashboard(request, slug="noise-orchestra-web"):
     data = get_object_or_404(NoiseAudioWeb, slug=slug)
 
-    naw = {
+    nawData = {
         'name': data.name,
         'slug': data.slug,
         'about': data.about,
@@ -18,4 +18,4 @@ def dashboard(request, slug="noise-orchestra-web"):
         'file_storage': data.file_storage,
     }
 
-    return render(request, 'dashboard/dashboard.html', {'data': {'naw': naw}})
+    return render(request, 'dashboard/dashboard.html', {'data': nawData})

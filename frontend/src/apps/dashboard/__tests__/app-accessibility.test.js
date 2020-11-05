@@ -4,7 +4,7 @@ import App from '../App.vue'
 
 expect.extend(toHaveNoViolations)
 
-it('test dashboard app with axe', async () => {
+it('tests dashboard app with axe', async () => {
 
 	const wrapper = mount(App)
 
