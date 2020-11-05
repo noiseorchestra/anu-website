@@ -25,6 +25,11 @@ export default {
 @import "@/scss/_variables.scss";
 .dashboard {
   color: map-get($colors, "bright");
+  width: 100%;
+}
+
+table {
+  overflow-wrap: anywhere;
 }
 
 </style>
