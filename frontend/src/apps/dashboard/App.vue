@@ -1,14 +1,13 @@
 <template>
   <main id="app">
-    <Dashboard :naw="djangoData"></Dashboard>
+    <DashboardView :naw="djangoData"></DashboardView>
   </main>
 </template>
 
 <script>
 // @ is an alias to /src
 
-import NavBar from '@/components/NavBar.vue'
-import Dashboard from '@/components/Dashboard.vue'
+import DashboardView from '../../views/dashboard.vue'
 
 export default {
   name: 'App',
@@ -27,8 +26,7 @@ export default {
     }
   },
   components: {
-    Dashboard,
-    NavBar
+    DashboardView,
   },
   created: function () {
     if (document.getElementById('djangoData')) {
@@ -43,6 +41,7 @@ export default {
 @import "@/scss/_common.scss";
 @include base-style;
 @include link-style;
+@include nav-style;
 </style>
 
 <style scoped lang="scss">

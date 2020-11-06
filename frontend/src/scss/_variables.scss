@@ -15,13 +15,15 @@ $font: (
 );
 
 $breakpoints: (
-    "small": 50em,
+    "small": 40em,
     "medium": 76.8em,
     "large": 102.4em,
     "larger": 128em,
     "extra-large": 144em
 );
 
+$header-height: 40px;
+
 $sizes: (
-    "header-height": 6rem
+    "header-height": 40px
 );

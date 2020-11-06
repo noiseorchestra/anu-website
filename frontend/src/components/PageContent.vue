@@ -20,7 +20,8 @@ export default {
 @import "@/scss/_variables.scss";
 
 .page-container {
-  max-height: calc(100vh - 50px);
+  max-height: calc(100vh - #{$header-height});
+  max-width: 100vw;
 }
 
 .page-content {
@@ -28,12 +29,15 @@ export default {
   padding-left: 10vw;
   padding-right: 10vw;
   overflow-y: auto;
-  max-height: calc(100vh - 50px);
+  max-height: calc(100vh - #{$header-height});
+  max-width: 100vw;
 }
 
 .page-body {
   overflow-y: auto;
-  h1 {background-color: map-get($colors, "dark");}
+  h1 {
+    background-color: map-get($colors, "dark");
+  }
   /deep/ p {
     background-color: map-get($colors, "dark");
   }

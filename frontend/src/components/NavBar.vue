@@ -18,26 +18,28 @@ export default {
 <style scoped lang="scss">
 @import "@/scss/_variables.scss";
 
-a {
-	margin-right: 5px;
-}
-
 #nav {
-	position: absolute;
+	display: block;
+	position: fixed;
+	margin: 4px;
 	z-index: 100;
 	left:0px;
 	top: 0px;
-	height: 50px;
+	height: map-get($sizes, "header-height");
 	width: 100vw;
-	padding: 4px;
 }
 
 #nav a.router-link-exact-active {
+	text-decoration: underline;
+	margin: 2px;
 	font-weight: bold;
   color: map-get($colors, "dark");
 }
 
 #nav a {
+	text-decoration: none;
+	margin: 2px;
+	font-weight: bold;
   color: map-get($colors, "dark");
 }
 

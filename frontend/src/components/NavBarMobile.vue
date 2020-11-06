@@ -17,6 +17,7 @@ export default {
 	},
 	computed: {
 		width() {
+			console.log(window.innerWidth)
 			if (window.innerWidth < 400) {
 				return window.innerWidth;
 			} else {

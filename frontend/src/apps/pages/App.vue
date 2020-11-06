@@ -14,7 +14,7 @@ import NavBar from '@/components/NavBar.vue'
 import NavBarMobile from '@/components/NavBarMobile.vue'
 import Footer from '@/components/Footer.vue'
 import P5jsBackground from '@/components/P5jsBackground.vue'
-import PageContent from '../../views/page.vue'
+import PageView from '../../views/page.vue'
 import Home from '@/components/Home.vue'
 import P5 from 'p5'
 
@@ -65,7 +65,7 @@ export default {
           this.generate_route(page, Home)
           continue
         }
-        this.generate_route(page, PageContent)
+        this.generate_route(page, PageView)
       }
     },
   },
@@ -90,6 +90,7 @@ export default {
 @import "@/scss/_common.scss";
 @include base-style;
 @include link-style;
+@include nav-style;
 </style>
 
 <style scoped lang="scss">

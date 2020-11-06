@@ -61,8 +61,12 @@ export default {
 
 <style scoped>
 #canvas {
-  overflow: hidden;
-  max-width: 100vw;
-  max-height: 100vh;
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -9999;
 }
 </style>
