@@ -20,7 +20,8 @@ export default {
 <style scoped>
 .vue-page {
   position: absolute;
-  min-height: 100vh;
+  padding-top: 50px;
+  min-height: calc(100vh - 50px);;
   min-width: 100vw;
 }
 </style>

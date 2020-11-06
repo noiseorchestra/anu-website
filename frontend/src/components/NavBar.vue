@@ -27,6 +27,8 @@ a {
 	z-index: 100;
 	left:0px;
 	top: 0px;
+	height: 50px;
+	width: 100vw;
 	padding: 4px;
 }
 

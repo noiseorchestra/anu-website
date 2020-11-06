@@ -20,23 +20,20 @@ export default {
 @import "@/scss/_variables.scss";
 
 .page-container {
-  max-height: 100vh;
+  max-height: calc(100vh - 50px);
 }
 
 .page-content {
   color: map-get($colors, "bright");
   padding-left: 10vw;
   padding-right: 10vw;
-  padding-top: 10vh;
-  margin-top: 5vh;
-  padding-bottom: 15vh;
   overflow-y: auto;
-  max-height: 70vh;
+  max-height: calc(100vh - 50px);
 }
 
 .page-body {
   overflow-y: auto;
-  padding-bottom: 100vh;
+  h1 {background-color: map-get($colors, "dark");}
   /deep/ p {
     background-color: map-get($colors, "dark");
   }
