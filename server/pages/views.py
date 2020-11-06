@@ -14,6 +14,7 @@ def get_pages():
             'body': page.body,
             'nav_position': page.nav_position
           })
+    pages.sort(key=lambda x: x.get('nav_position'))
     return pages
 
 
