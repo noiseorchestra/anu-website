@@ -1,6 +1,6 @@
 <template>
 	<nav id="nav">
-    <Slide width="360">
+    <Slide v-bind:width="width" :closeOnNavigation="true">
 			<router-link v-for="route in routes" :key="route.path" :to="route.path">
 				{{route.name}}
 			</router-link>
@@ -14,6 +14,15 @@ export default {
 	name: 'NavBar',
 	props: {
 		routes: Array
+	},
+	computed: {
+		width() {
+			if (window.innerWidth < 400) {
+				return window.innerWidth;
+			} else {
+				return 400
+			}
+		}
 	},
   components: {
       Slide
