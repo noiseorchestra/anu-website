@@ -35,35 +35,25 @@ export default {
 // }
 
 .bm-burger-button {
-	z-index: 300;
-	position: fixed;
-	width: 36px;
-	height: 30px;
-	left: 36px;
-	top: 36px;
-	cursor: pointer;
+	z-index: 300 !important;
+	width: 20px !important;
+	height: 20px !important;
+	left: 5px !important;
+	top: 5px !important;
 }
 .bm-burger-bars {
-	background-color: map-get($colors, "highlight");
-}
-.line-style {
-	position: absolute;
-	height: 20%;
-	left: 0;
-	right: 0;
+	background-color: map-get($colors, "highlight") !important;
 }
 .cross-style {
-	position: absolute;
-	top: 12px;
-	right: 2px;
-	cursor: pointer;
+	top: 12px !important;
+	right: 2px !important;
 }
 .bm-cross {
-	background: map-get($colors, "bright");
+	background: map-get($colors, "bright") !important;
 }
 .bm-cross-button {
-	height: 24px;
-	width: 24px;
+	height: 24px !important;
+	width: 24px !important;
 }
 .bm-menu {
 	height: 100%; /* 100% Full-height */
@@ -72,25 +62,26 @@ export default {
 	z-index: 1000; /* Stay on top */
 	top: 0;
 	left: 0;
-	background-color: map-get($colors, "dark");
+	background-color: map-get($colors, "dark") !important;
 	overflow-x: hidden; /* Disable horizontal scroll */
-	padding-top: 60px; /* Place content 60px from the top */
+	padding-top: 30px !important; /* Place content 60px from the top */
 	transition: 0.5s; /*0.5 second transition effect to slide in the sidenav*/
 }
 
 .bm-overlay {
-	background: map-get($colors, "dark");
+	background: map-get($colors, "dark") !important;
 }
 .bm-item-list {
 	a {
-		color: map-get($colors, "bright");
-		background-color: map-get($colors, "dark");}
-	a.router-link-exact-active {
-		font-weight: bold;
-		color: map-get($colors, "bright");
+		color: map-get($colors, "bright") !important;
+		background-color: map-get($colors, "dark") !important;
 	}
-	margin-left: 10%;
-	font-size: 20px;
+	a.router-link-exact-active {
+		font-weight: bold !important;
+		color: map-get($colors, "bright") !important;
+	}
+	margin-left: 10% !important;
+	font-size: 20px !important;
 }
 .bm-item-list > * {
 	display: flex;
