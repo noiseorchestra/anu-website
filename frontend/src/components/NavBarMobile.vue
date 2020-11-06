@@ -20,7 +20,7 @@ export default {
 			if (window.innerWidth < 400) {
 				return window.innerWidth;
 			} else {
-				return 400
+				return "400"
 			}
 		}
 	},
