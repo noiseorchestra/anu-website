@@ -42,6 +42,7 @@ export default {
 <style lang="scss">
 @import "@/scss/_common.scss";
 @include base-style;
+@include link-style;
 </style>
 
 <style scoped lang="scss">
