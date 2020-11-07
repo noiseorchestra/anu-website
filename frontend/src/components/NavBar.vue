@@ -1,5 +1,5 @@
 <template>
-	<nav id="nav">
+	<nav id="desktop-nav" aria-label="standard-nav-bar">
 		<router-link v-for="route in routes" :key="route.path" :to="route.path">
 			{{route.name}}
 		</router-link>
@@ -18,7 +18,7 @@ export default {
 <style scoped lang="scss">
 @import "@/scss/_variables.scss";
 
-#nav {
+#desktop-nav {
 	display: block;
 	position: fixed;
 	margin: 4px;
@@ -29,14 +29,14 @@ export default {
 	width: 100vw;
 }
 
-#nav a.router-link-exact-active {
+#desktop-nav a.router-link-exact-active {
 	text-decoration: underline;
 	margin: 2px;
 	font-weight: bold;
   color: map-get($colors, "dark");
 }
 
-#nav a {
+#desktop-nav a {
 	text-decoration: none;
 	margin: 2px;
 	font-weight: bold;

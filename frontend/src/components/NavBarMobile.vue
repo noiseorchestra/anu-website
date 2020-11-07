@@ -1,5 +1,5 @@
 <template>
-	<nav id="nav">
+	<nav id="mobile-nav" aria-label="mobile-nav-bar">
     <Slide v-bind:width="width" :closeOnNavigation="true">
 			<router-link v-for="route in routes" :key="route.path" :to="route.path">
 				{{route.name}}
