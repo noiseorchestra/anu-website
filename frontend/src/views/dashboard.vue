@@ -1,17 +1,20 @@
 <template>
   <div class="vue-container vue-dashboard">
 		<Dashboard :naw="naw"></Dashboard>
+		<Recordings/>
     <!-- <img src="../assets/anu-background-transparent.png"> -->
   </div>
 </template>
 
 <script>
 import Dashboard from '@/components/Dashboard.vue'
+import Recordings from '@/components/Recordings.vue'
 
 export default {
   name: 'page',
   components: {
-    Dashboard
+    Dashboard,
+		Recordings
   },
 	props: {naw: Object},
 }
