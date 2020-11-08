@@ -1,8 +1,14 @@
 <template>
   <article class="recordings-container">
 		<span class="recordings-item" v-for="recording in recordings">
-			<span><a v-on:click="get_download_url(recording.file)">listen!</a> {{ recording.file }}</span><br>
-			<audio v-if="recording.url" v-bind:src="recording.url" controls="true"/>
+			<div v-if="recording.url">
+				{{ recording.file }}<br>
+				<audio v-bind:src="recording.url" controls="true"/><br>
+				<a v-if="recording.url" v-bind:href="recording.url">download</a>
+			</div>
+			<div v-else>
+				<a v-on:click="get_download_url(recording.file)">listen!</a>{{ recording.file }}<br>
+			</div>
 	  </span>
   </article>
 </template>
