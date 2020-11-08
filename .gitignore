@@ -1,3 +1,4 @@
 docker-compose-prod.yml
+docker-compose.yml
 frontend/node_modules/
 server/staticfiles/
