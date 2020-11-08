@@ -6,13 +6,22 @@ COPY /frontend/package* /code/frontend/
 
 WORKDIR /code/frontend
 
+FROM frontend-base AS frontend-dev
+
 RUN npm install
 
 COPY . /code/
 
 FROM frontend-base AS frontend-prod
 
+RUN npm install
+
+COPY . /code/
+
 ENV NODE_ENV=production
+
+RUN npm install --production
+
 RUN npm run build
 
 FROM python:3.8 AS server-base
