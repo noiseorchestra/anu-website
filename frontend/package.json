@@ -9,6 +9,7 @@
   "dependencies": {
     "p5": "^1.1.9",
     "vue": "^2.6.12",
+    "vue-burger-menu": "^2.0.5",
     "vue-router": "^3.1.6"
   },
   "devDependencies": {
@@ -19,6 +20,8 @@
     "axe-core": "^4.0.2",
     "jest-axe": "^4.1.0",
     "jest-canvas-mock": "^2.3.0",
+    "node-sass": "^5.0.0",
+    "sass-loader": "^10.0.5",
     "vue-axe": "^2.4.2",
     "vue-template-compiler": "^2.6.12"
   }

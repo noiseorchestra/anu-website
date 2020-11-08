@@ -1,0 +1,80 @@
+@import "@/scss/_variables.scss";
+@mixin base-style {
+
+	::-webkit-scrollbar {
+	    width: 0px;
+	    background: transparent; /* make scrollbar transparent */
+	}
+
+	body {
+		overflow-y: hidden;
+		font-family: map-get($font, "main-family");
+		background-color: map-get($colors, "dark");
+	}
+
+	#app {
+		position: absolute;
+	  width: 100vw;
+	  left:0px;
+	  top: 0px;
+	  padding: 0px;
+	}
+
+	img {
+	  max-width: 100%;
+	}
+}
+
+@mixin link-style {
+	a.router-link-exact-active {
+		text-decoration: underline;
+		font-weight: bold;
+		color: map-get($colors, "dark");
+	}
+
+	a {
+		font-weight: bold;
+		text-decoration: none;
+		padding-left: 2px;
+		padding-right: 2px;
+		color: map-get($colors, "dark");
+		background-color: map-get($colors, "highlight");
+	}
+	a:hover {
+	  background-color: map-get($colors, "bright");
+	}
+}
+
+@mixin nav-style {
+	.user {
+	  color: map-get($colors, "bright");
+	  display: block;
+	  position: absolute;
+	  top: 0px;
+	  right: 0px;
+	  z-index: 300;
+	  padding: 4px;
+	}
+
+	.user-name {
+		font-weight: bold;
+	}
+	.mobileNav {
+	  display: none;
+	}
+	.desktopNav {
+	  display: block;
+	}
+
+	@media (max-width: map-get($breakpoints, "small")) {
+		.user{
+			a {font-size: 20px;}
+		}
+	  .mobileNav {
+	    display: block;
+	  }
+	  .desktopNav {
+	    display: none;
+	  }
+	}
+}

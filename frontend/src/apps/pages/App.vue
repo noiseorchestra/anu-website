@@ -1,6 +1,7 @@
 <template>
   <main id="app">
-    <NavBar :routes="routes"></NavBar>
+    <span class="desktopNav"><NavBar :routes="routes"></NavBar></span>
+    <span class="mobileNav"><NavBarMobile :routes="routes"></NavBarMobile></span>
     <router-view></router-view>
     <P5jsBackground></P5jsBackground>
     <Footer></Footer>
@@ -10,9 +11,10 @@
 <script>
 // @ is an alias to /src
 import NavBar from '@/components/NavBar.vue'
+import NavBarMobile from '@/components/NavBarMobile.vue'
 import Footer from '@/components/Footer.vue'
 import P5jsBackground from '@/components/P5jsBackground.vue'
-import PageContent from '../../views/page.vue'
+import PageView from '../../views/page.vue'
 import Home from '@/components/Home.vue'
 import P5 from 'p5'
 
@@ -36,6 +38,7 @@ export default {
   },
   components: {
     NavBar,
+    NavBarMobile,
     P5jsBackground,
     Footer,
     Home
@@ -62,7 +65,7 @@ export default {
           this.generate_route(page, Home)
           continue
         }
-        this.generate_route(page, PageContent)
+        this.generate_route(page, PageView)
       }
     },
   },
@@ -83,19 +86,30 @@ export default {
 
 </script>
 
-<style>
+<style lang="scss">
+@import "@/scss/_common.scss";
+@include base-style;
+@include link-style;
+@include nav-style;
+</style>
 
-#app {
-  background-color: black;
-  position: absolute;
-  width: 100vw;
-  left:0px;
-  top: 0px;
-  padding: 0px;
+<style scoped lang="scss">
+@import "@/scss/_variables.scss";
+
+.mobileNav {
+  display: none;
+}
+.desktopNav {
+  display: block;
 }
 
-img {
-  max-width: 100%;
+@media (max-width: map-get($breakpoints, "small")) {
+  .mobileNav {
+    display: block;
+  }
+  .desktopNav {
+    display: none;
+  }
 }
 
 </style>

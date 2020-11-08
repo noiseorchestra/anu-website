@@ -1,25 +1,25 @@
 <template>
-  <div class="vue-container vue-page">
-		<PageContent :pageBody="routeProps"></PageContent>
+  <div class="vue-container vue-dashboard">
+		<Dashboard :naw="naw"></Dashboard>
     <!-- <img src="../assets/anu-background-transparent.png"> -->
   </div>
 </template>
 
 <script>
-import PageContent from '@/components/PageContent.vue'
+import Dashboard from '@/components/Dashboard.vue'
 
 export default {
   name: 'page',
   components: {
-    PageContent
+    Dashboard
   },
-	props: {routeProps: Object},
+	props: {naw: Object},
 }
 </script>
 
 <style scoped lang="scss">
 @import "../scss/_variables.scss";
-.vue-page {
+.vue-dashboard {
   position: absolute;
   padding-top: map-get($sizes, "header-height");
   min-height: calc(100vh - #{$header-height});

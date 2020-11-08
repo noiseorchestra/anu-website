@@ -1,21 +1,10 @@
+/* These styles are just for while the frontend loads */
+
 .user {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  z-index: 100;
-  padding: 4px;
+  display: none;
 }
 
-a.router-link-exact-active {
-	font-weight: bold;
-  color: black;
-}
-
-a {
-	padding-left: 2px;
-	padding-right: 2px;
-	color: black;
-	background-color: #fdd01c;
-}
 body {
   background-color: black;
+  color: black;
+}

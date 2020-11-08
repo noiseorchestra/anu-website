@@ -14,12 +14,13 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import "@/scss/_variables.scss";
 
 a {
 	margin: 5px;
-	color: black;
-	background-color: #fdd01c;
+	color: map-get($colors, "dark");
+	background-color: map-get($colors, "highlight");
 }
 
 #footer {
