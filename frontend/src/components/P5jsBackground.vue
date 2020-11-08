@@ -12,26 +12,36 @@ export default {
   },
   created: function () {
     const sketch = s => {
-      let ANU_BLACK;
-      let CAM_FRAG;
-      let CRYS_FRAG;
-      let LIGHT_FRAG;
-      let MILL_FRAG;
-      let ORANGE_FRAG;
-      let SHAPE_FRAG;
-      let TEXT;
+      let fr = 3;
 
-      let fr = .5;
+      let ORANGE;
+      let SHUKOV;
+      let METRO;
+      let CACTUS;
+      let CAM;
+      let COSMOS;
+      let CRYS;
+      let MILL;
+      let MOSCOW;
+      let LIGHT;
+      let HIRO;
+      let TABLET;
+      let STONE;
 
       s.preload = () => {
-        ANU_BLACK = s.loadImage (require('../../assets/ANU_BLACK.png'));
-        CAM_FRAG = s.loadImage(require('../../assets/CAM_FRAG.png'));
-        CRYS_FRAG = s.loadImage (require('../../assets/CRYS_FRAG.png'));
-        LIGHT_FRAG = s.loadImage (require('../../assets/LIGHT_FRAG.png'));
-        MILL_FRAG = s.loadImage (require('../../assets/MILL_FRAG.png'));
-        ORANGE_FRAG = s.loadImage (require('../../assets/ORANGE_FRAG.png'));
-        SHAPE_FRAG = s.loadImage (require('../../assets/SHAPE_FRAG.png'));
-        TEXT = s.loadImage (require('../../assets/TEXT.png'));
+        SHUKOV = s.loadImage (require('../../assets/SHUKOV.png'));
+        METRO = s.loadImage (require('../../assets/METRO.png'))
+        ORANGE = s.loadImage (require('../../assets/ORANGE.png'));
+        CACTUS = s.loadImage (require('../../assets/CACTUS.png'));
+        CAM = s.loadImage (require('../../assets/CAM.png'));
+        COSMOS =s.loadImage (require('../../assets/COSMOS.png'));
+        CRYS = s.loadImage (require('../../assets/CRYS.png'));
+        MILL = s.loadImage (require('../../assets/MILL.png'));
+        MOSCOW = s.loadImage (require('../../assets/MOSCOW.png'));
+        LIGHT = s.loadImage (require('../../assets/LIGHT.png'));
+        HIRO = s.loadImage (require('../../assets/HIRO.png'));
+        TABLET = s.loadImage (require('../../assets/TABLET.png'));
+        STONE = s.loadImage (require('../../assets/STONE.png'));
       }
 
       s.setup = () => {
@@ -40,17 +50,20 @@ export default {
       }
 
       s.draw = () => {
-        s.background(254,208,22); //yellow
-        s.background(0);
-        s.imageMode(s.CENTER);
-        s.image (ANU_BLACK,window.innerWidth/2,260);
-        s.image (TEXT, window.innerWidth/2,460);
-        s.image (CAM_FRAG, s.random(600),s.random (500),150,150)
-        s.image (CRYS_FRAG,s.random(800),s.random(600),100,100);
-        s.image (LIGHT_FRAG,s.random(800),s.random(600),150,150);
-        s.image (MILL_FRAG,s.random(800),s.random(600),150,150);
-        s.image (ORANGE_FRAG,s.random(800),s.random(600),200,200);
-        s.image (SHAPE_FRAG,s.random(800),s.random(600),100,100);
+        s.background (0);
+        s.image(SHUKOV,s.random(window.innerWidth),s.random(window.innerHeight),180,180);
+        s.image (METRO,s.random(window.innerWidth),s.random(window.innerHeight),200,180);
+        s.image (ORANGE,s.random(window.innerWidth),s.random(window.innerHeight),150,150);
+        s.image (CACTUS, s.random (window.innerWidth),s.random(window.innerHeight),200,200);
+        s.image (CAM, s.random (window.innerWidth),s.random(window.innerHeight),200,200);
+        s.image (COSMOS, s.random (window.innerWidth),s.random(window.innerWidth),200,200);
+        s.image (CRYS,s.random (window.innerWidth),s.random(window.innerWidth),200,200);
+        s.image (MILL,s.random (window.innerWidth),s.random(window.innerWidth),200,200);
+        s.image (MOSCOW,s.random (window.innerWidth),s.random(window.innerWidth),200,200);
+        s.image (LIGHT,s.random (window.innerWidth),s.random(window.innerWidth),200,200);
+        s.image (HIRO,s.random (window.innerWidth),s.random(window.innerWidth),300,285);
+        s.image (TABLET,s.random (window.innerWidth),s.random(window.innerWidth),200,200);
+        s.image (STONE,s.random (window.innerWidth),s.random(window.innerWidth),170,230);
       }
     }
     let canvas = new P5(sketch, 'canvas');
