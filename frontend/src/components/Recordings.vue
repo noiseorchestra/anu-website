@@ -1,17 +1,19 @@
 <template>
-	<table class="recordings-container">
-		<tr class="recordings-item" v-for="recording in recordings">
-			<span v-if="recording.url">
-				<td><audio v-bind:src="recording.url" controls="true"/></td>
-				<td>{{ recording.file }}</td>
-				<td><a v-bind:href="recording.url">download</a></td>
-			</span>
-			<span v-else>
-				<td>{{ recording.file }}</td>
-				<td><a v-on:click="get_download_url(recording.file)">listen!</a></td>
-			</span>
-	  </tr>
-	</table>
+	<div class="recordings-container">
+		<table>
+			<tr class="recordings-item" v-for="recording in recordings">
+				<span v-if="recording.url">
+					<td><audio v-bind:src="recording.url" controls="true"/></td>
+					<td>{{ recording.file }}</td>
+					<td><a v-bind:href="recording.url">download</a></td>
+				</span>
+				<span v-else>
+					<td>{{ recording.file }}</td>
+					<td><a href="#0" v-on:click="get_download_url(recording.file)">listen!</a></td>
+				</span>
+		  </tr>
+		</table>
+	</div>
 </template>
 
 <script>
@@ -36,16 +38,13 @@ export default {
 				.then(response => (this.show_player(response.data.file_download)))
 		},
 		show_player(file_download){
-			console.log(file_download)
 			this.download_links.push(file_download)
-			console.log(this.recordings)
-			console.log(this.download_links)
 			var x, y;
 			for (x in this.download_links) {
 				for (y in this.recordings) {
-					if (this.download_links[x].file == this.recordings[y].file)
+					if (this.download_links[x].file == this.recordings[y].file) {
 						this.recordings[y].url = this.download_links[x].url
-						console.log("Match: " + this.download_links[x].url)
+					}
 				}
 			}
 		}
