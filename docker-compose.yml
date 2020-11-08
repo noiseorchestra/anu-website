@@ -15,7 +15,7 @@ services:
       - db
       - frontend
     environment:
-      - "USE_LOCAL_STORAGE=FALSE"
+      - "USE_LOCAL_STORAGE=TRUE"
   frontend:
     build:
       context: .
