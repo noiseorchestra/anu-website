@@ -4,6 +4,7 @@ from dashboard.models import NoiseAudioWeb
 from django.views.decorators.csrf import csrf_exempt
 from dashboard.serializers import Recordings, RecordingSerializer
 from django.http import HttpResponse, JsonResponse
+from rest_framework.decorators import api_view
 import os
 import boto3
 
@@ -41,6 +42,16 @@ def dashboard(request, slug="noise-orchestra-web"):
 def recordings_list(request):
     if request.method == 'GET':
         response = client.list_objects(Bucket='pypatcher-recordings')
-        urls = [get_recording_url(obj['Key']) for obj in response['Contents']]
-        serializer = RecordingSerializer(Recordings(urls))
+        files = [obj['Key'] for obj in response['Contents']]
+        serializer = RecordingSerializer(Recordings(files))
         return JsonResponse(serializer.data, safe=False)
+
+@api_view(['GET'])
+@csrf_exempt
+def get_download_link(request, file):
+    if request.method == 'GET':
+        url = client.generate_presigned_url(ClientMethod='get_object',
+                                    Params={'Bucket': 'pypatcher-recordings',
+                                            'Key': file},
+                                    ExpiresIn=300)
+        return JsonResponse({"url": url})
