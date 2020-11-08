@@ -42,9 +42,10 @@ def dashboard(request, slug="noise-orchestra-web"):
 def recordings_list(request):
     if request.method == 'GET':
         response = client.list_objects(Bucket='pypatcher-recordings')
-        files = [obj['Key'] for obj in response['Contents']]
-        serializer = RecordingSerializer(Recordings(files))
-        return JsonResponse(serializer.data, safe=False)
+        recordings = [{"file": obj['Key'], "url": None} for obj in response['Contents']]
+        # serializer = RecordingSerializer(Recordings(files))
+        return JsonResponse({"recordings": recordings})
+
 
 @api_view(['GET'])
 @csrf_exempt
@@ -54,4 +55,4 @@ def get_download_link(request, file):
                                     Params={'Bucket': 'pypatcher-recordings',
                                             'Key': file},
                                     ExpiresIn=300)
-        return JsonResponse({"url": url})
+        return JsonResponse({"file_download": {"file": file, "url": url}})
