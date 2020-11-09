@@ -8,7 +8,5 @@ build:
       target: server-prod
 release:
   image: web
-  command:
-    - python manage.py collectstatic --noinput --clear
 run:
   web: gunicorn config.wsgi
