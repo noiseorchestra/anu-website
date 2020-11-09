@@ -1,11 +1,17 @@
 <template>
-  <article class="home-container">
-  </article>
+  <div class="home-container">
+    <BackgroundLogo/>
+  </div>
 </template>
 
 <script>
+import BackgroundLogo from '@/components/BackgroundLogo.vue'
+
 export default {
   name: 'Home',
+  components: {
+    BackgroundLogo
+  }
 }
 </script>
 
@@ -13,6 +19,11 @@ export default {
 
 .home-container {
   max-height: 100vh;
+  min-height: 100vh;
+  min-width: 100vh;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
 }
 
 </style>
