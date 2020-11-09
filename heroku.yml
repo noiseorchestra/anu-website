@@ -9,4 +9,4 @@ build:
 release:
   image: web
 run:
-  web: gunicorn config.wsgi
+  web: ./on-release.sh
