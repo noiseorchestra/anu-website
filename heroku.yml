@@ -9,4 +9,4 @@ build:
 release:
   image: web
 run:
-  web: ./on-release.sh
+  web: ../on-release.sh
