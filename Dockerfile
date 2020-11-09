@@ -14,13 +14,11 @@ COPY . /code/
 
 FROM frontend-base AS frontend-prod
 
-RUN npm install
+RUN npm install --production
 
 COPY . /code/
 
 ENV NODE_ENV=production
-
-RUN npm install --production
 
 RUN npm run build
 
