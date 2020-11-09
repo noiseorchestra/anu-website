@@ -18,7 +18,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped lang="scss">
+@import "@/scss/_variables.scss";
 #logo {
 		width: 200px;
 		padding-bottom: 50px;
@@ -29,4 +30,17 @@ export default {
 #background-logo {
 		width: 200px;
 }
+@media (max-width: map-get($breakpoints, "small")) {
+	#logo {
+			width: 100px;
+			padding-bottom: 20px;
+	}
+	#background-text {
+			width: 100px;
+	}
+	#background-logo {
+			width: 100px;
+	}
+}
+
 </style>

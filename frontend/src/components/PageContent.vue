@@ -26,8 +26,8 @@ export default {
 
 .page-content {
   color: map-get($colors, "bright");
-  padding-left: 10vw;
-  padding-right: 10vw;
+  padding-left: 20vw;
+  padding-right: 20vw;
   overflow-y: auto;
   max-height: calc(100vh - #{$header-height});
   max-width: 100vw;
@@ -42,5 +42,13 @@ export default {
     background-color: map-get($colors, "dark");
   }
 }
+
+@media (max-width: map-get($breakpoints, "small")) {
+  .page-content {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+
 
 </style>

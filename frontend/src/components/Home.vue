@@ -20,7 +20,7 @@ export default {
 .home-container {
   max-height: 100vh;
   min-height: 100vh;
-  min-width: 100vh;
+  width: 100%;
   display: flex;
   align-items: flex-end;
   justify-content: center;
