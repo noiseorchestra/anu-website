@@ -29,7 +29,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: frontend-dev
+      target: frontend-base
     environment:
       - "NODE_ENV=development"
     ports:
