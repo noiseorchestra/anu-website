@@ -20,11 +20,13 @@ export default {
 
 <style>
 #logo {
-		width: 300px;
+		width: 200px;
 		padding-bottom: 50px;
 }
-/* #background-logo {
-		width: 300px;
-		padding-bottom: 50px;
-} */
+#background-text {
+		width: 200px;
+}
+#background-logo {
+		width: 200px;
+}
 </style>

@@ -8,5 +8,5 @@ build:
       target: server-prod
 release:
   image: web
-run:
-  web: ../on-release.sh
+  command:
+    - ../on-release.sh
