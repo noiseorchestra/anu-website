@@ -1,7 +1,7 @@
 <template>
 	<div id="logo">
-	  <img id="background-logo" v-bind:src="image"></img>
-	  <img id="background-text" v-bind:src="text"></img>
+	  <img id="background-logo" alt="ANU logo" v-bind:src="image"></img>
+	  <img id="background-text" alt="ANU text logo" v-bind:src="text"></img>
 	</div>
 </template>
 
