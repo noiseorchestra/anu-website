@@ -5,11 +5,11 @@
     <div class="container">
       <nav class="desktop-nav nav" aria-label="desktop-nav-bar"><NavBar :routes="routes"></NavBar></nav>
       <nav class="mobile-nav nav" aria-label="mobile-nav-bar"><NavBarMobile :routes="routes"></NavBarMobile></nav>
-      <div class="main">
+      <main class="main">
         <div class="main__padding"></div>
         <router-view class="main__content"></router-view>
         <div class="main__padding"></div>
-      </div>
+      </main>
       <footer class="footer"><Footer></Footer></footer>
     </div>
   </div>
