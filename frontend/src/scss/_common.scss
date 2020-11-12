@@ -13,6 +13,7 @@
 	html, body {
 		margin: 0;
 		font-family: map-get($font, "main-family");
+		font-size: 1em;
 	}
 }
 
@@ -47,7 +48,7 @@
 	  right: 0px;
 	  z-index: 300;
 	  padding: 4px;
-		a {font-size: 18px;}
+		a {font-size: 1.2em;}
 	}
 
 	.user-name {

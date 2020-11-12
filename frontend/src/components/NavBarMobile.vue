@@ -84,7 +84,7 @@ export default {
 }
 .bm-item-list {
 	margin-left: 10% !important;
-	font-size: 20px !important;
+	font-size: 2em !important;
 }
 .bm-item-list > * {
 	display: flex;
