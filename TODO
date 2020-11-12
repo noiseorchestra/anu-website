@@ -1,14 +1,15 @@
 CODING
-- padding at bottom of PageContent so footer isn't in the way
 - forward to homepage
-- bigger logo on bigger screens
 - compress images for upload
-- black background for all page content, not just text
-- light / dark mode
-- flexbox layout
-- make own NavBar (with flex)
 
 TEXTS
 - about page with more info about peeps
 - signal diagram
 - pisound how-to
+
+DONE
+- bigger logo on bigger screens
+- padding at bottom of PageContent so footer isn't in the way
+- black background for all page content, not just text
+- flexbox layout
+- light / dark mode
