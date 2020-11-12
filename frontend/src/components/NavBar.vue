@@ -22,17 +22,4 @@ export default {
 	margin: 4px;
 }
 
-#desktop-nav a.router-link-exact-active {
-	text-decoration: underline;
-	font-weight: bold;
-  color: map-get($colors, "dark");
-}
-
-#desktop-nav a {
-	text-decoration: none;
-	margin: 2px;
-	font-weight: bold;
-  color: map-get($colors, "dark");
-}
-
 </style>

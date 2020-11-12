@@ -113,16 +113,16 @@ export default {
   flex: 1;
 }
 
-.footer {
-  flex: 1;
-}
-
 .main {
   display: flex;
   flex-direction: row;
   justify-content: center;
   flex: 2 90vh;
   overflow-y: scroll;
+}
+
+.footer {
+  flex: 1;
 }
 
 .main__content {

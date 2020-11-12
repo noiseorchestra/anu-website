@@ -15,27 +15,9 @@ export default {
 <style scoped lang="scss">
 @import "@/scss/_variables.scss";
 
-a {
-	margin: 5px;
-	color: map-get($colors, "dark");
-	background-color: map-get($colors, "highlight");
-}
-
-#footer {
-	// position: absolute;
-	// z-index: 100;
-	// left:0px;
-	// top: 95vh;
-	// height: 5vh;
-	// min-width: 100vw;
-	// margin: 4px;
-}
-
 .footer-content {
-	// min-height: 12px;
-	// max-width: 400px;
 	text-align: center;
-	padding: 8px;
+	margin: 8px;
 }
 
 </style>
