@@ -3,8 +3,8 @@
     <P5jsBackground></P5jsBackground>
 
     <div class="container">
-      <nav class="desktop-nav" aria-label="desktop-nav-bar"><NavBar :routes="routes"></NavBar></nav>
-      <nav class="mobile-nav" aria-label="mobile-nav-bar"><NavBarMobile :routes="routes"></NavBarMobile></nav>
+      <nav class="desktop-nav nav" aria-label="desktop-nav-bar"><NavBar :routes="routes"></NavBar></nav>
+      <nav class="mobile-nav nav" aria-label="mobile-nav-bar"><NavBarMobile :routes="routes"></NavBarMobile></nav>
       <div class="main">
         <div class="main__padding"></div>
         <router-view class="main__content"></router-view>
@@ -110,7 +110,7 @@ export default {
 }
 
 .nav {
-  flex: 1;
+  flex: 1 18px;;
 }
 
 .main {
@@ -130,8 +130,22 @@ export default {
 }
 
 .main__padding {
-  flex: 1;
+  flex: 0;
 }
 
+@media (min-width: map-get($breakpoints, "medium")) {
+  .main__padding {
+    flex: 1;
+  }
+}
+
+.mobile-nav {
+	display: inline;
+  max-height: 0px;
+}
+
+.desktop-nav {
+  padding-bottom: 8px;
+}
 
 </style>

@@ -23,7 +23,7 @@ export default {
       border: 2px solid map-get($colors, "bright");
       align-self: center;
       height: auto !important;
-      max-width: 400px !important;
+      max-width: 100% !important;
       width: auto !important;
       max-height: 400px !important;
     }

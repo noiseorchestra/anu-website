@@ -47,26 +47,21 @@
 	  right: 0px;
 	  z-index: 300;
 	  padding: 4px;
+		a {font-size: 18px;}
 	}
 
 	.user-name {
 		font-weight: bold;
 	}
 	.mobile-nav {
-	  display: none;
-	}
-	.desktop-nav {
-	  // display: block;
+	  display: block;
 	}
 
-	@media (max-width: map-get($breakpoints, "small")) {
+	@media (min-width: map-get($breakpoints, "medium")) {
 		.user{
-			a {font-size: 20px;}
+			a {font-size: 1em;}
 		}
 	  .mobile-nav {
-	    display: block;
-	  }
-	  .desktop-nav {
 	    display: none;
 	  }
 	}

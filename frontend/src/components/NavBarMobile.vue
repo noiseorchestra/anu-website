@@ -1,9 +1,11 @@
 <template>
-  <Slide v-bind:width="width" :closeOnNavigation="true">
-		<router-link v-for="route in routes" :key="route.path" :to="route.path">
-			{{route.name}}
-		</router-link>
-  </Slide>
+	<span class="mobile-nav-wrapper">
+	  <Slide v-bind:width="width" :closeOnNavigation="true">
+			<router-link v-for="route in routes" :key="route.path" :to="route.path">
+				{{route.name}}
+			</router-link>
+	  </Slide>
+	</span>
 </template>
 <script>
 import { Slide } from 'vue-burger-menu'  // import the CSS transitions you wish to use, in this case we are using `Slide`
@@ -31,6 +33,17 @@ export default {
 
 <style lang="scss">
 @import "@/scss/_variables.scss";
+
+.mobile-nav-wrapper {
+	display: block;
+}
+
+@media (min-width: map-get($breakpoints, "medium")) {
+	.mobile-nav-wrapper {
+		display: none;
+	}
+}
+
 
 .bm-burger-button {
 	z-index: 300 !important;

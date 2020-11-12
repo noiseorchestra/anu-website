@@ -1,8 +1,10 @@
 <template>
 	<div id="desktop-nav" aria-label="standard-nav-bar">
+		<span class="nav-wrapper">
 		<router-link v-for="route in routes" :key="route.path" :to="route.path">
 			{{route.name}}
 		</router-link>
+	</span>
 	</div>
 </template>
 
@@ -24,12 +26,13 @@ export default {
 	flex-direction: row;
 }
 
-@media (max-width: map-get($breakpoints, "small")) {
-	.user{
-		a {font-size: 20px;}
-	}
-	#desktop-nav {
-		display: none;
+.nav-wrapper {
+	display: none;
+}
+
+@media (min-width: map-get($breakpoints, "medium")) {
+	.nav-wrapper {
+		display: block;
 	}
 }
 

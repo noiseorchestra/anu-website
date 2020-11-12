@@ -45,11 +45,4 @@ export default {
   // max-height: 100%;
 }
 
-@media (max-width: map-get($breakpoints, "small")) {
-  .page-content {
-    // padding-left: 5px;
-    // padding-right: 5px;
-  }
-}
-
 </style>
