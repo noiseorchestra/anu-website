@@ -20,8 +20,28 @@ export default {
 @import "../scss/_variables.scss";
 
 .page-content {
+  /* width */
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: map-get($colors, "dark");
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: map-get($colors, "bright");
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: map-get($colors, "highlight");
+  }
+
   color: map-get($colors, "bright");
-  // overflow-y: auto;
+  overflow-y: auto;
   // max-height: 100%;
 }
 

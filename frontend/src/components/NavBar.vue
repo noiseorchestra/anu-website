@@ -20,6 +20,18 @@ export default {
 
 #desktop-nav {
 	margin: 4px;
+	display: flex;
+	flex-direction: row;
 }
+
+@media (max-width: map-get($breakpoints, "small")) {
+	.user{
+		a {font-size: 20px;}
+	}
+	#desktop-nav {
+		display: none;
+	}
+}
+
 
 </style>

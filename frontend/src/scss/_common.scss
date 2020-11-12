@@ -5,48 +5,14 @@
     width: 0px;
     background: transparent; /* make scrollbar transparent */
 	}
-	/* width */
-	::-webkit-scrollbar {
-	  width: 12px;
-	}
-
-	/* Track */
-	::-webkit-scrollbar-track {
-	  background: map-get($colors, "dark");
-	}
-
-	/* Handle */
-	::-webkit-scrollbar-thumb {
-	  background: map-get($colors, "bright");
-	}
-
-	/* Handle on hover */
-	::-webkit-scrollbar-thumb:hover {
-	  background: map-get($colors, "highlight");
-	}
 
 	body {
 		background-color: map-get($colors, "dark");
 	}
 
 	html, body {
-		// width: 100%;
-		// height: 100%;
 		margin: 0;
 		font-family: map-get($font, "main-family");
-		// overflow-y: hidden;
-	}
-
-	#app {
-		// position: absolute;
-	  // width: 100vw;
-	  // left:0px;
-	  // top: 0px;
-	  // padding: 0px;
-	}
-
-	img {
-	  max-width: 100%;
 	}
 }
 
@@ -62,6 +28,8 @@
 		text-decoration: none;
 		padding-left: 2px;
 		padding-right: 2px;
+		margin-left: 2px;
+		margin-right: 2px;
 		color: map-get($colors, "dark");
 		background-color: map-get($colors, "highlight");
 	}

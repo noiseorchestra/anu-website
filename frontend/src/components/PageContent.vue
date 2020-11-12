@@ -28,7 +28,7 @@ export default {
       max-height: 400px !important;
     }
   }
-  overflow-y: auto;
+  overflow-x: hidden;
   background-color: map-get($colors, "dark");
   text-align: justify;
   padding: 20px;

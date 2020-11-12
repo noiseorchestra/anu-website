@@ -2,8 +2,8 @@
   <div class="wrapper">
     <P5jsBackground></P5jsBackground>
     <div class="container">
-      <nav class="nav"><NavBar :routes="routes"></NavBar></nav>
-      <!-- <div class="mobileNav item"><NavBarMobile :routes="routes"></NavBarMobile></div> -->
+      <div class="nav"><NavBar :routes="routes"></NavBar></div>
+      <div class="mobileNav item"><NavBarMobile :routes="routes"></NavBarMobile></div>
       <div class="main">
         <div class="main__padding"></div>
         <router-view class="main__content"></router-view>
