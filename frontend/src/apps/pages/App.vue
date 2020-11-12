@@ -1,11 +1,18 @@
 <template>
-  <main id="app">
-    <span class="desktopNav"><NavBar :routes="routes"></NavBar></span>
-    <span class="mobileNav"><NavBarMobile :routes="routes"></NavBarMobile></span>
-    <router-view></router-view>
+  <div class="wrapper">
     <P5jsBackground></P5jsBackground>
-    <Footer></Footer>
-  </main>
+
+    <div class="container">
+      <nav class="desktop-nav" aria-label="desktop-nav-bar"><NavBar :routes="routes"></NavBar></nav>
+      <nav class="mobile-nav" aria-label="mobile-nav-bar"><NavBarMobile :routes="routes"></NavBarMobile></nav>
+      <div class="main">
+        <div class="main__padding"></div>
+        <router-view class="main__content"></router-view>
+        <div class="main__padding"></div>
+      </div>
+      <footer class="footer"><Footer></Footer></footer>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -96,20 +103,36 @@ export default {
 <style scoped lang="scss">
 @import "@/scss/_variables.scss";
 
-.mobileNav {
-  display: none;
-}
-.desktopNav {
-  display: block;
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  max-height: 100vh;
 }
 
-@media (max-width: map-get($breakpoints, "small")) {
-  .mobileNav {
-    display: block;
-  }
-  .desktopNav {
-    display: none;
-  }
+.nav {
+  flex: 1;
 }
+
+.main {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex: 2 90vh;
+  overflow-y: scroll;
+}
+
+.footer {
+  flex: 1;
+}
+
+.main__content {
+  flex: 3;
+}
+
+.main__padding {
+  flex: 1;
+}
+
 
 </style>

@@ -1,7 +1,6 @@
 <template>
-  <div class="vue-container vue-page">
-		<PageContent :pageBody="routeProps"></PageContent>
-    <!-- <img src="../assets/anu-background-transparent.png"> -->
+  <div class="page-content">
+    <PageContent :pageBody="routeProps"></PageContent>
   </div>
 </template>
 
@@ -19,10 +18,38 @@ export default {
 
 <style scoped lang="scss">
 @import "../scss/_variables.scss";
-.vue-page {
-  position: absolute;
-  padding-top: map-get($sizes, "header-height");
-  min-height: calc(100vh - #{$header-height});
-  min-width: 100vw;
+
+.page-content {
+  /* width */
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    background: map-get($colors, "dark");
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: map-get($colors, "bright");
+  }
+
+  /* Handle on hover */
+  &::-webkit-scrollbar-thumb:hover {
+    background: map-get($colors, "highlight");
+  }
+
+  color: map-get($colors, "bright");
+  overflow-y: auto;
+  // max-height: 100%;
 }
+
+@media (max-width: map-get($breakpoints, "small")) {
+  .page-content {
+    // padding-left: 5px;
+    // padding-right: 5px;
+  }
+}
+
 </style>

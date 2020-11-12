@@ -1,12 +1,8 @@
 <template>
-  <article class="page-container">
-    <div class="page-content">
-      <div class="page-body" tabindex="0">
-        <h1>{{pageBody.title}}</h1>
-        <span class="text" v-html="pageBody.body"></span>
-      </div>
-    </div>
-  </article>
+  <div class="page-body" tabindex="0">
+    <h1>{{pageBody.title}}</h1>
+    <div class="text" v-html="pageBody.body"></div>
+  </div>
 </template>
 
 <script>
@@ -19,36 +15,24 @@ export default {
 <style scoped lang="scss">
 @import "@/scss/_variables.scss";
 
-.page-container {
-  max-height: calc(100vh - #{$header-height});
-  max-width: 100vw;
-}
-
-.page-content {
-  color: map-get($colors, "bright");
-  padding-left: 20vw;
-  padding-right: 20vw;
-  overflow-y: auto;
-  max-height: calc(100vh - #{$header-height});
-  max-width: 100vw;
-}
-
 .page-body {
-  overflow-y: auto;
-  h1 {
-    background-color: map-get($colors, "dark");
+  .text {
+    display: flex;
+    flex-direction: column;
+    /deep/img {
+      border: 2px solid map-get($colors, "bright");
+      align-self: center;
+      height: auto !important;
+      max-width: 400px !important;
+      width: auto !important;
+      max-height: 400px !important;
+    }
   }
-  /deep/ p {
-    background-color: map-get($colors, "dark");
-  }
-}
+  overflow-x: hidden;
+  background-color: map-get($colors, "dark");
+  text-align: justify;
+  padding: 20px;
 
-@media (max-width: map-get($breakpoints, "small")) {
-  .page-content {
-    padding-left: 5px;
-    padding-right: 5px;
-  }
 }
-
 
 </style>

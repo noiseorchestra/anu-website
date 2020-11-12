@@ -1,11 +1,9 @@
 <template>
-	<nav id="mobile-nav" aria-label="mobile-nav-bar">
-    <Slide v-bind:width="width" :closeOnNavigation="true">
-			<router-link v-for="route in routes" :key="route.path" :to="route.path">
-				{{route.name}}
-			</router-link>
-    </Slide>
-	</nav>
+  <Slide v-bind:width="width" :closeOnNavigation="true">
+		<router-link v-for="route in routes" :key="route.path" :to="route.path">
+			{{route.name}}
+		</router-link>
+  </Slide>
 </template>
 <script>
 import { Slide } from 'vue-burger-menu'  // import the CSS transitions you wish to use, in this case we are using `Slide`
@@ -33,16 +31,6 @@ export default {
 
 <style lang="scss">
 @import "@/scss/_variables.scss";
-
-// .slide {
-// 	width: 100vm;
-// }
-
-// @media (max-width: map-get($breakpoints, "medium")) {
-// 	.slide {
-// 		width: 300px;
-// 	}
-// }
 
 .bm-burger-button {
 	z-index: 300 !important;
@@ -72,24 +60,16 @@ export default {
 	z-index: 1000; /* Stay on top */
 	top: 0;
 	left: 0;
-	background-color: map-get($colors, "dark") !important;
+	background-color: map-get($colors, "highlight") !important;
 	overflow-x: hidden; /* Disable horizontal scroll */
 	padding-top: 30px !important; /* Place content 60px from the top */
 	transition: 0.5s; /*0.5 second transition effect to slide in the sidenav*/
 }
 
 .bm-overlay {
-	background: map-get($colors, "dark") !important;
+	background: map-get($colors, "bright") !important;
 }
 .bm-item-list {
-	a {
-		color: map-get($colors, "bright") !important;
-		background-color: map-get($colors, "dark") !important;
-	}
-	a.router-link-exact-active {
-		font-weight: bold !important;
-		color: map-get($colors, "bright") !important;
-	}
 	margin-left: 10% !important;
 	font-size: 20px !important;
 }

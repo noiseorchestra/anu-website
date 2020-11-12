@@ -1,9 +1,9 @@
 <template>
-	<nav id="desktop-nav" aria-label="standard-nav-bar">
+	<div id="desktop-nav" aria-label="standard-nav-bar">
 		<router-link v-for="route in routes" :key="route.path" :to="route.path">
 			{{route.name}}
 		</router-link>
-	</nav>
+	</div>
 </template>
 
 <script>
@@ -19,28 +19,19 @@ export default {
 @import "@/scss/_variables.scss";
 
 #desktop-nav {
-	display: block;
-	position: fixed;
 	margin: 4px;
-	z-index: 100;
-	left:0px;
-	top: 0px;
-	height: map-get($sizes, "header-height");
-	width: 100vw;
+	display: flex;
+	flex-direction: row;
 }
 
-#desktop-nav a.router-link-exact-active {
-	text-decoration: underline;
-	margin: 2px;
-	font-weight: bold;
-  color: map-get($colors, "dark");
+@media (max-width: map-get($breakpoints, "small")) {
+	.user{
+		a {font-size: 20px;}
+	}
+	#desktop-nav {
+		display: none;
+	}
 }
 
-#desktop-nav a {
-	text-decoration: none;
-	margin: 2px;
-	font-weight: bold;
-  color: map-get($colors, "dark");
-}
 
 </style>

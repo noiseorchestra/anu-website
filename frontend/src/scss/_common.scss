@@ -2,26 +2,17 @@
 @mixin base-style {
 
 	::-webkit-scrollbar {
-	    width: 0px;
-	    background: transparent; /* make scrollbar transparent */
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
 	}
 
 	body {
-		overflow-y: hidden;
-		font-family: map-get($font, "main-family");
 		background-color: map-get($colors, "dark");
 	}
 
-	#app {
-		position: absolute;
-	  width: 100vw;
-	  left:0px;
-	  top: 0px;
-	  padding: 0px;
-	}
-
-	img {
-	  max-width: 100%;
+	html, body {
+		margin: 0;
+		font-family: map-get($font, "main-family");
 	}
 }
 
@@ -37,6 +28,8 @@
 		text-decoration: none;
 		padding-left: 2px;
 		padding-right: 2px;
+		margin-left: 2px;
+		margin-right: 2px;
 		color: map-get($colors, "dark");
 		background-color: map-get($colors, "highlight");
 	}
@@ -49,7 +42,7 @@
 	.user {
 	  color: map-get($colors, "bright");
 	  display: block;
-	  position: absolute;
+	  position: fixed;
 	  top: 0px;
 	  right: 0px;
 	  z-index: 300;
@@ -59,21 +52,21 @@
 	.user-name {
 		font-weight: bold;
 	}
-	.mobileNav {
+	.mobile-nav {
 	  display: none;
 	}
-	.desktopNav {
-	  display: block;
+	.desktop-nav {
+	  // display: block;
 	}
 
 	@media (max-width: map-get($breakpoints, "small")) {
 		.user{
 			a {font-size: 20px;}
 		}
-	  .mobileNav {
+	  .mobile-nav {
 	    display: block;
 	  }
-	  .desktopNav {
+	  .desktop-nav {
 	    display: none;
 	  }
 	}
