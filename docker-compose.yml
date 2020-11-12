@@ -15,7 +15,7 @@ services:
       - db
       - frontend
     environment:
-      - "USE_LOCAL_STORAGE=FALSE"
+      - "USE_LOCAL_STORAGE=TRUE"
       - "DJANGO_SECRET_KEY=p=4f_cxdno4qj6itdx!@v%7oij3ma%b_y#422*t(dbpk9^pt08"
       - "DJANGO_DEBUG=True"
       - "DJANGO_SECURE_SSL_REDIRECT=False"
