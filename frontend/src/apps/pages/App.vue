@@ -1,15 +1,16 @@
 <template>
   <div class="wrapper">
     <P5jsBackground></P5jsBackground>
+
     <div class="container">
-      <div class="nav"><NavBar :routes="routes"></NavBar></div>
-      <div class="mobileNav item"><NavBarMobile :routes="routes"></NavBarMobile></div>
+      <nav class="desktop-nav" aria-label="desktop-nav-bar"><NavBar :routes="routes"></NavBar></nav>
+      <nav class="mobile-nav" aria-label="mobile-nav-bar"><NavBarMobile :routes="routes"></NavBarMobile></nav>
       <div class="main">
         <div class="main__padding"></div>
         <router-view class="main__content"></router-view>
         <div class="main__padding"></div>
       </div>
-      <div class="footer"><Footer></Footer></div>
+      <footer class="footer"><Footer></Footer></footer>
     </div>
   </div>
 </template>
