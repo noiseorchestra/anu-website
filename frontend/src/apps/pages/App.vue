@@ -82,12 +82,11 @@ export default {
       this.djangoData = JSON.parse(document.getElementById('djangoData').textContent)
     }
     this.generate_page_routes()
-    // this.pages = jsVariable.pages
-    // this.$router.push(`/${jsVariable.slug}`).catch(err => {
-    //   if (err.name !== 'NavigationDuplicated') {
-    //     throw err;
-    //   }
-    // });
+    this.$router.push(`/${this.djangoData.slug}`).catch(err => {
+      if (err.name !== 'NavigationDuplicated') {
+        throw err;
+      }
+    });
   }
 }
 

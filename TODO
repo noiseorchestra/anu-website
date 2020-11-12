@@ -1,6 +1,5 @@
 CODING
 - forward to homepage
-- compress images for upload
 
 TEXTS
 - about page with more info about peeps
@@ -13,3 +12,4 @@ DONE
 - black background for all page content, not just text
 - flexbox layout
 - light / dark mode
+- compress images for upload
