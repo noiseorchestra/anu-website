@@ -21,8 +21,8 @@ export default {
 
 .page-content {
   color: map-get($colors, "bright");
-  overflow-y: auto;
-  max-height: calc(100vh - #{$header-height});
+  // overflow-y: auto;
+  // max-height: 100%;
 }
 
 @media (max-width: map-get($breakpoints, "small")) {

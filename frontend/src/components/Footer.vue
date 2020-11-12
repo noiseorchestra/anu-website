@@ -28,14 +28,14 @@ a {
 	// top: 95vh;
 	// height: 5vh;
 	// min-width: 100vw;
-	// padding: 0;
+	// margin: 4px;
 }
 
 .footer-content {
-	min-height: 12px;
-	max-width: 400px;
+	// min-height: 12px;
+	// max-width: 400px;
 	text-align: center;
-	margin: 0 auto;
+	padding: 8px;
 }
 
 </style>

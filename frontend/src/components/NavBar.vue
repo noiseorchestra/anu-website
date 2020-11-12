@@ -19,26 +19,18 @@ export default {
 @import "@/scss/_variables.scss";
 
 #desktop-nav {
-	// display: block;
-	// position: fixed;
-	// margin: 4px;
-	// z-index: 100;
-	// left:0px;
-	// top: 0px;
-	// height: map-get($sizes, "header-height");
-	// width: 100vw;
+	margin: 4px;
 }
 
 #desktop-nav a.router-link-exact-active {
 	text-decoration: underline;
-	// margin: 2px;
 	font-weight: bold;
   color: map-get($colors, "dark");
 }
 
 #desktop-nav a {
 	text-decoration: none;
-	// margin: 2px;
+	margin: 2px;
 	font-weight: bold;
   color: map-get($colors, "dark");
 }

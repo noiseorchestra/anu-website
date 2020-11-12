@@ -16,16 +16,23 @@ export default {
 @import "@/scss/_variables.scss";
 
 .page-body {
+  .text {
+    display: flex;
+    flex-direction: column;
+    /deep/img {
+      border: 2px solid map-get($colors, "bright");
+      align-self: center;
+      height: auto !important;
+      max-width: 400px !important;
+      width: auto !important;
+      max-height: 400px !important;
+    }
+  }
   overflow-y: auto;
   background-color: map-get($colors, "dark");
   text-align: justify;
   padding: 20px;
-  // h1 {
-  //   background-color: map-get($colors, "dark");
-  // }
-  // /deep/ p {
-  //   background-color: map-get($colors, "dark");
-  // }
+
 }
 
 </style>

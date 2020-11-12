@@ -2,14 +2,14 @@
   <div class="wrapper">
     <P5jsBackground></P5jsBackground>
     <div class="container">
-      <nav class="nav-item"><NavBar :routes="routes"></NavBar></nav>
+      <nav class="nav"><NavBar :routes="routes"></NavBar></nav>
       <!-- <div class="mobileNav item"><NavBarMobile :routes="routes"></NavBarMobile></div> -->
-      <main class="main">
+      <div class="main">
         <div class="main__padding"></div>
         <router-view class="main__content"></router-view>
         <div class="main__padding"></div>
-      </main>
-      <footer class="footer"><Footer></Footer></footer>
+      </div>
+      <div class="footer"><Footer></Footer></div>
     </div>
   </div>
 </template>
@@ -106,12 +106,23 @@ export default {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  max-height: 100vh;
+}
+
+.nav {
+  flex: 1;
+}
+
+.footer {
+  flex: 1;
 }
 
 .main {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  flex: 2 90vh;
+  overflow-y: scroll;
 }
 
 .main__content {
@@ -122,8 +133,5 @@ export default {
   flex: 1;
 }
 
-.main {
-  flex-grow: 1;
-}
 
 </style>
