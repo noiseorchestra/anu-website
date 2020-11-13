@@ -30,7 +30,6 @@ export default {
   }
   overflow-x: hidden;
   background-color: map-get($colors, "dark");
-  text-align: justify;
   padding: 20px;
 
 }
