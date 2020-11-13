@@ -1,5 +1,7 @@
 <template>
 	<div class="api-container">
+		<p>{{server_settings.jacktrip_q}}</p>
+		<p>{{server_settings.jack_fpp}}</p>
 	</div>
 </template>
 
@@ -9,16 +11,50 @@ import axios from 'axios'
 
 export default {
   name: 'DashboarApi',
+	data () {
+    return {
+      server_settings: {
+				jack_fpp: null,
+				jacktrip_q: null,
+			}
+    }
+  },
+	methods: {
+		get_fpp(){
+			let requestObj = jsonrpc.request('1', 'get_fpp')
+			axios
+				.post('/dashboard/rpc/', requestObj)
+				.then(response => (this.handle_fpp(response)))
+		},
+		get_q(){
+			let requestObj = jsonrpc.request('1', 'get_q')
+			axios
+				.post('/dashboard/rpc/', requestObj)
+				.then(response => (this.handle_q(response)))
+		},
+		handle_fpp(response){
+			this.server_settings.jack_fpp = response.data.result
+			console.log(this.server_settings.jack_fpp)
+		},
+		handle_q(response){
+			this.server_settings.jacktrip_q = response.data.result
+			console.log(this.server_settings.jacktrip_q)
+		},
+	},
   mounted () {
-		const requestObj = jsonrpc.request('1', 'add', {a: 1, b: 2})
-    axios
-      .post('/dashboard/rpc/', requestObj)
-      .then(response => (console.log(response)))
+		this.get_fpp()
+		this.get_q()
+		console.log(this.server_settings)
   }
 }
 </script>
 
 <style scoped lang="scss">
 @import "@/scss/_variables.scss";
+
+.api-container{
+	height: 20px;
+	color: white;
+}
 
 </style>

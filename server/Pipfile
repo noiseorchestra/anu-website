@@ -17,6 +17,7 @@ boto3 = "==1.11.12"
 djangorestframework = "*"
 pillow = "*"
 django-modern-rpc = "*"
+fabric = "*"
 
 [requires]
 python_version = "3.7"
