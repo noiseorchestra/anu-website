@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'storages',
+    'modernrpc',
 
     # local apps
     'accounts',
@@ -190,3 +191,7 @@ AWS_QUERYSTRING_AUTH = False
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_IMAGE_BACKEND = "pillow"
 CKEDITOR_FORCE_JPEG_COMPRESSION = True
+
+MODERNRPC_METHODS_MODULES = [
+    'dashboard.rpc_methods'
+]
