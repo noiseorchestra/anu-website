@@ -1,22 +1,25 @@
 <template>
-  <div class="vue-container vue-dashboard">
-		<Dashboard :naw="naw"></Dashboard>
-		<Recordings/>
-    <DashboardApi/>
+  <div class="dashboard grid">
+		<div class="grid-item info"><DashboardInfo :naw="naw"></DashboardInfo></div>
+    <div class="grid-item stream"><DashboardStream/></div>
+		<div class="grid-item recordings"><DashboardRecordings/></div>
+    <div class="grid-item api"><DashboardApi/></div>
     <!-- <img src="../assets/anu-background-transparent.png"> -->
   </div>
 </template>
 
 <script>
-import Dashboard from '@/components/Dashboard.vue'
-import Recordings from '@/components/Recordings.vue'
+import DashboardInfo from '@/components/DashboardInfo.vue'
+import DashboardStream from '@/components/DashboardStream.vue'
+import DashboardRecordings from '@/components/DashboardRecordings.vue'
 import DashboardApi from '@/components/DashboardApi.vue'
 
 export default {
   name: 'page',
   components: {
-    Dashboard,
-		Recordings,
+    DashboardInfo,
+    DashboardStream,
+		DashboardRecordings,
     DashboardApi
   },
 	props: {naw: Object},
@@ -25,10 +28,28 @@ export default {
 
 <style scoped lang="scss">
 @import "../scss/_variables.scss";
-.vue-dashboard {
-  position: absolute;
-  padding-top: map-get($sizes, "header-height");
-  min-height: calc(100vh - #{$header-height});
-  min-width: 100vw;
+
+.grid {
+  display: grid;
+  margin: 30px;
+  grid-gap: 30px;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 110px;
 }
+
+.info {
+  grid-row: 1/3;
+}
+
+.recordings {
+  grid-row: 1/5;
+  min-width: 330px;
+}
+
+.grid-item {
+  outline: 3px dashed red;
+  padding: 2px;
+  overflow-y: auto;
+}
+
 </style>
