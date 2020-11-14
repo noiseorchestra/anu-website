@@ -115,8 +115,6 @@ export default {
   justify-content: center;
   flex: 1 1 100%;
   overflow-y: scroll;
-  margin-top: 0px;
-  margin-bottom: 0px;
 }
 
 .main__content {

@@ -21,6 +21,7 @@ export default {
 
 #background-logo {
 	max-height: 70vh;
+	padding-bottom: 20px;
 }
 
 </style>
