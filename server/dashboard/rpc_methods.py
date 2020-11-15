@@ -20,14 +20,16 @@ c = Connection(host, username, connect_kwargs={"password": password,})
 @http_basic_auth_login_required
 def get_fpp():
     result = c.run('cat /etc/jacktrip_pypatcher/jackd.conf')
-    return result.stdout.strip()
+    key, value = result.stdout.strip().split('=')
+    return value
 
 
 @http_basic_auth_login_required
 @rpc_method
 def get_q():
     result = c.run('cat /etc/jacktrip_pypatcher/jacktrip.conf')
-    return result.stdout.strip()
+    key, value = result.stdout.strip().split('=')
+    return value
 
 
 @http_basic_auth_login_required
