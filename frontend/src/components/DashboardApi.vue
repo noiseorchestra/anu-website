@@ -1,5 +1,6 @@
 <template>
 	<div class="api-container">
+		<h2>JackTrip Settings</h2>
 		<p>{{server_settings.jacktrip_q}}</p>
 		<p>{{server_settings.jack_fpp}}</p>
 	</div>
@@ -34,17 +35,14 @@ export default {
 		},
 		handle_fpp(response){
 			this.server_settings.jack_fpp = response.data.result
-			console.log(this.server_settings.jack_fpp)
 		},
 		handle_q(response){
 			this.server_settings.jacktrip_q = response.data.result
-			console.log(this.server_settings.jacktrip_q)
 		},
 	},
   mounted () {
 		this.get_fpp()
 		this.get_q()
-		console.log(this.server_settings)
   }
 }
 </script>

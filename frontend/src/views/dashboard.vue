@@ -34,7 +34,7 @@ export default {
   margin: 30px;
   grid-gap: 30px;
   grid-template-columns: repeat(2, 1fr);
-  grid-auto-rows: 110px;
+  grid-auto-rows: 120px;
 }
 
 .info {

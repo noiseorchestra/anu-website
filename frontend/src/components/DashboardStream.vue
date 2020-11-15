@@ -1,6 +1,6 @@
 <template>
 	<section class="live-stream">
-		<b>Live Stream</b><br>
+		<h2>Live Stream</h2>
 		<audio src="http://noiseaa2.miniserver.com:8000/curious_ear_stream" controls="true"/>
 	</section>
 </template>

@@ -1,5 +1,6 @@
 <template>
 	<div class="recordings-container">
+		<h2>Recordings</h2>
 		<div class="recordings-item" v-for="recording in recordings">
 			<div class="recordings-item-content with-player" v-if="recording.url">
 				<div class="recordings-item-content-child player" player><audio v-bind:src="recording.url" controls="true"/></div>
@@ -26,7 +27,6 @@ export default {
   },
 	methods: {
 		set_recordings(recordings) {
-			console.log(recordings)
 			this.recordings = recordings
 		},
 		get_download_url(file) {
