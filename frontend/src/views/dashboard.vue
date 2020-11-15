@@ -33,10 +33,10 @@ export default {
 
 .grid {
   display: grid;
-  margin: 30px;
+  padding: 30px;
   grid-gap: 30px;
   grid-template-columns: repeat(2, 1fr);
-  grid-auto-rows: 120px;
+  grid-auto-rows: 135px;
 }
 
 .info {
