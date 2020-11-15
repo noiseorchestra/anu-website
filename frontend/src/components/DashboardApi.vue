@@ -1,10 +1,14 @@
 <template>
 	<div class="api-container">
-		<h2>JackTrip Settings</h2>
-		<p>{{server_settings.jacktrip_q}}</p>
-		<p>{{server_settings.jack_fpp}}</p>
-		<div v-for="value in q_values">
-			<button v-bind:class="{'active': server_settings.jacktrip_q == value}" v-on:click="set_q(value)">{{value}}</button>
+		<div class="current-info">
+			<div><h2>JackTrip Settings</h2></div>
+			<div class="jacktrip-queue">
+				<div>JackTrip queue:</div>
+				<div v-bind:class="{'deactivate': busy}" v-for="value in q_values">
+					<button v-bind:class="{'selected': selected_server_settings.jacktrip_q == value}" v-on:click="set_q(value)">{{value}}</button>
+				</div>
+			</div>
+			<div>JACK server fpp: {{server_settings.jack_fpp}}</div>
 		</div>
 	</div>
 </template>
@@ -17,9 +21,10 @@ export default {
   name: 'DashboarApi',
 	data () {
     return {
+			busy: false,
 			q_values: ["4", "6", "8", "10", "12", "14", "16"],
 			fpp_values: [64, 128, 256, 512],
-			next_server_settings: {
+			selected_server_settings: {
 				jack_fpp: null,
 				jacktrip_q: null,
 			},
@@ -31,12 +36,16 @@ export default {
   },
 	methods: {
 		set_q(q_value){
+			this.busy = true
+			this.selected_server_settings.jacktrip_q = q_value
 			let requestObj = jsonrpc.request('1', 'set_q', {q_value: q_value})
 			axios
 				.post('/dashboard/rpc/', requestObj)
 				.then(response => (this.handle_set_q(response)))
 		},
 		set_fpp(fpp_value){
+			this.busy = true
+			this.selected_server_settings.jack_fpp = fpp_value
 			let requestObj = jsonrpc.request('1', 'set_fpp', {fpp_value: fpp_value})
 			axios
 				.post('/dashboard/rpc/', requestObj)
@@ -68,31 +77,33 @@ export default {
 		},
 		handle_get_fpp(response){
 			// need error checking
+			this.selected_server_settings.jack_fpp = response.data.result
 			this.server_settings.jack_fpp = response.data.result
-			this.next_server_settings.jack_fpp = response.data.result
 		},
 		handle_get_q(response){
 			// need error checking
+			this.selected_server_settings.jacktrip_q = response.data.result
 			this.server_settings.jacktrip_q = response.data.result
-			this.next_server_settings.jacktrip_q = response.data.result
 		},
 		handle_set_q(response){
 			// need error checking
 			this.restart_jacktrip()
-			this.get_q()
 		},
 		handle_set_fpp(response){
 			// need error checking
 			this.restart_jackd()
-			this.get_fpp()
 		},
 		handle_restart_jacktrip(response){
 			// need error checking
 			console.log("JackTrip restarted with response:", response)
+			this.get_q()
+			this.busy = false
 		},
 		handle_restart_jackd(response){
 			// need error checking
 			console.log("JACKD restarted with response:", response)
+			this.get_fpp()
+			this.busy = false
 		},
 	},
   mounted () {
@@ -106,12 +117,28 @@ export default {
 @import "@/scss/_variables.scss";
 
 .api-container{
-	height: 20px;
-	color: white;
+	display: flex;
+	flex-direction: column;
+	color: map-get($colors, "bright");
+	height: 100%;
 }
 
-.active {
+.jacktrip-queue {
+	display: flex;
+	flex-direction: row;
+}
+
+.selected {
 	font-weight: bold;
+	background-color: map-get($colors, "bright");
+}
+
+.deactivate {
+	& button {
+		cursor: not-allowed;
+    pointer-events: none;
+		background-color: grey;
+	}
 }
 
 </style>
