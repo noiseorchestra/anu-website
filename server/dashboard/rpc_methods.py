@@ -9,7 +9,7 @@ username = os.getenv('JACKTRIP_SERVER_USER')
 password = os.getenv('JACKTRIP_SERVER_PASSWORD')
 
 sudopass = Responder(
-    pattern=r'\[sudo\] password:',
+    pattern=r'\[sudo\] password for fabric:',
     response=password + '\n',
 )
 
@@ -47,5 +47,12 @@ def set_q(q_value):
 @http_basic_auth_login_required
 @rpc_method
 def restart_jacktrip():
-    result = c.run('sudo whoami', pty=True, watchers=[sudopass])
-    return result.stdout.strip()
+    result = c.run('sudo systemctl restart jacktrip.service', pty=True, watchers=[sudopass])
+    return result.exited
+
+
+@http_basic_auth_login_required
+@rpc_method
+def restart_jackd():
+    result = c.run('sudo systemctl restart jackd.service', pty=True, watchers=[sudopass])
+    return result.exited
