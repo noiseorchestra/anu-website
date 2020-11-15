@@ -1,7 +1,5 @@
 <template>
-  <main id="app">
-    <DashboardView :naw="djangoData"></DashboardView>
-  </main>
+  <DashboardView :naw="djangoData"></DashboardView>
 </template>
 
 <script>
@@ -46,4 +44,10 @@ export default {
 
 <style scoped lang="scss">
 @import "@/scss/_variables.scss";
+
+.container {
+  width: 100%;
+  padding: 30px;
+}
+
 </style>
