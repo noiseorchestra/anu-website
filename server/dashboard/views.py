@@ -2,8 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from dashboard.models import NoiseAudioWeb
 from django.views.decorators.csrf import csrf_exempt
-from dashboard.serializers import Recordings, RecordingSerializer
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from rest_framework.decorators import api_view
 import os
 import boto3
@@ -38,21 +37,22 @@ def dashboard(request, slug="noise-orchestra-web"):
     return render(request, 'dashboard/dashboard.html', {'data': nawData})
 
 
+@login_required
 @csrf_exempt
 def recordings_list(request):
     if request.method == 'GET':
         response = client.list_objects(Bucket='pypatcher-recordings')
         recordings = [{"file": obj['Key'], "url": None} for obj in response['Contents']]
-        # serializer = RecordingSerializer(Recordings(files))
         return JsonResponse({"recordings": recordings})
 
 
+@login_required
 @api_view(['GET'])
 @csrf_exempt
 def get_download_link(request, file):
     if request.method == 'GET':
-        url = client.generate_presigned_url(ClientMethod='get_object',
-                                    Params={'Bucket': 'pypatcher-recordings',
-                                            'Key': file},
-                                    ExpiresIn=300)
+        url = client.generate_presigned_url(
+            ClientMethod='get_object',
+            Params={'Bucket': 'pypatcher-recordings', 'Key': file},
+            ExpiresIn=300)
         return JsonResponse({"file_download": {"file": file, "url": url}})
