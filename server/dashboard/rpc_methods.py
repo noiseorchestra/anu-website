@@ -2,11 +2,14 @@ from modernrpc.core import rpc_method
 from modernrpc.auth.basic import http_basic_auth_login_required
 from fabric import Connection
 from invoke import Responder
-import os
+from environs import Env
 
-host = os.getenv('JACKTRIP_SERVER_ADDRESS')
-username = os.getenv('JACKTRIP_SERVER_USER')
-password = os.getenv('JACKTRIP_SERVER_PASSWORD')
+env = Env()
+env.read_env()
+
+host = env("JACKTRIP_SERVER_ADDRESS", default="123.123.123.123")
+username = env("JACKTRIP_SERVER_USER", default="user")
+password = env("JACKTRIP_SERVER_PASSWORD", default="password")
 
 sudopass = Responder(
     pattern=r'\[sudo\] password for fabric:',
