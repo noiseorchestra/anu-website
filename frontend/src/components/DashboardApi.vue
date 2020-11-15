@@ -1,7 +1,7 @@
 <template>
 	<div class="api-container">
 		<div class="current-info">
-			<div><h2>JackTrip Settings</h2></div>
+			<div><h2>JackTrip Hub Server Settings</h2></div>
 			<div class="value-picker jacktrip-queue">
 				<div>JackTrip queue:</div>
 				<div v-bind:class="{'deactivate': busy}" v-for="value in q_values">
@@ -9,7 +9,7 @@
 				</div>
 			</div>
 			<div class="value-picker jack-fpp">
-				<div>JACK server fpp:</div>
+				<div>JACK fpp:</div>
 				<div v-bind:class="{'deactivate': busy}" v-for="value in fpp_values">
 					<button v-bind:class="{'selected': selected_server_settings.jack_fpp == value}" v-on:click="set_fpp(value)">{{value}}</button>
 				</div>

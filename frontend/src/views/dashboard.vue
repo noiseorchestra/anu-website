@@ -1,11 +1,13 @@
 <template>
-  <div class="dashboard grid">
-		<div class="grid-item info"><DashboardInfo :naw="naw"></DashboardInfo></div>
-    <div class="grid-item stream"><DashboardStream/></div>
-		<div class="grid-item recordings"><DashboardRecordings/></div>
-    <div class="grid-item api"><DashboardApi/></div>
-    <!-- <img src="../assets/anu-background-transparent.png"> -->
-  </div>
+  <main>
+    <div class="dashboard grid">
+  		<div class="grid-item info"><DashboardInfo :naw="naw"></DashboardInfo></div>
+      <div class="grid-item stream"><DashboardStream/></div>
+  		<div class="grid-item recordings"><DashboardRecordings/></div>
+      <div class="grid-item api"><DashboardApi/></div>
+      <!-- <img src="../assets/anu-background-transparent.png"> -->
+    </div>
+  </main>
 </template>
 
 <script>
