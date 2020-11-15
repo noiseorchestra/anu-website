@@ -21,7 +21,8 @@ export default {
 @import "@/scss/_variables.scss";
 
 #desktop-nav {
-	margin: 4px;
+	padding-top: 4px;
+	padding-left: 4px;
 	display: flex;
 	flex-direction: row;
 }

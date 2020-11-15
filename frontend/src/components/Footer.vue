@@ -16,8 +16,9 @@ export default {
 @import "@/scss/_variables.scss";
 
 .footer-content {
+	width: 100%;
 	text-align: center;
-	margin: 8px;
+	// margin: 8px;
 }
 
 </style>

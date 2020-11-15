@@ -109,20 +109,14 @@ export default {
   max-height: 100vh;
 }
 
-.nav {
-  flex: 1 18px;;
-}
-
 .main {
   display: flex;
   flex-direction: row;
   justify-content: center;
-  flex: 2 90vh;
+  flex: 1 1 100%;
   overflow-y: scroll;
-}
-
-.footer {
-  flex: 1;
+  margin-top: 0px;
+  margin-bottom: 0px;
 }
 
 .main__content {
@@ -133,19 +127,34 @@ export default {
   flex: 0;
 }
 
+.nav {
+  display: block;
+  position: fixed;
+  width: 100%;
+  height: 0px;
+}
+
+.mobile-nav {
+  display: inline;
+  max-height: 0px;
+}
+
+.footer {
+  height: 20px;
+  display: block;
+  position:fixed;
+  bottom: 0px;
+  width: 100%;
+}
+
 @media (min-width: map-get($breakpoints, "medium")) {
   .main__padding {
     flex: 1;
   }
-}
+  .nav {
+    height: 20px;
+  }
 
-.mobile-nav {
-	display: inline;
-  max-height: 0px;
-}
-
-.desktop-nav {
-  padding-bottom: 8px;
 }
 
 </style>
