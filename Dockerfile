@@ -36,3 +36,5 @@ FROM server-base AS server-prod
 COPY --from=frontend-prod /code/server/static/dist /code/server/static/dist
 COPY --from=frontend-prod /code/server/templates/pages/_vue_base.html /code/server/templates/pages/_vue_base.html
 COPY --from=frontend-prod /code/server/templates/dashboard/_vue_base.html /code/server/templates/dashboard/_vue_base.html
+
+EXPOSE 8000
