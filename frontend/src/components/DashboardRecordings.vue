@@ -50,7 +50,7 @@ export default {
 		get_date_time(file_string){
 			let date_string = file_string.split("-")
 			let units = date_string[1].split("_")
-			let date = new Date(units[0], units[1], units[2], units[3].slice(0, 2), units[3].slice(2, 4))
+			let date = new Date(units[0], units[1] - 1, units[2], units[3].slice(0, 2), units[3].slice(2, 4))
 			console.log(date.toLocaleString())
 			return date.toLocaleString()
 		}
