@@ -3,11 +3,17 @@ CODING
 - connect server RPC API to naw data
 - connect naw data to user
 - create server scripts
+- tests
+- drop-down menus for pages
+- stream page
+- chat for stream page?
+- ANU universe gif collage
+- poll data from influxdb server
+- domain name
 
 TEXTS
 - about page with more info about peeps
 - signal diagram
-- pisound how-to
 
 DONE
 - forward to homepage
