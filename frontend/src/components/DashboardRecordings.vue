@@ -7,8 +7,7 @@
 				<div class="recordings-item-content-child button"><a v-bind:href="recording.url">download</a></div>
 			</div>
 			<div class="recordings-item-content no-player" v-else>
-				<div class="recordings-item-content-child filename">{{ recording.file }}</div>
-				<div class="recordings-item-content-child"><a href="#0" v-on:click="get_download_url(recording.file)">listen!</a></div>
+				<div class="recordings-item-content-child"><a href="#0" v-on:click="get_download_url(recording.file)">{{ recording.dateTime }}</a></div>
 			</div>
 	  </div>
 	</div>
@@ -28,6 +27,9 @@ export default {
 	methods: {
 		set_recordings(recordings) {
 			this.recordings = recordings
+			this.recordings.forEach((item, i) => {
+				this.recordings[i].dateTime = this.get_date_time(item.file)
+			});
 		},
 		get_download_url(file) {
 			axios
@@ -44,6 +46,13 @@ export default {
 					}
 				}
 			}
+		},
+		get_date_time(file_string){
+			let date_string = file_string.split("-")
+			let units = date_string[1].split("_")
+			let date = new Date(units[0], units[1], units[2], units[3].slice(0, 2), units[3].slice(2, 4))
+			console.log(date.toLocaleString())
+			return date.toLocaleString()
 		}
 	},
   mounted () {

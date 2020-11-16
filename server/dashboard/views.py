@@ -19,6 +19,9 @@ client = session.client('s3',
 def get_recording_url(file_path):
     return SPACES_BASE_URL + "/" + file_path
 
+def sort_files(e):
+    return e['file']
+
 @login_required
 def dashboard(request, slug="noise-orchestra-web"):
     data = get_object_or_404(NoiseAudioWeb, slug=slug)
@@ -42,7 +45,9 @@ def dashboard(request, slug="noise-orchestra-web"):
 def recordings_list(request):
     if request.method == 'GET':
         response = client.list_objects(Bucket='pypatcher-recordings')
+        print(response['Contents'])
         recordings = [{"file": obj['Key'], "url": None} for obj in response['Contents']]
+        recordings.sort(reverse=True, key=sort_files)
         return JsonResponse({"recordings": recordings})
 
 
