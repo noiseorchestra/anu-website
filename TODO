@@ -1,5 +1,8 @@
 CODING
-- forward to homepage
+- ssh key pair for django
+- connect server RPC API to naw data
+- connect naw data to user
+- create server scripts
 
 TEXTS
 - about page with more info about peeps
@@ -7,6 +10,7 @@ TEXTS
 - pisound how-to
 
 DONE
+- forward to homepage
 - bigger logo on bigger screens
 - padding at bottom of PageContent so footer isn't in the way
 - black background for all page content, not just text
