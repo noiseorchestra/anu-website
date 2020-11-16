@@ -20,6 +20,7 @@ FROM python:3.8 AS server-base
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+EXPOSE 8000
 
 WORKDIR /code
 COPY /server/Pipfile /server/Pipfile.lock /code/server/
@@ -37,4 +38,4 @@ COPY --from=frontend-prod /code/server/static/dist /code/server/static/dist
 COPY --from=frontend-prod /code/server/templates/pages/_vue_base.html /code/server/templates/pages/_vue_base.html
 COPY --from=frontend-prod /code/server/templates/dashboard/_vue_base.html /code/server/templates/dashboard/_vue_base.html
 
-CMD gunicorn --bind 0.0.0.0:$PORT config.wsgi
+CMD gunicorn config.wsgi
