@@ -1,3 +1,6 @@
 frontend/node_modules/
 server/staticfiles/
 .env
+docker-compose-prod.yml
+docker-compose-dev.yml
+heroku.yml
