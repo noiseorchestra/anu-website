@@ -1,6 +1,6 @@
 <template>
   <div class="page-content">
-    <PageContent :pageBody="routeProps"></PageContent>
+    <PageContent :page="page"></PageContent>
   </div>
 </template>
 
@@ -12,7 +12,7 @@ export default {
   components: {
     PageContent
   },
-	props: {routeProps: Object},
+	props: {page: Object},
 }
 </script>
 

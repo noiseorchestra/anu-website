@@ -1,8 +1,8 @@
 <template>
 	<span class="mobile-nav-wrapper">
 	  <Slide v-bind:width="width" :closeOnNavigation="true">
-			<router-link v-for="route in routes" :key="route.path" :to="route.path">
-				{{route.name}}
+			<router-link v-for="route in routes" :key="`/${route.slug}`" :to="`/${route.slug}`">
+				{{route.title}}
 			</router-link>
 	  </Slide>
 	</span>

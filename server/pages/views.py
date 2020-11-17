@@ -13,7 +13,7 @@ def get_pages():
             'title': page.title,
             'body': page.body,
             'nav_position': page.nav_position,
-            'nav_parent': page.nav_parent
+            'nav_parents': page.nav_parents
           })
     pages.sort(key=lambda x: x.get('nav_position'))
     return pages

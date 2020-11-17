@@ -1,14 +1,14 @@
 <template>
   <div class="page-body" tabindex="0">
-    <h1>{{pageBody.title}}</h1>
-    <div class="text" v-html="pageBody.body"></div>
+    <h1>{{page.title}}</h1>
+    <div class="text" v-html="page.body"></div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'PageContent',
-  props: {pageBody: Object},
+  props: {page: Object},
 }
 </script>
 
