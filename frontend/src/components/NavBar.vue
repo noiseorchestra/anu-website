@@ -9,7 +9,7 @@
 				</div>
 			</div>
 			<div class="nav-dropdown">
-				<div class="nav-item header"><a>About</a></div>
+				<div class="nav-item header no-nav"><a>About</a></div>
 				<div class="nav-items">
 					<div class="nav-item" v-for="route in routes">
 						<router-link v-if="route.nav_parents == 'About'" :key="`/${route.slug}`" :to="`/${route.slug}`">
@@ -19,7 +19,7 @@
 				</div>
 			</div>
 			<div class="nav-dropdown">
-				<div class="nav-item header"><a>How To</a></div>
+				<div class="nav-item header no-nav"><a>How To</a></div>
 				<div class="nav-items">
 					<div class="nav-item" v-for="route in routes">
 						<router-link v-if="route.nav_parents == 'How To'" :key="`/${route.slug}`" :to="`/${route.slug}`">
@@ -70,6 +70,12 @@ export default {
 
 .nav-dropdown:hover {
 	max-height: 300px;
+}
+
+.no-nav {
+	a:hover {
+		background-color: map-get($colors, "highlight");
+	}
 }
 
 @media (min-width: map-get($breakpoints, "medium")) {
