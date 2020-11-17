@@ -1,9 +1,29 @@
 <template>
 	<span class="mobile-nav-wrapper">
 	  <Slide v-bind:width="width" :closeOnNavigation="true">
-			<router-link v-for="route in routes" :key="`/${route.slug}`" :to="`/${route.slug}`">
-				{{route.title}}
-			</router-link>
+			<div id="mobile-nav" aria-label="standard-nav-bar">
+				<div class="nav-item header" v-for="route in routes">
+					<router-link v-if="route.title == 'Home'" :key="`/${route.slug}`" :to="`/${route.slug}`">
+						{{route.title}}
+					</router-link>
+				</div>
+				<div class="nav-item header no-nav"><a>About:</a></div>
+				<div class="nav-items">
+					<div class="nav-item" v-for="route in routes">
+						<router-link v-if="route.nav_parents == 'About'" :key="`/${route.slug}`" :to="`/${route.slug}`">
+							{{route.title}}
+						</router-link>
+					</div>
+				</div>
+				<div class="nav-item header no-nav"><a>How To:</a></div>
+				<div class="nav-items">
+					<div class="nav-item" v-for="route in routes">
+						<router-link v-if="route.nav_parents == 'How To'" :key="`/${route.slug}`" :to="`/${route.slug}`">
+							{{route.title}}
+						</router-link>
+					</div>
+				</div>
+			</div>
 	  </Slide>
 	</span>
 </template>
@@ -37,14 +57,11 @@ export default {
 .mobile-nav-wrapper {
 	display: block;
 }
-
 @media (min-width: map-get($breakpoints, "medium")) {
 	.mobile-nav-wrapper {
 		display: none;
 	}
 }
-
-
 .bm-burger-button {
 	z-index: 300 !important;
 	width: 20px !important;
@@ -96,5 +113,32 @@ export default {
 	font-weight: 700;
 	color: white;
 }
+
+</style>
+
+
+<style scoped lang="scss">
+@import "@/scss/_variables.scss";
+
+#mobile-nav {
+	display: flex;
+	flex-direction: column;
+}
+
+.nav-item {
+	font-size: 1.5rem;
+	margin-left: 10px;
+	&.header {
+		font-size: 1.8rem;
+		margin-left: 0px;
+	}
+}
+
+.no-nav {
+	a:hover {
+		background-color: map-get($colors, "highlight");
+	}
+}
+
 
 </style>
