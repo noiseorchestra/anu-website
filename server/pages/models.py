@@ -13,6 +13,12 @@ class Page(models.Model):
         ('06', '06'),
     )
 
+    NAV_PARENTS = (
+        ('About', 'About'),
+        ('How To', 'How To'),
+        ('none', 'none'),
+    )
+
     title = models.CharField(max_length=250)
     slug = models.SlugField(max_length=250,
                             unique=True)
@@ -20,7 +26,9 @@ class Page(models.Model):
     nav_position = models.CharField(max_length=20,
                                     choices=NAV_POSITION,
                                     default='01')
-
+    nav_parents = models.CharField(max_length=20,
+                                   choices=NAV_PARENTS,
+                                   default='none')
     objects = models.Manager()
 
     def __str__(self):
