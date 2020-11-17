@@ -1,16 +1,28 @@
 <template>
   <div class="home-container">
-    <BackgroundLogo/>
+    <span @mouseover="shouldShowLogo=false">
+      <BackgroundLogo v-if="shouldShowLogo"/>
+      <div v-else>
+        <span @mouseleave="shouldShowLogo=true">
+          <AnuSkyGod/>
+        </span>
+      </div>
+    </span>
   </div>
 </template>
 
 <script>
 import BackgroundLogo from '@/components/BackgroundLogo.vue'
+import AnuSkyGod from '@/components/AnuSkyGod.vue'
 
 export default {
   name: 'Home',
   components: {
-    BackgroundLogo
+    BackgroundLogo,
+    AnuSkyGod
+  },
+  data () {
+    return {shouldShowLogo: true}
   }
 }
 </script>
