@@ -9,13 +9,14 @@ CODING
 - chat for stream page?
 - ANU universe gif collage
 - poll data from influxdb server
-- domain name
 
 TEXTS
 - about page with more info about peeps
 - signal diagram
 
 DONE
+- domain name
+- deploy on dokku
 - forward to homepage
 - bigger logo on bigger screens
 - padding at bottom of PageContent so footer isn't in the way
