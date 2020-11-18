@@ -3,8 +3,8 @@
     <P5jsBackground></P5jsBackground>
 
     <div class="container">
-      <nav class="desktop-nav nav" aria-label="desktop-nav-bar"><NavBar :routes="routes"></NavBar></nav>
-      <nav class="mobile-nav nav" aria-label="mobile-nav-bar"><NavBarMobile :routes="routes"></NavBarMobile></nav>
+      <nav class="desktop-nav nav" aria-label="desktop-nav-bar"><NavBar :routes="djangoData.pages"></NavBar></nav>
+      <nav class="mobile-nav nav" aria-label="mobile-nav-bar"><NavBarMobile :routes="djangoData.pages"></NavBarMobile></nav>
       <main class="main">
         <div class="main__padding"></div>
         <router-view class="main__content"></router-view>
@@ -38,7 +38,8 @@ export default {
           slug: "about",
           title: "About",
           body: "About stuff",
-          nav_position: "02"
+          nav_position: "02",
+          nav_parents: "none",
         }]
       }
     }
@@ -56,12 +57,12 @@ export default {
     },
   },
   methods: {
-    generate_route: function (routeProps, component) {
+    generate_route: function (page, component) {
       let new_route = {
-        path: `/${routeProps.slug}`,
-        name: routeProps.title,
+        path: `/${page.slug}`,
+        name: page.title,
         component: component,
-        props: {routeProps: routeProps}
+        props: {page: page}
       }
       this.$router.options.routes.push(new_route)
       this.$router.addRoutes([new_route])
