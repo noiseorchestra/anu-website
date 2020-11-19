@@ -45,7 +45,7 @@ export default {
       }
 
       s.setup = () => {
-        s.createCanvas(window.innerWidth, window.innerHeight);
+        s.createCanvas(window.innerWidth, window.innerHeight + 100);
         s.frameRate(fr);
       }
 
