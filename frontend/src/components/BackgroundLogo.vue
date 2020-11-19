@@ -21,7 +21,13 @@ export default {
 
 #background-logo {
 	max-height: 70vh;
-	padding-bottom: 20px;
+	padding-bottom: 60px;
+}
+
+@media (min-width: map-get($breakpoints, "medium")) {
+	#background-logo {
+		padding-bottom: 20px;
+	}
 }
 
 </style>

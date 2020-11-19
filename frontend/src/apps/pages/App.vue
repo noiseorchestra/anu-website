@@ -145,6 +145,7 @@ export default {
   display: block;
   position:fixed;
   bottom: 0px;
+  padding-bottom: 3px;
   width: 100%;
 }
 

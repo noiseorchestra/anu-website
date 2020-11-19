@@ -16,13 +16,6 @@
 		font-size: 1em;
 		min-height: 100vh;
 	}
-
-	@media (min-width: map-get($breakpoints, "medium")) {
-		html, body {
-			min-height: 100%;
-			height: 100%
-		}
-	}
 }
 
 
