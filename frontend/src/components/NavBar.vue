@@ -1,35 +1,37 @@
 <template>
-	<div class="nav-wrapper">
-		<div id="desktop-nav" aria-label="standard-nav-bar">
-			<div class="nav-dropdown">
-				<div class="nav-item header" v-for="route in routes">
-					<router-link v-if="route.title == 'Home'" :key="`/${route.slug}`" :to="`/${route.slug}`">
-						{{route.title}}
-					</router-link>
-				</div>
-			</div>
-			<div class="nav-dropdown">
-				<div class="nav-item header no-nav"><a>About</a></div>
-				<div class="nav-items">
-					<div class="nav-item" v-for="route in routes">
-						<router-link v-if="route.nav_parents == 'About'" :key="`/${route.slug}`" :to="`/${route.slug}`">
+	<nav id="desktop-nav" role="navigation">
+		<ul>
+			<li v-for="route in routes" v-if="route.title == 'Home'">
+				<router-link :key="`/${route.slug}`" :to="`/${route.slug}`">
+					{{route.title}}
+				</router-link>
+			</li>
+			<li>
+				<a class="nonav" href="#">
+					About
+				</a>
+				<ul class="dropdown">
+					<li v-for="route in routes" v-if="route.nav_parents == 'About'">
+						<router-link :key="`/${route.slug}`" :to="`/${route.slug}`">
 							{{route.title}}
 						</router-link>
-					</div>
-				</div>
-			</div>
-			<div class="nav-dropdown">
-				<div class="nav-item header no-nav"><a>How To</a></div>
-				<div class="nav-items">
-					<div class="nav-item" v-for="route in routes">
-						<router-link v-if="route.nav_parents == 'How To'" :key="`/${route.slug}`" :to="`/${route.slug}`">
+					</li>
+				</ul>
+			</li>
+			<li>
+				<a class="nonav" href="#">
+					How To
+				</a>
+				<ul class="dropdown">
+					<li v-for="route in routes" v-if="route.nav_parents == 'How To'">
+						<router-link :key="`/${route.slug}`" :to="`/${route.slug}`">
 							{{route.title}}
 						</router-link>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</nav>
 </template>
 
 <script>
@@ -44,42 +46,59 @@ export default {
 <style scoped lang="scss">
 @import "@/scss/_variables.scss";
 
+ul {
+list-style: none;
+padding-left: 0;
+padding-top: 0;
+margin-block-start: 0px;
+}
+
+li {
+display: block;
+float: left;
+position: relative;
+text-decoration: none;
+transition-duration: 0.5s;
+}
+
+li:hover {
+cursor: pointer;
+}
+
+ul li ul {
+width: 130px;
+visibility: hidden;
+opacity: 0;
+min-width: 5rem;
+position: absolute;
+transition: all 0.5s ease;
+display: none;
+}
+
+ul li:hover > ul,
+ul li ul:hover {
+  visibility: visible;
+  opacity: 1;
+  display: block;
+}
+
+ul li ul li {
+clear: both;
+  width: 100%;
+}
+
 #desktop-nav {
 	padding-top: 4px;
 	padding-left: 4px;
-	display: flex;
-	flex-direction: row;
-}
-
-.nav-wrapper {
 	display: none;
 }
 
-.nav-dropdown {
-	display: flex;
-	flex-direction: column;
-	max-height: 18px;
-	overflow: hidden;
-}
-
-.nav-item {
-	&.header {
-		cursor: pointer;
-	}
-}
-
-.nav-dropdown:hover {
-	max-height: 300px;
-}
-
-.no-nav {
-	a:hover {
-		background-color: map-get($colors, "highlight");
-	}
+.nonav:hover {
+	background-color: map-get($colors, "highlight");
 }
 
 @media (min-width: map-get($breakpoints, "medium")) {
-	.nav-wrapper {
+	#desktop-nav {
 		display: block;
 	}
 }
