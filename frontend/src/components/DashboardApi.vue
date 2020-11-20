@@ -3,15 +3,19 @@
 		<div class="current-info">
 			<div><h2>JackTrip Hub Server Settings</h2></div>
 			<div class="value-picker jacktrip-queue">
-				<div>JackTrip queue:</div>
-				<div v-bind:class="{'deactivate': busy}" v-for="value in q_values">
-					<button v-bind:class="{'selected': selected_server_settings.jacktrip_q == value}" v-on:click="set_q(value)">{{value}}</button>
+				<div class="key">JackTrip queue:</div>
+				<div class="values">
+					<div v-bind:class="{'deactivate': busy}" v-for="value in q_values">
+						<button v-bind:class="{'selected': selected_server_settings.jacktrip_q == value}" v-on:click="set_q(value)">{{value}}</button>
+					</div>
 				</div>
 			</div>
 			<div class="value-picker jack-fpp">
-				<div>JACK fpp:</div>
-				<div v-bind:class="{'deactivate': busy}" v-for="value in fpp_values">
-					<button v-bind:class="{'selected': selected_server_settings.jack_fpp == value}" v-on:click="set_fpp(value)">{{value}}</button>
+				<div class="key">JACK fpp:</div>
+				<div class="values">
+					<div v-bind:class="{'deactivate': busy}" v-for="value in fpp_values">
+						<button v-bind:class="{'selected': selected_server_settings.jack_fpp == value}" v-on:click="set_fpp(value)">{{value}}</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -121,6 +125,22 @@ export default {
 <style scoped lang="scss">
 @import "@/scss/_variables.scss";
 
+button {
+	font-weight: bold;
+	text-decoration: none;
+	padding-left: 2px;
+	padding-right: 2px;
+	margin-left: 2px;
+	margin-right: 2px;
+	color: map-get($colors, "dark");
+	background-color: map-get($colors, "highlight");
+  border: none;
+	width: 40px;
+  display: inline-block;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
 .api-container{
 	display: flex;
 	flex-direction: column;
@@ -131,6 +151,16 @@ export default {
 .value-picker {
 	display: flex;
 	flex-direction: row;
+}
+
+.key {
+	flex: 0 0 80px;
+}
+
+.values {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
 }
 
 .selected {

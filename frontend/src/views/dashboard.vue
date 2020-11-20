@@ -33,10 +33,11 @@ export default {
 
 .grid {
   display: grid;
-  padding: 30px;
+  padding: 10px;
+  padding-top: 40px;
   grid-gap: 30px;
-  grid-template-columns: repeat(2, 1fr);
-  grid-auto-rows: 135px;
+  grid-template-columns: repeat(1, 100%);
+  grid-auto-rows: 150px;
 }
 
 .info {
@@ -44,14 +45,30 @@ export default {
 }
 
 .recordings {
-  grid-row: 1/5;
-  min-width: 330px;
+  grid-row: 3/5;
 }
 
 .grid-item {
-  outline: 3px dashed red;
+  outline: 3px solid map-get($colors, "bright");;
   padding: 2px;
   overflow-y: auto;
 }
+
+@media (min-width: map-get($breakpoints, "medium")) {
+	.grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-rows: 160px;
+    padding: 30px;
+    padding-top: 40px;
+	}
+  .grid-item {
+    padding: 10px;
+  }
+  .recordings {
+    grid-row: 1/3;
+    min-width: 330px;
+  }
+}
+
 
 </style>
