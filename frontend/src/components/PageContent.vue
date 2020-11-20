@@ -1,8 +1,10 @@
 <template>
   <div class="page-body" tabindex="0">
+    <div class="text-wrapper">
     <h1>{{page.title}}</h1>
-    <div class="text" v-html="page.body"></div>
-  </div>
+      <div class="text" v-html="page.body"></div>
+    </div>
+    </div>
 </template>
 
 <script>
@@ -30,8 +32,11 @@ export default {
   }
   overflow-x: hidden;
   background-color: map-get($colors, "dark");
-  padding: 20px;
+  min-height: 100%;
+}
 
+.text-wrapper {
+  padding: 20px;
 }
 
 </style>
