@@ -1,5 +1,5 @@
 <template>
-    <div id="canvas"></div>
+  <div id="canvas"></div>
 </template>
 
 <script>
@@ -8,7 +8,7 @@ import P5 from 'p5'
 export default {
   name: 'P5jsBackground',
   data: function() {
-    return {pages: {}}
+    return {sketch: null}
   },
   created: function () {
     const sketch = s => {
@@ -68,8 +68,23 @@ export default {
         s.image (TABLET,s.random (width) - 200,s.random(height) - 200,200,200);
         s.image (STONE,s.random (width) - 200,s.random(height) - 200,170,230);
       }
+      this.sketch = s
     }
     let canvas = new P5(sketch, 'canvas');
+  },
+  mounted() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  methods: {
+    handleResize: function () {
+      // Calculate new canvas size based on window
+      this.$nextTick(() => {
+        this.sketch.resizeCanvas(window.innerWidth, window.innerHeight)
+      })
+    },
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
   }
 }
 
@@ -83,6 +98,6 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: -9999;
+  z-index: -1999;
 }
 </style>
