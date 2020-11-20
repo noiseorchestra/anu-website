@@ -1,13 +1,13 @@
 <template>
   <div class="home-container">
-    <span @mouseover="shouldShowLogo=false">
+    <div @click="shouldShowLogo=false">
       <BackgroundLogo v-if="shouldShowLogo"/>
       <div v-else>
-        <span @mouseleave="shouldShowLogo=true">
+        <div @click="shouldShowLogo=true">
           <AnuSkyGod/>
-        </span>
+        </div>
       </div>
-    </span>
+    </div>
   </div>
 </template>
 

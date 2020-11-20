@@ -138,6 +138,7 @@ export default {
 .mobile-nav {
   display: inline;
   max-height: 0px;
+  z-index: 1000;
 }
 
 .footer {

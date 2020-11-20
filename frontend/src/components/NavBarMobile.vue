@@ -37,7 +37,6 @@ export default {
 	},
 	computed: {
 		width() {
-			console.log(window.innerWidth)
 			if (window.innerWidth < 400) {
 				return window.innerWidth;
 			} else {
@@ -56,6 +55,7 @@ export default {
 
 .mobile-nav-wrapper {
 	display: block;
+	z-index: 100;
 }
 @media (min-width: map-get($breakpoints, "medium")) {
 	.mobile-nav-wrapper {
@@ -87,7 +87,7 @@ export default {
 	height: 100%; /* 100% Full-height */
 	width: 0; /* 0 width - change this with JavaScript */
 	position: fixed; /* Stay in place */
-	z-index: 1000; /* Stay on top */
+	z-index: 1000 !important; /* Stay on top */
 	top: 0;
 	left: 0;
 	background-color: map-get($colors, "highlight") !important;
