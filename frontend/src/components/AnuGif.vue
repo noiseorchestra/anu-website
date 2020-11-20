@@ -1,11 +1,5 @@
 <template>
-	<div class="gif-container">
-	  <div class="gif-item" ><img alt="ANU gif" v-bind:src="gif"></img></div>
-	  <div class="gif-item blink" ><img alt="ANU gif" v-bind:src="image"></img></div>
-	  <div class="gif-item" ><img alt="ANU gif" v-bind:src="gif"></img></div>
-	  <div class="gif-item blink" ><img alt="ANU gif" v-bind:src="image"></img></div>
-	  <div class="gif-item" ><img alt="ANU gif" v-bind:src="gif"></img></div>
-	</div>
+  <div class="anu-img" v-bind:class="{blink: blink}" v-bind:style="{top:top + 'px', left:left + 'px'}"><img alt="ANU gif" v-bind:src="src"></img></div>
 </template>
 
 <script>
@@ -14,32 +8,45 @@ export default {
   name: 'AnuGif',
 	data () {
     return {
-      image: require('../../assets/anu-line.png'),
+			blink: false,
+      image: require('../../assets/anu-line-small.png'),
       gif: require('../../assets/anu.gif'),
     }
   },
+	computed: {
+		src() {
+			if(2 * Math.random() < 1) {
+				this.blink = true
+				return this.image
+			} else {
+				return this.gif
+			}
+		},
+		top() {
+			return Math.random() * (window.innerHeight);
+		},
+		left(){
+			return Math.random() * (window.innerWidth);
+		}
+	},
 }
 </script>
 
 <style scoped lang="scss">
 @import "@/scss/_variables.scss";
 
-.gif-container {
-	height: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	align-items: center;
-}
-
-.gif-item {
-	flex: 1;
+.anu-img {
+	z-index: 100;
+	position: fixed;
+	width: 10vh;
+	min-width: 80px;
 }
 
 img {
 	display: block;
-	max-width: 100px;
+	max-width: 10vw;
 	height: auto;
+	min-width: 80px;
 }
 
 .blink {
