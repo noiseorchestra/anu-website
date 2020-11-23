@@ -1,16 +1,19 @@
 <template>
 	<section>
 		<div class="bg-overlay"></div>
-		<AnuGif gif="../../assets/anu.gif"></AnuGif>
-		<AnuGif gif="../../assets/anu.gif"></AnuGif>
-		<AnuGif gif="../../assets/anu.gif"></AnuGif>
-		<AnuGif gif="../../assets/anu.gif"></AnuGif>
-		<AnuGif gif="../../assets/anu.gif"></AnuGif>
-		<AnuGif gif="../../assets/anu.gif"></AnuGif>
-		<AnuGif gif="../../assets/anu.gif"></AnuGif>
-		<AnuGif gif="../../assets/anu.gif"></AnuGif>
-		<AnuGif gif="../../assets/anu.gif"></AnuGif>
-		<svg class="skygod" viewBox="0 0 100 100">
+			<div v-if="changeGifs">
+				<AnuGif gif="../../assets/anu.gif"></AnuGif>
+				<AnuGif gif="../../assets/anu.gif"></AnuGif>
+				<AnuGif gif="../../assets/anu.gif"></AnuGif>
+				<AnuGif gif="../../assets/anu.gif"></AnuGif>
+				<AnuGif gif="../../assets/anu.gif"></AnuGif>
+				<AnuGif gif="../../assets/anu.gif"></AnuGif>
+				<AnuGif gif="../../assets/anu.gif"></AnuGif>
+				<AnuGif gif="../../assets/anu.gif"></AnuGif>
+				<AnuGif gif="../../assets/anu.gif"></AnuGif>
+			</div>
+		<div class="skygod-text"><AnuSkyGodText/></div>
+		<svg @click="refreshGifs" class="skygod" viewBox="0 0 100 100">
 			<use xlink:href="#skygod"/>
 		</svg>
 		<svg id="skygod" class="defs-only" xmlns="http://www.w3.org/2000/svg" version="1.0" width="100" height="100">
@@ -23,18 +26,29 @@
 
 <script>
 import AnuGif from '@/components/AnuGif.vue'
+import AnuSkyGodText from '@/components/AnuSkyGodText.vue'
 
 export default {
   name: 'AnuSkyGod',
 	components: {
-		AnuGif
+		AnuGif,
+		AnuSkyGodText
 	},
 	data () {
     return {
       image: require('../../assets/anu-line-small.png'),
       gif: require('../../assets/anu.gif'),
+			changeGifs: true
     }
   },
+	methods: {
+		refreshGifs () {
+			this.changeGifs = false
+			this.$nextTick(() => {
+				this.changeGifs = true
+			})
+		}
+	}
 }
 </script>
 
@@ -44,6 +58,13 @@ export default {
 
 <style scoped lang="scss">
 @import "@/scss/_variables.scss";
+
+.skygod-text {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	z-index: -100;
+}
 
 .bg-overlay {
 	position: fixed;
@@ -60,10 +81,6 @@ export default {
 	left: -100px;
 }
 
-// .skygod {
-// 	z-index: -1;
-// }
-
 .skygod {
 	position: fixed;
 	top: 10vh;
@@ -71,12 +88,6 @@ export default {
 	height: 80vh;
 	width: 80vw;
 	fill: map-get($colors, "dark");
-}
-
-.skygod-container {
-	position: fixed;
-	top: 0px;
-	left: 0px;
 }
 
 </style>
