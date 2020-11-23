@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'accounts',
     'pages',
     'dashboard',
+    'sounds'
 ]
 
 MIDDLEWARE = [

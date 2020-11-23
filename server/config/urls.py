@@ -13,5 +13,6 @@ urlpatterns = [
 
     # Local apps
     path('dashboard/', include('dashboard.urls')),
+    path('sounds/', include('sounds.urls')),
     path('', include('pages.urls')),
 ]
