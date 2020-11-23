@@ -30,6 +30,11 @@
 					</li>
 				</ul>
 			</li>
+			<li v-for="route in routes" v-if="route.title == 'Listen'">
+				<router-link :key="`/${route.slug}`" :to="`/${route.slug}`">
+					{{route.title}}
+				</router-link>
+			</li>
 		</ul>
 	</nav>
 </template>
