@@ -10,10 +10,13 @@
 		background-color: map-get($colors, "dark");
 	}
 
+	h1, h2, h3, h4 {
+		font-family: map-get($font, "heading-family");
+	}
+
 	html, body {
 		margin: 0;
 		font-family: map-get($font, "main-family");
-		font-size: 1em;
 		min-height: 100vh;
 	}
 }
@@ -27,10 +30,10 @@
 	}
 
 	a {
-		font-weight: bold;
+		font-family: map-get($font, "heading-family");
 		text-decoration: none;
+		padding-top: 2px;
 		padding-left: 2px;
-		padding-right: 2px;
 		margin-left: 2px;
 		margin-right: 2px;
 		color: map-get($colors, "dark");
@@ -50,6 +53,7 @@
 	  right: 0px;
 	  z-index: 300;
 	  padding: 4px;
+	  padding-top: 10px;
 		a {font-size: 1.2em;}
 	}
 
@@ -62,6 +66,7 @@
 
 	@media (min-width: map-get($breakpoints, "medium")) {
 		.user{
+			padding-top: 6px;
 			a {font-size: 1em;}
 		}
 	  .mobile-nav {

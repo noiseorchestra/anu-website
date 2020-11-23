@@ -36,6 +36,14 @@ export default {
 </script>
 
 <style lang="scss">
+@font-face {
+  font-family: "Russian";
+  src: url('../../../assets/fonts/Russian.woff') format('woff'), url('../../../assets/fonts/Russian.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+@import "@/scss/_variables.scss";
 @import "@/scss/_common.scss";
 @include base-style;
 @include link-style;

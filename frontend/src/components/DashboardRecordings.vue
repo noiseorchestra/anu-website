@@ -66,6 +66,12 @@ export default {
 <style scoped lang="scss">
 @import "@/scss/_variables.scss";
 
+a {
+  font-weight: bold;
+  font-family: map-get($font, "main-family");
+  padding-top: 0px;
+}
+
 .recordings-container {
 	display: flex;
 	flex-direction: column;

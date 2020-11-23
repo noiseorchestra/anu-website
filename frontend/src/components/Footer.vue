@@ -15,6 +15,10 @@ export default {
 <style scoped lang="scss">
 @import "@/scss/_variables.scss";
 
+a {
+	font-size: 0.8rem;
+}
+
 .footer-content {
 	width: 100%;
 	text-align: center;

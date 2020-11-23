@@ -2,12 +2,12 @@
 	<span class="mobile-nav-wrapper">
 	  <Slide v-bind:width="width" :closeOnNavigation="true">
 			<div id="mobile-nav" aria-label="mobile-nav-bar">
-				<div class="nav-item header" v-for="route in routes">
+				<div class="nav-item" v-for="route in routes">
 					<router-link v-if="route.title == 'Home'" :key="`/${route.slug}`" :to="`/${route.slug}`">
 						{{route.title}}
 					</router-link>
 				</div>
-				<div class="nav-item header no-nav"><a>About:</a></div>
+				<div class="nav-item header no-nav"><a>About</a></div>
 				<div class="nav-items">
 					<div class="nav-item" v-for="route in routes">
 						<router-link v-if="route.nav_parents == 'About'" :key="`/${route.slug}`" :to="`/${route.slug}`">
@@ -15,7 +15,7 @@
 						</router-link>
 					</div>
 				</div>
-				<div class="nav-item header no-nav"><a>How To:</a></div>
+				<div class="nav-item header no-nav"><a>How To</a></div>
 				<div class="nav-items">
 					<div class="nav-item" v-for="route in routes">
 						<router-link v-if="route.nav_parents == 'How To'" :key="`/${route.slug}`" :to="`/${route.slug}`">
@@ -64,10 +64,10 @@ export default {
 }
 .bm-burger-button {
 	z-index: 300 !important;
-	width: 20px !important;
-	height: 20px !important;
-	left: 5px !important;
-	top: 5px !important;
+	width: 30px !important;
+	height: 30px !important;
+	left: 10px !important;
+	top: 10px !important;
 }
 .bm-burger-bars {
 	background-color: map-get($colors, "highlight") !important;
@@ -129,7 +129,7 @@ export default {
 	font-size: 1.5rem;
 	margin-left: 10px;
 	&.header {
-		font-size: 1.8rem;
+		font-size: 1rem;
 		margin-left: 0px;
 	}
 }
