@@ -1,7 +1,7 @@
 <template>
 	<span class="mobile-nav-wrapper">
 	  <Slide v-bind:width="width" :closeOnNavigation="true">
-			<div id="mobile-nav" aria-label="standard-nav-bar">
+			<div id="mobile-nav" aria-label="mobile-nav-bar">
 				<div class="nav-item header" v-for="route in routes">
 					<router-link v-if="route.title == 'Home'" :key="`/${route.slug}`" :to="`/${route.slug}`">
 						{{route.title}}
