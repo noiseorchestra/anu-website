@@ -37,9 +37,8 @@ div{
 	padding: 10px;
 	position: fixed;
   color: #fff;
-	font-size: 30px;
+	font-size: 35px;
   font-family: 'Fira Mono', monospace;
-  letter-spacing: -7px;
 	top: -2500px
 }
 
