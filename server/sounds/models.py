@@ -8,6 +8,7 @@ class Recording(models.Model):
     info = models.TextField()
 
     objects = models.Manager()
+    ordering = ['-date']
 
     def __str__(self):
         return self.title
@@ -19,6 +20,7 @@ class StreamEvent(models.Model):
     info = models.TextField()
 
     objects = models.Manager()
+    ordering = ['-date']
 
     def __str__(self):
         return self.title
