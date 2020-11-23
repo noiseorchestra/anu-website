@@ -37,6 +37,7 @@ export default {
 
 .text-wrapper {
   padding: 20px;
+  padding-top: 30px;
 }
 
 </style>

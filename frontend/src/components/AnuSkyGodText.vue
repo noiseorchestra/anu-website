@@ -31,14 +31,14 @@ export default {
 
 <style scoped lang="scss">
 @import "@/scss/_variables.scss";
-@import url('https://fonts.googleapis.com/css?family=Fira+Mono:400');
 
 div{
 	padding: 10px;
 	position: fixed;
   color: #fff;
-	font-size: 35px;
-  font-family: 'Fira Mono', monospace;
+	font-size: 30px;
+  font-family: map-get($font, "heading-family");
+  letter-spacing: 2px;
 	top: -2500px
 }
 

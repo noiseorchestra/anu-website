@@ -54,13 +54,13 @@ export default {
 ul {
 list-style: none;
 padding-left: 0;
-padding-top: 0;
 margin-block-start: 0px;
 }
 
 li {
 display: block;
 float: left;
+padding-top: 2px;
 position: relative;
 text-decoration: none;
 transition-duration: 0.5s;
