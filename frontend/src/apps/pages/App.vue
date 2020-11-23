@@ -3,8 +3,8 @@
     <P5jsBackground></P5jsBackground>
 
     <div class="container">
-      <nav class="desktop-nav nav" aria-label="desktop-nav-bar"><NavBar :routes="djangoData.pages"></NavBar></nav>
-      <nav class="mobile-nav nav" aria-label="mobile-nav-bar"><NavBarMobile :routes="djangoData.pages"></NavBarMobile></nav>
+      <nav class="desktop-nav nav" aria-label="desktop-nav-bar"><NavBar :routes="data.pages"></NavBar></nav>
+      <nav class="mobile-nav nav" aria-label="mobile-nav-bar"><NavBarMobile :routes="data.pages"></NavBarMobile></nav>
       <main class="main">
         <div class="main__padding"></div>
         <router-view class="main__content"></router-view>
@@ -23,6 +23,7 @@ import Footer from '@/components/Footer.vue'
 import P5jsBackground from '@/components/P5jsBackground.vue'
 import PageView from '../../views/page.vue'
 import Home from '@/components/Home.vue'
+import Listen from '@/components/Listen.vue'
 import P5 from 'p5'
 
 export default {
@@ -32,7 +33,7 @@ export default {
   // },
   data: function() {
     return {
-      djangoData: {
+      data: {
         slug: "about",
         pages: [{
           slug: "about",
@@ -68,26 +69,50 @@ export default {
       this.$router.addRoutes([new_route])
     },
     generate_page_routes: function () {
-      for (const page of this.djangoData.pages) {
+      for (const page of this.data.pages) {
         if (page.slug === "home") {
           this.generate_route(page, Home)
+          continue
+        }
+        if (page.slug === "listen") {
+          this.generate_route(page, Listen)
           continue
         }
         this.generate_route(page, PageView)
       }
     },
+    create_default_pages(){
+      let listen = {
+        slug: "listen",
+        title: "Listen",
+        body: "",
+        nav_position: "02",
+        nav_parents: "none",
+      }
+      let home = {
+        slug: "home",
+        title: "Home",
+        body: "",
+        nav_position: "01",
+        nav_parents: "none",
+      }
+      this.data.pages.push(listen)
+      this.data.pages.push(home)
+    }
   },
   created: function () {
-    // build routes and pass in djangoData
+    // build routes and pass in data
     if (document.getElementById('djangoData')) {
-      this.djangoData = JSON.parse(document.getElementById('djangoData').textContent)
+      this.data = JSON.parse(document.getElementById('djangoData').textContent)
     }
+    this.create_default_pages()
     this.generate_page_routes()
-    this.$router.push(`/${this.djangoData.slug}`).catch(err => {
+    this.$router.push(`/${this.data.slug}`).catch(err => {
       if (err.name !== 'NavigationDuplicated') {
         throw err;
       }
     });
+    console.log(this.pages)
   }
 }
 

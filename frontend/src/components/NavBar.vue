@@ -1,5 +1,5 @@
 <template>
-	<nav id="desktop-nav" role="navigation">
+	<nav id="desktop-nav" aria-label="standard-nav-bar" role="navigation">
 		<ul>
 			<li v-for="route in routes" v-if="route.title == 'Home'">
 				<router-link :key="`/${route.slug}`" :to="`/${route.slug}`">
@@ -29,6 +29,11 @@
 						</router-link>
 					</li>
 				</ul>
+			</li>
+			<li v-for="route in routes" v-if="route.title == 'Listen'">
+				<router-link :key="`/${route.slug}`" :to="`/${route.slug}`">
+					{{route.title}}
+				</router-link>
 			</li>
 		</ul>
 	</nav>
