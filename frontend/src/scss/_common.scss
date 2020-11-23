@@ -24,7 +24,7 @@
 
 @mixin link-style {
 	a.router-link-exact-active {
-		text-decoration: underline;
+		// text-decoration: underline;
 		font-weight: bold;
 		color: map-get($colors, "dark");
 	}
@@ -54,7 +54,7 @@
 	  z-index: 300;
 	  padding: 4px;
 	  padding-top: 10px;
-		a {font-size: 1.2em;}
+		a {font-size: 0.8em;}
 	}
 
 	.user-name {
