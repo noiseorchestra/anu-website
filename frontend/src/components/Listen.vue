@@ -1,9 +1,9 @@
 <template>
   <div class="listen-wrapper">
     <div class="listen grid">
-  		<div class="grid-item recordings"><ListenRecordings/></div>
       <div class="grid-item upcomming"><ListenStreamEvents/></div>
   		<div class="grid-item stream"><DashboardStream/></div>
+			<div class="grid-item recordings"><ListenRecordings/></div>
       <!-- <img src="../assets/anu-background-transparent.png"> -->
     </div>
   </div>
@@ -43,12 +43,16 @@ export default {
 }
 
 .recordings {
-  grid-row: 1/3;
-	grid-column: 2;
+	// grid-row: 4/6;
+	grid-column: 1;
 }
 
-.upcoming {
-  grid-row: 3/5;
+.upcomming {
+  grid-row: 1/3;
+}
+
+.stream {
+  grid-row: 3/4;
 }
 
 .grid-item {
@@ -68,10 +72,16 @@ export default {
   .grid-item {
     padding: 10px;
   }
-  .upcoming {
-    grid-row: 1/3;
-    min-width: 330px;
+  .upcomming {
+    grid-row: 1/2;
   }
+	.stream {
+	  grid-row: 2/3;
+	}
+	.recordings {
+	  grid-row: 1/3;
+		grid-column: 2;
+	}
 }
 
 
