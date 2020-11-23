@@ -66,7 +66,7 @@ cursor: pointer;
 }
 
 ul li ul {
-width: 130px;
+width: 200px;
 visibility: hidden;
 opacity: 0;
 min-width: 5rem;

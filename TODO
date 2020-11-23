@@ -4,23 +4,23 @@ CODING
 - connect naw data to user
 - create server scripts
 - tests
-- drop-down menus for pages
 - stream page
 - chat for stream page?
-- ANU universe gif collage
 - poll data from influxdb server
-- dashboard mobile view
-- refresh canvas size
 - sound on BG change
 
 TEXTS
 - contact page
 - where should invocations go?
 - links in text
-- about page with more info about peeps
 - signal diagram
 
 DONE
+- ssl for stream access
+- drop-down menus for pages
+- ANU universe gif collage
+- dashboard mobile view
+- refresh canvas size
 - domain name
 - deploy on dokku
 - forward to homepage
@@ -30,3 +30,4 @@ DONE
 - flexbox layout
 - light / dark mode
 - compress images for upload
+- about page with more info about peeps
