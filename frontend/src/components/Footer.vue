@@ -1,8 +1,8 @@
 <template>
 	<div class="footer-content">
-		<a href="https://noiseorchestra.org/">Noise Orchestra</a> -
-		<a href="https://github.com/noiseorchestra">GitHub</a> -
-		<a href="https://twitter.com/orchestranoise?lang=en">Twitter</a>
+		<a class="nav-link" href="https://noiseorchestra.org/">Noise Orchestra</a> -
+		<a class="nav-link" href="https://github.com/noiseorchestra">GitHub</a> -
+		<a class="nav-link" href="/contact">Twitter</a>
 	</div>
 </template>
 

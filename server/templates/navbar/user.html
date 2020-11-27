@@ -1,12 +1,12 @@
 {% block content %}
 	{% if request.user.is_authenticated %}
 		{% if "dashboard" in request.path %}
-			<a href="{% url "pages:page" "home"%}">Home</a>
+			<a class="nav-link" href="{% url "pages:page" "home"%}">Home</a>
 		{% else %}
-			<a href="{% url "dashboard:dashboard" "noise-orchestra-web" %}">My Dashboard</a>
+			<a class="nav-link" href="{% url "dashboard:dashboard" "noise-orchestra-web" %}">My Dashboard</a>
 		{% endif %}
-		<a href="{% url "logout" %}">Logout</a>
+		<a class="nav-link" href="{% url "logout" %}">Logout</a>
 	{% else %}
-		<a href="{% url "login" %}">Login</a>
+		<a class="nav-link" href="{% url "login" %}">Login</a>
 	{% endif %}
 {% endblock %}

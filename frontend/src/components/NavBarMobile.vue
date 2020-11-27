@@ -3,22 +3,22 @@
 	  <Slide v-bind:width="width" :closeOnNavigation="true">
 			<div id="mobile-nav" aria-label="mobile-nav-bar">
 				<div class="nav-item" v-for="route in routes">
-					<router-link v-if="route.title == 'Home'" :key="`/${route.slug}`" :to="`/${route.slug}`">
+					<router-link class="nav-link" v-if="route.title == 'Home'" :key="`/${route.slug}`" :to="`/${route.slug}`">
 						{{route.title}}
 					</router-link>
 				</div>
-				<div class="nav-item header no-nav"><a>About</a></div>
+				<div class="nav-item header no-nav"><a class="nav-link">About</a></div>
 				<div class="nav-items">
 					<div class="nav-item" v-for="route in routes">
-						<router-link v-if="route.nav_parents == 'About'" :key="`/${route.slug}`" :to="`/${route.slug}`">
+						<router-link class="nav-link" v-if="route.nav_parents == 'About'" :key="`/${route.slug}`" :to="`/${route.slug}`">
 							{{route.title}}
 						</router-link>
 					</div>
 				</div>
-				<div class="nav-item header no-nav"><a>How To</a></div>
+				<div class="nav-item header no-nav"><a class="nav-link">How To</a></div>
 				<div class="nav-items">
 					<div class="nav-item" v-for="route in routes">
-						<router-link v-if="route.nav_parents == 'How To'" :key="`/${route.slug}`" :to="`/${route.slug}`">
+						<router-link class="nav-link" v-if="route.nav_parents == 'How To'" :key="`/${route.slug}`" :to="`/${route.slug}`">
 							{{route.title}}
 						</router-link>
 					</div>
