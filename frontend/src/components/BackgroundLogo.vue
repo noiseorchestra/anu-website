@@ -20,8 +20,8 @@ export default {
 @import "@/scss/_variables.scss";
 
 #background-logo {
-	max-height: 70vh;
-	padding-bottom: 60px;
+	max-height: 85vh;
+	padding-bottom: 40px;
 }
 
 @media (min-width: map-get($breakpoints, "medium")) {
