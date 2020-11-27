@@ -32,10 +32,7 @@
 	a {
 		font-family: map-get($font, "main-family");
 		text-decoration: none;
-		padding-top: 2px;
-		padding-left: 2px;
-		margin-left: 2px;
-		margin-right: 2px;
+		font-weight: bold;
 		background-color: map-get($colors, "highlight");
 		color: map-get($colors, "dark");
 	}
@@ -43,6 +40,11 @@
 	  background-color: map-get($colors, "bright");
 	}
 	.nav-link {
+		font-weight:normal;
+		margin-left: 2px;
+		margin-right: 2px;
+		padding-left: 2px;
+		padding-top: 2px;
 		font-family: map-get($font, "heading-family");
 	}
 }
