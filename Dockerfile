@@ -1,3 +1,19 @@
+FROM python:3.8 AS server-base
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+EXPOSE 8000
+
+WORKDIR /code
+COPY /server/Pipfile /server/Pipfile.lock /code/server/
+
+WORKDIR /code/server
+RUN pip install pipenv && pipenv install --system
+
+COPY . /code/
+
+WORKDIR /code/server
+
 FROM node:12-slim AS frontend-base
 
 WORKDIR /code
@@ -15,22 +31,6 @@ FROM frontend-base AS frontend-prod
 ENV NODE_ENV=production
 
 RUN npm run build
-
-FROM python:3.8 AS server-base
-
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PYTHONUNBUFFERED 1
-EXPOSE 8000
-
-WORKDIR /code
-COPY /server/Pipfile /server/Pipfile.lock /code/server/
-
-WORKDIR /code/server
-RUN pip install pipenv && pipenv install --system
-
-COPY . /code/
-
-WORKDIR /code/server
 
 FROM server-base AS server-prod
 
