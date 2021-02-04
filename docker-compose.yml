@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
       target: server-base
     working_dir: /code/server
-    command: bash -c "python manage.py collectstatic --noinput && gunicorn config.wsgi -b 0.0.0.0:8000"
+    command: sh launch-dev.sh
     volumes:
       - .:/code
     ports:
