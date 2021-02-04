@@ -18,6 +18,7 @@ djangorestframework = "*"
 pillow = "*"
 django-modern-rpc = "*"
 fabric = "*"
+linode_api4 = "*"
 
 [requires]
 python_version = "3.7"
