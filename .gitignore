@@ -4,3 +4,4 @@ server/staticfiles/
 docker-compose-prod.yml
 docker-compose-dev.yml
 heroku.yml
+venv
