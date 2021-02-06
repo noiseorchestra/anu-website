@@ -67,12 +67,10 @@ def set_fpp(fpp_value):
     """
     Set the JACK fpp (frames per period) value on a py_patcher server.
     """
-    if type(q_value) != int:
-        print('The input is not a number')
-        return "not a number"
-    else:
-    result = c.run('echo "FPP=%s" > /etc/jacktrip_pypatcher/jackd.conf' % (fpp_value))
-    return result.exited
+    if type(fpp_value) == int:
+        result = c.run('echo "FPP=%s" > /etc/jacktrip_pypatcher/jackd.conf' % (fpp_value))
+        return result.exited
+    return "not a number"
 
 
 @http_basic_auth_login_required
@@ -81,12 +79,10 @@ def set_q(q_value):
     """
     Set the JackTrip q (buffer) value on a py_patcher server.
     """
-    if type(q_value) != int:
-        print('The input is not a number')
-        return "not a number"
-    else:
+    if type(q_value) == int or q_value == "auto":
         result = c.run('echo "Q=%s" > /etc/jacktrip_pypatcher/jacktrip.conf' % (q_value))
         return result.exited
+    return "not a number"
 
 
 @http_basic_auth_login_required
@@ -167,4 +163,3 @@ def delete_all_servers():
         response = error  
 
     return response
-
