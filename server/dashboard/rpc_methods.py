@@ -5,6 +5,7 @@ from invoke import Responder
 from environs import Env
 from linode_api4 import LinodeClient
 import schedule
+import time
 
 env = Env()
 env.read_env()
@@ -66,6 +67,10 @@ def set_fpp(fpp_value):
     """
     Set the JACK fpp (frames per period) value on a py_patcher server.
     """
+    if type(q_value) != int:
+        print('The input is not a number')
+        return "not a number"
+    else:
     result = c.run('echo "FPP=%s" > /etc/jacktrip_pypatcher/jackd.conf' % (fpp_value))
     return result.exited
 
@@ -76,8 +81,12 @@ def set_q(q_value):
     """
     Set the JackTrip q (buffer) value on a py_patcher server.
     """
-    result = c.run('echo "Q=%s" > /etc/jacktrip_pypatcher/jacktrip.conf' % (q_value))
-    return result.exited
+    if type(q_value) != int:
+        print('The input is not a number')
+        return "not a number"
+    else:
+        result = c.run('echo "Q=%s" > /etc/jacktrip_pypatcher/jacktrip.conf' % (q_value))
+        return result.exited
 
 
 @http_basic_auth_login_required

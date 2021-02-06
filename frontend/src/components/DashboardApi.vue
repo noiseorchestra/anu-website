@@ -31,7 +31,7 @@ export default {
 	data () {
     return {
 			busy: false,
-			q_values: ["4", "6", "8", "10", "12", "14", "16"],
+			q_values: [4, 6, 8, 10, 12, 14, 16],
 			fpp_values: [64, 128, 256, 512],
 			selected_server_settings: {
 				jack_fpp: null,
