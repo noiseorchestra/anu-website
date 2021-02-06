@@ -1,34 +1,33 @@
 from modernrpc.core import rpc_method
 from modernrpc.auth.basic import http_basic_auth_login_required
 from fabric import Connection
+import paramiko
 from invoke import Responder
 from environs import Env
 from linode_api4 import LinodeClient
 import schedule
 import time
+import os
 
 env = Env()
 env.read_env()
 
-host = env("JACKTRIP_SERVER_ADDRESS", default="123.123.123.123")
-username = env("JACKTRIP_SERVER_USER", default="user")
-password = env("JACKTRIP_SERVER_PASSWORD", default="password")
-token = env("LINODE_PAT", default="")
-
-sudopass = Responder(
-    pattern=r'\[sudo\] password for fabric:',
-    response=password + '\n',
-)
+LINODE_PAT = env("LINODE_PAT", default="")
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 f = open("/root/.ssh/id_rsa.pub", "r")
-pkey = f.read().rstrip('\n')
+public_key = f.read().rstrip('\n')
 f.close()
 
-client = LinodeClient('{}'.format(token))
-c = Connection(host, username, connect_timeout=4, connect_kwargs={
-        "key_filename": "/root/.ssh/id_rsa",
-    },
-)
+private_key = paramiko.rsakey.RSAKey.from_private_key_file(filename="/root/.ssh/id_rsa")
+
+client = LinodeClient('{}'.format(LINODE_PAT))
+
+def _get_fabric_client(host):
+    return Connection(host, "root", connect_kwargs={
+        "pkey": private_key,
+        },
+    )
 
 def _delete_all_servers():
     my_linodes = client.linode.instances()
@@ -39,69 +38,69 @@ def _delete_all_servers():
 
 @rpc_method
 @http_basic_auth_login_required
-def get_fpp():
+def get_fpp(host):
     """
     Fetch the current JACK fpp (frames per period) value from a py_patcher server.
     :return: String
     """
-    result = c.run('cat /etc/jacktrip_pypatcher/jackd.conf')
+    result = _get_fabric_client(host).run('cat /etc/jacktrip_pypatcher/jackd.conf')
     key, value = result.stdout.strip().split('=')
     return value
 
 
 @http_basic_auth_login_required
 @rpc_method
-def get_q():
+def get_q(host):
     """
     Fetch the current JackTrip q (buffer) value from a py_patcher server.
     :return: String
     """
-    result = c.run('cat /etc/jacktrip_pypatcher/jacktrip.conf')
+    result = _get_fabric_client(host).run('cat /etc/jacktrip_pypatcher/jacktrip.conf')
     key, value = result.stdout.strip().split('=')
     return value
 
 
 @http_basic_auth_login_required
 @rpc_method
-def set_fpp(fpp_value):
+def set_fpp(host, fpp_value):
     """
     Set the JACK fpp (frames per period) value on a py_patcher server.
     """
     if type(fpp_value) == int:
-        result = c.run('echo "FPP=%s" > /etc/jacktrip_pypatcher/jackd.conf' % (fpp_value))
+        result = _get_fabric_client(host).run('echo "FPP=%s" > /etc/jacktrip_pypatcher/jackd.conf' % (fpp_value))
         return result.exited
     return "not a number"
 
 
 @http_basic_auth_login_required
 @rpc_method
-def set_q(q_value):
+def set_q(host, q_value):
     """
     Set the JackTrip q (buffer) value on a py_patcher server.
     """
     if type(q_value) == int or q_value == "auto":
-        result = c.run('echo "Q=%s" > /etc/jacktrip_pypatcher/jacktrip.conf' % (q_value))
+        result = _get_fabric_client(host).run('echo "Q=%s" > /etc/jacktrip_pypatcher/jacktrip.conf' % (q_value))
         return result.exited
-    return "not a number"
+    return "not a valid q value"
 
 
 @http_basic_auth_login_required
 @rpc_method
-def restart_jacktrip():
+def restart_jacktrip(host):
     """
     Restart JackTrip on a py_patcher server.
     """
-    result = c.run('sudo systemctl restart jacktrip.service', pty=True, watchers=[sudopass])
+    result = _get_fabric_client(host).run('sudo systemctl restart jacktrip.service')
     return result.exited
 
 
 @http_basic_auth_login_required
 @rpc_method
-def restart_jackd():
+def restart_jackd(host):
     """
     Restart JACK on a py_patcher server.
     """
-    result = c.run('sudo systemctl restart jackd.service', pty=True, watchers=[sudopass])
+    result = _get_fabric_client(host).run('sudo systemctl restart jackd.service')
     return result.exited
 
 
@@ -111,6 +110,8 @@ def create_server():
     """
     Create a py_patcher server on Linode.
     """
+
+    # put a check in here for MAX_SERVER_LIMIT so we can limit the number of linodes running (3 maybe?)
 
     # Nanode for safety, while developing
     type_id = "g6-nanode-1"
@@ -122,11 +123,20 @@ def create_server():
     image = "linode/ubuntu18.04"
 
     linode, password = client.linode.instance_create(type_id, region_id,
-                            image=image, authorized_keys=pkey)
+                            image=image, authorized_keys=public_key)
 
     if not linode:
         raise RuntimeError("it didn't work")
 
+    # for i in range(1,10):
+    #     print(linode.status)
+    #     time.sleep(10)
+    # print(linode.status)
+
+    # host = linode.ipv4[0]
+    # upload_everything_and_run(host)
+
+    # return the server ip OR array of all servers, save to NAW in db from frontend
     return {"ip": linode.ipv4[0]}
 
 
@@ -148,7 +158,6 @@ def fetch_all_servers():
 
     return ips
 
-
 @http_basic_auth_login_required
 @rpc_method
 def delete_all_servers():
@@ -163,3 +172,40 @@ def delete_all_servers():
         response = error  
 
     return response
+
+@http_basic_auth_login_required
+@rpc_method
+def upload_everything_and_run(host):
+    # Check if custom darkice config exists
+    # Change this to genuine file
+
+    scripts_path = os.path.join(BASE_DIR, 'dashboard/jacktrip-server-automation/scripts')
+    templates_path = os.path.join(BASE_DIR, 'dashboard/jacktrip-server-automation/templates')
+
+    if os.path.isfile('{}/darkice.cfg'.format(templates_path)):
+        print ("Darkice config found")
+    else:
+        raise RuntimeError("Please create custom darkice config file")
+
+    c = _get_fabric_client(host)
+
+    print("Upload files")
+
+    upload_files(c, scripts_path)
+    upload_files(c, templates_path)
+
+    result = c.put('{}/darkice.cfg'.format(templates_path))
+    print("Uploaded {0.local} to {0.remote}".format(result))
+
+    run_scripts(c)
+
+    return "success"
+
+def upload_files(c, dir_path):
+    for filename in os.listdir(dir_path):
+        print('Upload: {}/{}'.format(dir_path, filename))
+        result = c.put('{}/{}'.format(dir_path, filename))
+        print("Uploaded {0.local} to {0.remote}".format(result))
+
+def run_scripts(c):
+    c.run('./install.sh && reboot')
