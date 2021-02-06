@@ -5,4 +5,4 @@ docker-compose-prod.yml
 docker-compose-dev.yml
 heroku.yml
 venv
-server/jacktrip-server-automation
+server/dashboard/jacktrip-server-automation
