@@ -29,6 +29,13 @@ c = Connection(host, username, connect_timeout=4, connect_kwargs={
     },
 )
 
+def _delete_all_servers():
+    my_linodes = client.linode.instances()
+
+    for current_linode in my_linodes:
+        print("delete: ", current_linode.label)
+        current_linode.delete()
+
 @rpc_method
 @http_basic_auth_login_required
 def get_fpp():
@@ -125,32 +132,30 @@ def fetch_all_servers():
     Fetch all linode server instances
     """
     my_linodes = client.linode.instances()
+    ips = []
+
+    if len(my_linodes) == 0:
+        return ips
 
     for current_linode in my_linodes:
-        print(current_linode.label)
+        print(current_linode.ipv4[0])
+        ips.append(current_linode.ipv4[0])
 
-    return my_linodes[0].label
+    return ips
 
 
 @http_basic_auth_login_required
 @rpc_method
 def delete_all_servers():
     """
-    Fetch all linode server instances
+    Delete all linode server instances
     """
-    my_linodes = client.linode.instances()
+    response = "success"
+    try:
+        _delete_all_servers()
+    except AssertionError as error:
+        print(error)
+        response = error  
 
-    for current_linode in my_linodes:
-        print("delete: ", current_linode.label)
-        current_linode.delete()
+    return response
 
-    return "success"
-
-
-@http_basic_auth_login_required
-@rpc_method
-def public_key():
-    f = open("/root/.ssh/id_rsa.pub", "r")
-    file = f.read().rstrip('\n')
-    f.close()
-    return file
