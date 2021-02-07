@@ -92,7 +92,7 @@
 		color: map-get($colors, "dark");
 		background-color: map-get($colors, "highlight");
 		border: none;
-		width: 40px;
+		width: 60px;
 		display: inline-block;
 		margin: 4px 2px;
 		cursor: pointer;
@@ -106,7 +106,7 @@
 	.deactivate {
 		& .api-button {
 			cursor: not-allowed;
-		pointer-events: none;
+			pointer-events: none;
 			background-color: grey;
 		}
 	}

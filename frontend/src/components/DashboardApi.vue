@@ -18,6 +18,12 @@
 					</div>
 				</div>
 			</div>
+			<div class="value-picker server-automation">
+				<div class="key">Servers:</div>
+				<div class="values">
+					<div><button class="api-button big" v-on:click="create_server()">new server</button></div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
