@@ -6,7 +6,7 @@
 				<div class="key">JackTrip queue:</div>
 				<div class="values">
 					<div v-bind:class="{'deactivate': busy}" v-for="value in q_values">
-						<button v-bind:class="{'selected': selected_server_settings.jacktrip_q == value}" v-on:click="set_q(value)">{{value}}</button>
+						<button class="api-button" v-bind:class="{'selected': selected_server_settings.jacktrip_q == value}" v-on:click="set_q(value)">{{value}}</button>
 					</div>
 				</div>
 			</div>
@@ -14,7 +14,7 @@
 				<div class="key">JACK fpp:</div>
 				<div class="values">
 					<div v-bind:class="{'deactivate': busy}" v-for="value in fpp_values">
-						<button v-bind:class="{'selected': selected_server_settings.jack_fpp == value}" v-on:click="set_fpp(value)">{{value}}</button>
+						<button class="api-button" v-bind:class="{'selected': selected_server_settings.jack_fpp == value}" v-on:click="set_fpp(value)">{{value}}</button>
 					</div>
 				</div>
 			</div>
@@ -124,22 +124,8 @@ export default {
 
 <style scoped lang="scss">
 @import "@/scss/_variables.scss";
-
-button {
-	font-weight: bold;
-	text-decoration: none;
-	padding-left: 2px;
-	padding-right: 2px;
-	margin-left: 2px;
-	margin-right: 2px;
-	color: map-get($colors, "dark");
-	background-color: map-get($colors, "highlight");
-  border: none;
-	width: 40px;
-  display: inline-block;
-  margin: 4px 2px;
-  cursor: pointer;
-}
+@import "@/scss/_common.scss";
+@include api-style;
 
 .api-container{
 	display: flex;
@@ -161,19 +147,6 @@ button {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
-}
-
-.selected {
-	font-weight: bold;
-	background-color: map-get($colors, "bright");
-}
-
-.deactivate {
-	& button {
-		cursor: not-allowed;
-    pointer-events: none;
-		background-color: grey;
-	}
 }
 
 </style>
