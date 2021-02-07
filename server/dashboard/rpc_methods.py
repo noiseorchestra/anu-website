@@ -42,7 +42,6 @@ def _delete_all_servers():
             current_linode.delete()
         return "deleted all linodes"
 
-
 def _delete_one_server(host):
 
     my_linodes = client.linode.instances()
@@ -59,13 +58,16 @@ def _delete_one_server(host):
                 message = "deleted {}".format(current_linode.ipv4[0])
     return message
 
-
-
 def _upload_files(c, dir_path):
     for filename in os.listdir(dir_path):
         print('Upload: {}/{}'.format(dir_path, filename))
         result = c.put('{}/{}'.format(dir_path, filename))
         print("Uploaded {0.local} to {0.remote}".format(result))
+
+def _check_exit_string(result):
+    if result.exitcode != 0:
+        return False
+    return True
 
 
 @rpc_method
@@ -186,6 +188,7 @@ def fetch_all_servers():
 
     return {"ips": ips}
 
+
 @http_basic_auth_login_required
 @rpc_method
 def delete_one_server(host):
@@ -195,12 +198,14 @@ def delete_one_server(host):
     message = _delete_one_server(host)
     return {"message": message}
 
+
 def delete_all_servers():
     """
     Delete all linode server instances
     """
     message = _delete_all_servers()
     return {"message": message}
+
 
 @http_basic_auth_login_required
 @rpc_method
@@ -217,12 +222,22 @@ def upload_scripts(host):
 
     c = _get_fabric_client(host)
 
-    result_1 = _upload_files(c, scripts_path)
-    result_2 = _upload_files(c, templates_path)
-    result_3 = c.put('{}/darkice.cfg'.format(templates_path))
+    results = []
+
+    results.append(_upload_files(c, scripts_path))
+    results.append(_upload_files(c, templates_path))
+    results.append(c.put('{}/darkice.cfg'.format(templates_path)))
+
+    for result in results:
+        isZero = _check_exit_string(result)
+        if not isZero:
+            raise RuntimeError("Could not upload files: {}".format(result))
 
     return {"message": "successfully uploaded scripts to {}".format(host)}
 
+
+@http_basic_auth_login_required
+@rpc_method
 def run_scripts(host):
     c = _get_fabric_client(host)
     result = c.run('./install.sh && reboot')
