@@ -2,7 +2,7 @@
 	<div class="api-container">
 		<div class="current-info">
 			<div><h2>JackTrip Hub Server Settings</h2></div>
-			<div class="value-picker jacktrip-queue">
+			<div class="api-container-child jacktrip-queue">
 				<div class="key">JackTrip queue:</div>
 				<div class="values">
 					<div v-bind:class="{'deactivate': busy}" v-for="value in q_values">
@@ -10,7 +10,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="value-picker jack-fpp">
+			<div class="api-container-child jack-fpp">
 				<div class="key">JACK fpp:</div>
 				<div class="values">
 					<div v-bind:class="{'deactivate': busy}" v-for="value in fpp_values">
@@ -18,10 +18,16 @@
 					</div>
 				</div>
 			</div>
-			<div class="value-picker server-automation">
+			<div class="api-container-child server-details">
+				<div class="key">Server IP:</div>
+				<div class="values">
+					<div>{{ip}}</div>
+				</div>
+			</div>
+			<div class="api-container-child server-automation">
 				<div class="key">Servers:</div>
 				<div class="values">
-					<div><button class="api-button big" v-on:click="create_server()">new server</button></div>
+					<div><button class="api-button" v-on:click="create_server()">new server</button></div>
 				</div>
 			</div>
 		</div>
@@ -33,22 +39,23 @@ import jsonrpc from 'jsonrpc-lite'
 import axios from 'axios'
 
 export default {
-  name: 'DashboarApi',
+	name: 'DashboarApi',
 	data () {
-    return {
+		return {
 			busy: false,
+			ip: "123.123.123.123",
+			server_settings: {
+				jack_fpp: null,
+				jacktrip_q: null,
+			},
 			q_values: [4, 6, 8, 10, 12, 14, 16],
 			fpp_values: [64, 128, 256, 512],
 			selected_server_settings: {
 				jack_fpp: null,
 				jacktrip_q: null,
 			},
-			server_settings: {
-				jack_fpp: null,
-				jacktrip_q: null,
-			}
-    }
-  },
+		}
+	},
 	methods: {
 		set_q(q_value){
 			this.busy = true
@@ -162,7 +169,7 @@ export default {
 	height: 100%;
 }
 
-.value-picker {
+.api-container-child {
 	display: flex;
 	flex-direction: row;
 }
