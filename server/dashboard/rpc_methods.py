@@ -49,14 +49,13 @@ def _delete_one_server(host):
 
     if len(my_linodes) == 0:
         return "no linodes to delete"
-    elif:
+    else:
         for current_linode in my_linodes:
             if current_linode.ipv4[0] == host}
                 print("delete: ", current_linode.label)
                 current_linode.delete()
                 return "deleted {}".format(current_linode.ipv4[0])
-    else:
-        return "Linode {} could not be found".format(current_linode.ipv4[0])
+    return "Linode {} could not be found".format(current_linode.ipv4[0])
 
 
 
@@ -65,9 +64,6 @@ def _upload_files(c, dir_path):
         print('Upload: {}/{}'.format(dir_path, filename))
         result = c.put('{}/{}'.format(dir_path, filename))
         print("Uploaded {0.local} to {0.remote}".format(result))
-
-def _run_scripts(c):
-    c.run('./install.sh && reboot')
 
 
 @rpc_method
@@ -191,23 +187,20 @@ def delete_server(host):
     """
     Delete all linode server instances
     """
-    response = _delete_all_servers()
 
-    return response
+    return _delete_one_server(host)
 
 def delete_all_servers():
     """
     Delete all linode server instances
     """
-    response = _delete_all_servers()
 
-    return response
+    return _delete_all_servers()
 
 @http_basic_auth_login_required
 @rpc_method
-def upload_everything_and_run(host):
-    # Check if custom darkice config exists
-    # Change this to genuine file
+def upload_scripts(host):
+    # Change this to genuine file and pass in ENV vars or strings from NAW db entry
 
     scripts_path = os.path.join(BASE_DIR, 'dashboard/jacktrip-server-automation/scripts')
     templates_path = os.path.join(BASE_DIR, 'dashboard/jacktrip-server-automation/templates')
@@ -219,14 +212,13 @@ def upload_everything_and_run(host):
 
     c = _get_fabric_client(host)
 
-    print("Upload files")
+    result_1 = _upload_files(c, scripts_path)
+    result_2 = _upload_files(c, templates_path)
+    result_3 = c.put('{}/darkice.cfg'.format(templates_path))
 
-    _upload_files(c, scripts_path)
-    _upload_files(c, templates_path)
+    return "successfully uploaded scripts to {}".format(host)
 
-    result = c.put('{}/darkice.cfg'.format(templates_path))
-    print("Uploaded {0.local} to {0.remote}".format(result))
-
-    _run_scripts(c)
-
-    return "success"
+def run_scripts(host):
+    c = _get_fabric_client(host)
+    result c.run('./install.sh && reboot')
+    return result
