@@ -96,10 +96,11 @@ def set_fpp(host, fpp_value):
     """
     Set the JACK fpp (frames per period) value on a py_patcher server.
     """
-    if type(fpp_value) == int:
-        result = _get_fabric_client(host).run('echo "FPP=%s" > /etc/jacktrip_pypatcher/jackd.conf' % (fpp_value))
-        return result.exited
-    return "not a number"
+    if type(fpp_value) != int:
+        raise TypeError("not a number")
+
+    result = _get_fabric_client(host).run('echo "FPP=%s" > /etc/jacktrip_pypatcher/jackd.conf' % (fpp_value))
+    return result.exited
 
 
 @http_basic_auth_login_required
@@ -108,10 +109,12 @@ def set_q(host, q_value):
     """
     Set the JackTrip q (buffer) value on a py_patcher server.
     """
-    if type(q_value) == int or q_value == "auto":
-        result = _get_fabric_client(host).run('echo "Q=%s" > /etc/jacktrip_pypatcher/jacktrip.conf' % (q_value))
-        return result.exited
-    return "not a valid q value"
+    if type(q_value) != int and q_value != "auto":
+        raise TypeError("not a valid q value")
+
+    result = _get_fabric_client(host).run('echo "Q=%s" > /etc/jacktrip_pypatcher/jacktrip.conf' % (q_value))
+
+    return {"exitcode": result.exited}
 
 
 @http_basic_auth_login_required
@@ -121,7 +124,7 @@ def restart_jacktrip(host):
     Restart JackTrip on a py_patcher server.
     """
     result = _get_fabric_client(host).run('sudo systemctl restart jacktrip.service')
-    return result.exited
+    return {"exitcode": result.exited}
 
 
 @http_basic_auth_login_required
@@ -131,7 +134,7 @@ def restart_jackd(host):
     Restart JACK on a py_patcher server.
     """
     result = _get_fabric_client(host).run('sudo systemctl restart jackd.service')
-    return result.exited
+    return {"exitcode": result.exited}
 
 
 @http_basic_auth_login_required
@@ -179,23 +182,23 @@ def fetch_all_servers():
         print(current_linode.ipv4[0])
         ips.append(current_linode.ipv4[0])
 
-    return ips
+    return {"ips": ips}
 
 @http_basic_auth_login_required
 @rpc_method
-def delete_server(host):
+def _delete_one_server(host):
     """
     Delete all linode server instances
     """
-
-    return _delete_one_server(host)
+    message = delete_server()
+    return {"message": message}
 
 def delete_all_servers():
     """
     Delete all linode server instances
     """
-
-    return _delete_all_servers()
+    message = _delete_all_servers()
+    return {"message": message}
 
 @http_basic_auth_login_required
 @rpc_method
@@ -216,9 +219,9 @@ def upload_scripts(host):
     result_2 = _upload_files(c, templates_path)
     result_3 = c.put('{}/darkice.cfg'.format(templates_path))
 
-    return "successfully uploaded scripts to {}".format(host)
+    return {"message": "successfully uploaded scripts to {}".format(host)}
 
 def run_scripts(host):
     c = _get_fabric_client(host)
-    result c.run('./install.sh && reboot')
+    result = c.run('./install.sh && reboot')
     return result
