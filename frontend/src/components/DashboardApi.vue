@@ -37,7 +37,7 @@ export default {
 				jack_fpp: null,
 				jacktrip_q: null,
 			},
-      server_settings: {
+			server_settings: {
 				jack_fpp: null,
 				jacktrip_q: null,
 			}
@@ -87,6 +87,7 @@ export default {
 		handle_get_fpp(response){
 			if (response.data.error){
 				window.alert(`An error occured:\n${response.data.error.message}`);
+				this.busy = true
 				return
 			}
 			this.selected_server_settings.jack_fpp = response.data.result
@@ -95,15 +96,16 @@ export default {
 		handle_get_q(response){
 			if (response.data.error){
 				window.alert(`An error occured:\n${response.data.error.message}`);
+				this.busy = true
 				return
 			}
 			this.selected_server_settings.jacktrip_q = response.data.result
 			this.server_settings.jacktrip_q = response.data.result
 		},
 		handle_set_q(response){
-			console.log(response)
 			if (response.data.error){
 				window.alert(`An error occured:\n${response.data.error.message}`);
+				this.busy = true
 				return
 			}
 			this.restart_jacktrip()
@@ -111,6 +113,7 @@ export default {
 		handle_set_fpp(response){
 			if (response.data.error){
 				window.alert(`An error occured:\n${response.data.error.message}`);
+				this.busy = true
 				return
 			}
 			this.restart_jackd()
@@ -118,6 +121,7 @@ export default {
 		handle_restart_jacktrip(response){
 			if (response.data.error){
 				window.alert(`An error occured:\n${response.data.error.message}`);
+				this.busy = true
 				return
 			}
 			this.get_q()
@@ -126,6 +130,7 @@ export default {
 		handle_restart_jackd(response){
 			if (response.data.error){
 				window.alert(`An error occured:\n${response.data.error.message}`);
+				this.busy = true
 				return
 			}
 			this.get_fpp()
