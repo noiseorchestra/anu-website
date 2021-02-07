@@ -47,15 +47,17 @@ def _delete_one_server(host):
 
     my_linodes = client.linode.instances()
 
+    message = "Linode {} could not be found".format(current_linode.ipv4[0])
+
     if len(my_linodes) == 0:
-        return "no linodes to delete"
+        message = "no linodes to delete"
     else:
         for current_linode in my_linodes:
             if current_linode.ipv4[0] == host:
                 print("delete: ", current_linode.label)
                 current_linode.delete()
-                return "deleted {}".format(current_linode.ipv4[0])
-    return "Linode {} could not be found".format(current_linode.ipv4[0])
+                message = "deleted {}".format(current_linode.ipv4[0])
+    return message
 
 
 
@@ -145,7 +147,7 @@ def create_server():
     """
 
     my_linodes = client.linode.instances()
-    if len(my_linodes) >= MAX_LINODES:
+    if len(my_linodes) >= int(MAX_LINODES):
         raise RuntimeError("max server number of {} reached".format(MAX_LINODES))
 
     # Nanode for safety, while developing
@@ -186,11 +188,11 @@ def fetch_all_servers():
 
 @http_basic_auth_login_required
 @rpc_method
-def _delete_one_server(host):
+def delete_one_server(host):
     """
     Delete all linode server instances
     """
-    message = delete_server()
+    message = _delete_one_server(host)
     return {"message": message}
 
 def delete_all_servers():
