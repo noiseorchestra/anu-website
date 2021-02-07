@@ -43,6 +43,23 @@ def _delete_all_servers():
         return "deleted all linodes"
 
 
+def _delete_one_server(host):
+
+    my_linodes = client.linode.instances()
+
+    if len(my_linodes) == 0:
+        return "no linodes to delete"
+    elif:
+        for current_linode in my_linodes:
+            if current_linode.ipv4[0] == host}
+                print("delete: ", current_linode.label)
+                current_linode.delete()
+                return "deleted {}".format(current_linode.ipv4[0])
+    else:
+        return "Linode {} could not be found".format(current_linode.ipv4[0])
+
+
+
 def _upload_files(c, dir_path):
     for filename in os.listdir(dir_path):
         print('Upload: {}/{}'.format(dir_path, filename))
@@ -170,6 +187,14 @@ def fetch_all_servers():
 
 @http_basic_auth_login_required
 @rpc_method
+def delete_server(host):
+    """
+    Delete all linode server instances
+    """
+    response = _delete_all_servers()
+
+    return response
+
 def delete_all_servers():
     """
     Delete all linode server instances
