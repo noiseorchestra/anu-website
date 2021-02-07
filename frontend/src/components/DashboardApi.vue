@@ -85,32 +85,49 @@ export default {
 				.then(response => (this.handle_restart_jackd(response)))
 		},
 		handle_get_fpp(response){
-			// need error checking
+			if (response.data.error){
+				window.alert(`An error occured:\n${response.data.error.message}`);
+				return
+			}
 			this.selected_server_settings.jack_fpp = response.data.result
 			this.server_settings.jack_fpp = response.data.result
 		},
 		handle_get_q(response){
-			// need error checking
+			if (response.data.error){
+				window.alert(`An error occured:\n${response.data.error.message}`);
+				return
+			}
 			this.selected_server_settings.jacktrip_q = response.data.result
 			this.server_settings.jacktrip_q = response.data.result
 		},
 		handle_set_q(response){
-			// need error checking
+			console.log(response)
+			if (response.data.error){
+				window.alert(`An error occured:\n${response.data.error.message}`);
+				return
+			}
 			this.restart_jacktrip()
 		},
 		handle_set_fpp(response){
-			// need error checking
+			if (response.data.error){
+				window.alert(`An error occured:\n${response.data.error.message}`);
+				return
+			}
 			this.restart_jackd()
 		},
 		handle_restart_jacktrip(response){
-			// need error checking
-			console.log("JackTrip restarted with response:", response)
+			if (response.data.error){
+				window.alert(`An error occured:\n${response.data.error.message}`);
+				return
+			}
 			this.get_q()
 			this.busy = false
 		},
 		handle_restart_jackd(response){
-			// need error checking
-			console.log("JACKD restarted with response:", response)
+			if (response.data.error){
+				window.alert(`An error occured:\n${response.data.error.message}`);
+				return
+			}
 			this.get_fpp()
 			this.busy = false
 		},
