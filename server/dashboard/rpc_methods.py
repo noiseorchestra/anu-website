@@ -51,7 +51,7 @@ def _delete_one_server(host):
         return "no linodes to delete"
     else:
         for current_linode in my_linodes:
-            if current_linode.ipv4[0] == host}
+            if current_linode.ipv4[0] == host:
                 print("delete: ", current_linode.label)
                 current_linode.delete()
                 return "deleted {}".format(current_linode.ipv4[0])
