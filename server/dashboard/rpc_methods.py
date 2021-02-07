@@ -13,6 +13,7 @@ env = Env()
 env.read_env()
 
 LINODE_PAT = env("LINODE_PAT", default="")
+MAX_LINODES = env("MAX_LINODES", default=0)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 f = open("/root/.ssh/id_rsa.pub", "r")
@@ -30,12 +31,17 @@ def _get_fabric_client(host):
     )
 
 def _delete_all_servers():
+
     my_linodes = client.linode.instances()
 
-    for current_linode in my_linodes:
-        print("delete: ", current_linode.label)
-        current_linode.delete()
-
+    if len(my_linodes) == 0:
+        return "no linodes to delete"
+    else:
+        for current_linode in my_linodes:
+            print("delete: ", current_linode.label)
+            current_linode.delete()
+        return "deleted all linodes"
+    
 @rpc_method
 @http_basic_auth_login_required
 def get_fpp(host):
@@ -111,7 +117,9 @@ def create_server():
     Create a py_patcher server on Linode.
     """
 
-    # put a check in here for MAX_SERVER_LIMIT so we can limit the number of linodes running (3 maybe?)
+    my_linodes = client.linode.instances()
+    if len(my_linodes) >= MAX_LINODES:
+        raise RuntimeError("max server number of {} reached".format(MAX_LINODES))
 
     # Nanode for safety, while developing
     type_id = "g6-nanode-1"
@@ -164,12 +172,7 @@ def delete_all_servers():
     """
     Delete all linode server instances
     """
-    response = "success"
-    try:
-        _delete_all_servers()
-    except AssertionError as error:
-        print(error)
-        response = error  
+    response = _delete_all_servers()
 
     return response
 
