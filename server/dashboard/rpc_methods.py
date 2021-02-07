@@ -199,6 +199,8 @@ def delete_one_server(host):
     return {"message": message}
 
 
+@http_basic_auth_login_required
+@rpc_method
 def delete_all_servers():
     """
     Delete all linode server instances
