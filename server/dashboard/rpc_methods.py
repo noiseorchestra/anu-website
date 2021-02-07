@@ -65,21 +65,36 @@ def _upload_files(c, dir_path):
         print("Uploaded {0.local} to {0.remote}".format(result))
 
 def _check_exit_string(result):
-    if result.exitcode != 0:
+    if result.exited != 0:
         return False
     return True
 
+def _run_scripts(c):
+    result = c.run('./install.sh && reboot')
+    return result
 
-@rpc_method
+def _read_config_file(result, lookup):
+    for line in result.stdout.split('\n'):
+        key, value = line.split('=')
+        if key == lookup:
+            return value
+
+
 @http_basic_auth_login_required
+@rpc_method
 def get_fpp(host):
     """
     Fetch the current JACK fpp (frames per period) value from a py_patcher server.
     :return: String
     """
-    result = _get_fabric_client(host).run('cat /etc/jacktrip_pypatcher/jackd.conf')
-    key, value = result.stdout.strip().split('=')
-    return value
+    print(host)
+    c = _get_fabric_client(host)
+    result = c.run('cat /etc/jacktrip_pypatcher/jackd.conf')
+    value = _read_config_file(result, "FPP")
+    return {
+        "value": value,
+        "ip": host
+    }
 
 
 @http_basic_auth_login_required
@@ -89,9 +104,16 @@ def get_q(host):
     Fetch the current JackTrip q (buffer) value from a py_patcher server.
     :return: String
     """
-    result = _get_fabric_client(host).run('cat /etc/jacktrip_pypatcher/jacktrip.conf')
-    key, value = result.stdout.strip().split('=')
-    return value
+    print(host)
+    c = _get_fabric_client(host)
+    result = c.run('cat /etc/jacktrip_pypatcher/jacktrip.conf')
+
+    value = _read_config_file(result, "Q")
+
+    return {
+        "value": value,
+        "ip": host
+    }
 
 
 @http_basic_auth_login_required
@@ -183,7 +205,10 @@ def get_server_status(host):
     for current_linode in my_linodes:
         if (current_linode.ipv4[0] == host):
             print(current_linode.status)
-            return current_linode.status
+            return {
+                "status": current_linode.status,
+                "ip": host
+            }
     
     raise RuntimeError("Could not find server with this ip{}".format(host))
 
@@ -194,17 +219,18 @@ def fetch_all_servers():
     """
     Fetch all linode server instances
     """
+    # Right now this just returns the first linode as there should only be one
     my_linodes = client.linode.instances()
     ips = []
 
     if len(my_linodes) == 0:
-        return {"ips": ips}
+        return {"ip": ""}
 
     for current_linode in my_linodes:
         print(current_linode.ipv4[0])
         ips.append(current_linode.ipv4[0])
 
-    return {"ips": ips}
+    return {"ip": ips[0]}
 
 
 @http_basic_auth_login_required
@@ -242,23 +268,10 @@ def upload_scripts(host):
 
     c = _get_fabric_client(host)
 
-    results = []
+    _upload_files(c, scripts_path)
+    _upload_files(c, templates_path)
+    c.put('{}/darkice.cfg'.format(templates_path))
 
-    results.append(_upload_files(c, scripts_path))
-    results.append(_upload_files(c, templates_path))
-    results.append(c.put('{}/darkice.cfg'.format(templates_path)))
+    _run_scripts(c)
 
-    for result in results:
-        isZero = _check_exit_string(result)
-        if not isZero:
-            raise RuntimeError("Could not upload files: {}".format(result))
-
-    return {"message": "successfully uploaded scripts to {}".format(host)}
-
-
-@http_basic_auth_login_required
-@rpc_method
-def run_scripts(host):
-    c = _get_fabric_client(host)
-    result = c.run('./install.sh && reboot')
-    return result
+    return {"message": "successfully uploaded and installed scripts to {}".format(host)}
