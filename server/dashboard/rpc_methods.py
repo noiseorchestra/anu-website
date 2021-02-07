@@ -169,6 +169,24 @@ def create_server():
 
     return {"ip": linode.ipv4[0]}
 
+@http_basic_auth_login_required
+@rpc_method
+def get_server_status(host):
+    """
+    Get the status of our linode server.
+    """
+
+    my_linodes = client.linode.instances()
+    if len(my_linodes) == 0:
+        raise RuntimeError("No servers running")
+
+    for current_linode in my_linodes:
+        if (current_linode.ipv4[0] == host):
+            print(current_linode.status)
+            return current_linode.status
+    
+    raise RuntimeError("Could not find server with this ip{}".format(host))
+
 
 @http_basic_auth_login_required
 @rpc_method
