@@ -224,7 +224,7 @@ def fetch_all_servers():
     ips = []
 
     if len(my_linodes) == 0:
-        return {"ip": ""}
+        raise RuntimeError("No servers running")
 
     for current_linode in my_linodes:
         print(current_linode.ipv4[0])
