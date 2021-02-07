@@ -21,7 +21,7 @@
 			<div class="api-container-child server-details">
 				<div class="key">Server IP:</div>
 				<div class="values">
-					<div>{{ip}}</div>
+					<div>{{ip}}</div><div><button class="api-button" v-on:click="get_server_ip()">refresh</button></div>
 				</div>
 			</div>
 			<div class="api-container-child server-automation">
@@ -43,7 +43,7 @@ export default {
 	data () {
 		return {
 			busy: false,
-			ip: "123.123.123.123",
+			ip: "",
 			server_settings: {
 				jack_fpp: null,
 				jacktrip_q: null,
@@ -57,6 +57,20 @@ export default {
 		}
 	},
 	methods: {
+		create_server(){
+			this.busy = true
+			let requestObj = jsonrpc.request('1', 'create_server')
+			axios
+				.post('/dashboard/rpc/', requestObj)
+				.then(response => (this.handle_create_server(response)))
+		},
+		get_server_ip(){
+			this.busy = true
+			let requestObj = jsonrpc.request('1', 'fetch_all_servers')
+			axios
+				.post('/dashboard/rpc/', requestObj)
+				.then(response => (this.handle_get_server_ip(response)))
+		},
 		set_q(q_value){
 			this.busy = true
 			this.selected_server_settings.jacktrip_q = q_value
@@ -96,6 +110,24 @@ export default {
 			axios
 				.post('/dashboard/rpc/', requestObj)
 				.then(response => (this.handle_restart_jackd(response)))
+		},
+		handle_create_server(response){
+			if (response.data.error){
+				window.alert(`An error occured:\n${response.data.error.message}`);
+				this.busy = true
+				return
+			}
+			this.ip = response.data.result
+			this.busy = false
+		},
+		handle_get_server_ip(response){
+			if (response.data.error){
+				window.alert(`An error occured:\n${response.data.error.message}`);
+				this.busy = true
+				return
+			}
+			this.ip = response.data.result.ips[0]
+			this.busy = false
 		},
 		handle_get_fpp(response){
 			if (response.data.error){
@@ -151,8 +183,7 @@ export default {
 		},
 	},
   mounted () {
-		this.get_fpp()
-		this.get_q()
+		this.get_server_ip()
   }
 }
 </script>
