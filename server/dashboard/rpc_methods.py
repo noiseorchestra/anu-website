@@ -41,7 +41,18 @@ def _delete_all_servers():
             print("delete: ", current_linode.label)
             current_linode.delete()
         return "deleted all linodes"
-    
+
+
+def _upload_files(c, dir_path):
+    for filename in os.listdir(dir_path):
+        print('Upload: {}/{}'.format(dir_path, filename))
+        result = c.put('{}/{}'.format(dir_path, filename))
+        print("Uploaded {0.local} to {0.remote}".format(result))
+
+def _run_scripts(c):
+    c.run('./install.sh && reboot')
+
+
 @rpc_method
 @http_basic_auth_login_required
 def get_fpp(host):
@@ -136,15 +147,6 @@ def create_server():
     if not linode:
         raise RuntimeError("it didn't work")
 
-    # for i in range(1,10):
-    #     print(linode.status)
-    #     time.sleep(10)
-    # print(linode.status)
-
-    # host = linode.ipv4[0]
-    # upload_everything_and_run(host)
-
-    # return the server ip OR array of all servers, save to NAW in db from frontend
     return {"ip": linode.ipv4[0]}
 
 
@@ -194,21 +196,12 @@ def upload_everything_and_run(host):
 
     print("Upload files")
 
-    upload_files(c, scripts_path)
-    upload_files(c, templates_path)
+    _upload_files(c, scripts_path)
+    _upload_files(c, templates_path)
 
     result = c.put('{}/darkice.cfg'.format(templates_path))
     print("Uploaded {0.local} to {0.remote}".format(result))
 
-    run_scripts(c)
+    _run_scripts(c)
 
     return "success"
-
-def upload_files(c, dir_path):
-    for filename in os.listdir(dir_path):
-        print('Upload: {}/{}'.format(dir_path, filename))
-        result = c.put('{}/{}'.format(dir_path, filename))
-        print("Uploaded {0.local} to {0.remote}".format(result))
-
-def run_scripts(c):
-    c.run('./install.sh && reboot')
