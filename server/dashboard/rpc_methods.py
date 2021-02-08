@@ -30,6 +30,43 @@ def _get_fabric_client(host):
         },
     )
 
+def _init_linode_instance():
+
+    # Nanode for safety, while developing
+    type_id = "g6-nanode-1"
+    # type_id = "g6-dedicated-8"
+    # curl https://api.linode.com/v4/linode/types | jq '."data"[] | ."label"'
+
+    region_id = "eu-west"
+    image = "linode/ubuntu18.04"
+
+    linode, password = client.linode.instance_create(type_id, region_id,
+                            image=image, authorized_keys=public_key)
+    return linode
+
+def _get_all_ips(linodes):
+
+    ips = []
+    if len(linodes) == 0:
+        raise RuntimeError("No servers running")
+    for linode in linodes:
+        print(linode.ipv4[0])
+        ips.append(linode.ipv4[0])
+    return ips
+
+def _check_server_status(linodes, host):
+    if len(linodes) == 0:
+        raise RuntimeError("No servers running")
+
+    for linode in linodes:
+        if (linode.ipv4[0] == host):
+            print(linode.status)
+            return {
+                "status": linode.status,
+                "ip": host
+            }
+    raise RuntimeError("Could not find server with this ip{}".format(host))
+
 def _delete_all_servers(linodes):
 
     if len(linodes) == 0:
@@ -69,6 +106,11 @@ def _run_scripts(c):
     c.run('./install.sh')
     c.run('reboot', warn=True)
 
+def _check_max_linode_instances(linodes):
+    if len(linodes) >= int(MAX_LINODES):
+        raise RuntimeError("max server number of {} reached".format(MAX_LINODES))
+
+
 def _read_config_file(result, lookup):
     for line in result.stdout.split('\n'):
         key, value = line.split('=')
@@ -83,21 +125,9 @@ def create_server():
     Create a py_patcher server on Linode.
     """
 
-    my_linodes = client.linode.instances()
-    if len(my_linodes) >= int(MAX_LINODES):
-        raise RuntimeError("max server number of {} reached".format(MAX_LINODES))
-
-    # Nanode for safety, while developing
-    type_id = "g6-nanode-1"
-    # type_id = "g6-dedicated-8"
-    # curl https://api.linode.com/v4/linode/types | jq '."data"[] | ."label"'
-
-    # London
-    region_id = "eu-west"
-    image = "linode/ubuntu18.04"
-
-    linode, password = client.linode.instance_create(type_id, region_id,
-                            image=image, authorized_keys=public_key)
+    linodes = client.linode.instances()
+    _check_max_linode_instances(linodes)
+    linode = _init_linode_instance()
 
     if not linode:
         raise RuntimeError("it didn't work")
@@ -136,16 +166,8 @@ def fetch_all_servers():
     Fetch all linode server instances
     """
     # Right now this just returns the first linode as there should only be one
-    my_linodes = client.linode.instances()
-    ips = []
-
-    if len(my_linodes) == 0:
-        raise RuntimeError("No servers running")
-
-    for current_linode in my_linodes:
-        print(current_linode.ipv4[0])
-        ips.append(current_linode.ipv4[0])
-
+    linodes = client.linode.instances()
+    ips = _get_all_ips(linodes)
     return {"ip": ips[0]}
 
 
@@ -178,20 +200,9 @@ def get_server_status(host):
     Get the status of our linode server.
     """
 
-    my_linodes = client.linode.instances()
-    if len(my_linodes) == 0:
-        raise RuntimeError("No servers running")
-
-    for current_linode in my_linodes:
-        if (current_linode.ipv4[0] == host):
-            print(current_linode.status)
-            return {
-                "status": current_linode.status,
-                "ip": host
-            }
-    
-    raise RuntimeError("Could not find server with this ip{}".format(host))
-
+    linodes = client.linode.instances()
+    status = _check_server_status(linodes, host)
+    return status
 
 @http_basic_auth_login_required
 @rpc_method
