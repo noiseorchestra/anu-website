@@ -6,3 +6,4 @@ docker-compose-dev.yml
 heroku.yml
 venv
 server/dashboard/jacktrip-server-automation
+.vscode
