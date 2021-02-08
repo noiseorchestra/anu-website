@@ -30,32 +30,28 @@ def _get_fabric_client(host):
         },
     )
 
-def _delete_all_servers():
+def _delete_all_servers(linodes):
 
-    my_linodes = client.linode.instances()
-
-    if len(my_linodes) == 0:
+    if len(linodes) == 0:
         return "no linodes to delete"
     else:
-        for current_linode in my_linodes:
-            print("delete: ", current_linode.label)
-            current_linode.delete()
+        for linode in linodes:
+            print("delete: ", linode.label)
+            linode.delete()
         return "deleted all linodes"
 
-def _delete_one_server(host):
-
-    my_linodes = client.linode.instances()
+def _delete_one_server(linodes, host):
 
     message = "Linode {} could not be found".format(current_linode.ipv4[0])
 
-    if len(my_linodes) == 0:
+    if len(linodes) == 0:
         message = "no linodes to delete"
     else:
-        for current_linode in my_linodes:
-            if current_linode.ipv4[0] == host:
-                print("delete: ", current_linode.label)
-                current_linode.delete()
-                message = "deleted {}".format(current_linode.ipv4[0])
+        for linode in linodes:
+            if linode.ipv4[0] == host:
+                print("delete: ", linode.label)
+                linode.delete()
+                message = "deleted {}".format(linode.ipv4[0])
     return message
 
 def _upload_files(c, dir_path):
@@ -159,7 +155,8 @@ def delete_one_server(host):
     """
     Delete all linode server instances
     """
-    message = _delete_one_server(host)
+    linodes = client.linode.instances()
+    message = _delete_one_server(linodes, host)
     return {"message": message}
 
 
@@ -169,7 +166,8 @@ def delete_all_servers():
     """
     Delete all linode server instances
     """
-    message = _delete_all_servers()
+    linodes = client.linode.instances()
+    message = _delete_all_servers(linodes)
     return {"message": message}
 
 
