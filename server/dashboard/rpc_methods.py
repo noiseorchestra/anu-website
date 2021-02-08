@@ -70,8 +70,8 @@ def _check_exit_string(result):
     return True
 
 def _run_scripts(c):
-    result = c.run('./install.sh && reboot')
-    return result
+    c.run('./install.sh')
+    c.run('reboot', warn=True)
 
 def _read_config_file(result, lookup):
     for line in result.stdout.split('\n'):
@@ -87,10 +87,14 @@ def get_fpp(host):
     Fetch the current JACK fpp (frames per period) value from a py_patcher server.
     :return: String
     """
-    print(host)
     c = _get_fabric_client(host)
-    result = c.run('cat /etc/jacktrip_pypatcher/jackd.conf')
+    try:
+        result = c.run('cat /etc/jacktrip_pypatcher/jackd.conf')
+    except Exception:
+        raise RuntimeError("Could not get FPP value, py_patcher may not be installed")
+
     value = _read_config_file(result, "FPP")
+
     return {
         "value": value,
         "ip": host
@@ -106,7 +110,11 @@ def get_q(host):
     """
     print(host)
     c = _get_fabric_client(host)
-    result = c.run('cat /etc/jacktrip_pypatcher/jacktrip.conf')
+
+    try:
+        result = c.run('cat /etc/jacktrip_pypatcher/jacktrip.conf')
+    except Exception:
+        raise RuntimeError("Could not get Q value, py_patcher may not be installed")
 
     value = _read_config_file(result, "Q")
 
