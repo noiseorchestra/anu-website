@@ -6,7 +6,7 @@
 				<div class="key">JackTrip queue:</div>
 				<div class="values">
 					<div v-bind:class="{'deactivate': busy}" v-for="value in q_values">
-						<button class="api-button" v-bind:class="{'selected': selected_server_settings.jacktrip_q == value}" v-on:click="set_q(ip, value)">{{value}}</button>
+						<button class="api-button" v-bind:class="{'selected': server_settings.jacktrip_q == value}" v-on:click="set_q(value)">{{value}}</button>
 					</div>
 				</div>
 			</div>
@@ -14,7 +14,7 @@
 				<div class="key">JACK fpp:</div>
 				<div class="values">
 					<div v-bind:class="{'deactivate': busy}" v-for="value in fpp_values">
-						<button class="api-button" v-bind:class="{'selected': selected_server_settings.jack_fpp == value}" v-on:click="set_fpp(ip, value)">{{value}}</button>
+						<button class="api-button" v-bind:class="{'selected': server_settings.jack_fpp == value}" v-on:click="set_fpp(value)">{{value}}</button>
 					</div>
 				</div>
 			</div>
@@ -52,10 +52,6 @@ export default {
 			},
 			q_values: [4, 6, 8, 10, 12, 14, 16],
 			fpp_values: [64, 128, 256, 512],
-			selected_server_settings: {
-				jack_fpp: null,
-				jacktrip_q: null,
-			},
 		}
 	},
 	methods: {
@@ -65,13 +61,11 @@ export default {
 			let requestObj = jsonrpc.request('1', 'create_server')
 			axios
 				.post('/dashboard/rpc/', requestObj)
-				.then(response => this.handle_create_server(response))
-				.then(response => this.wait_for_ready(response.data.result.ip))
-				.then(response => this.upload_scripts(response.data.result.ip))
-				.then(response => {
-					console.log("Success: ", response)
-					this.server_ready = true
-				})
+				.then(response => this.handle_error(response))
+				.then(response => this.ip = response.data.result.ip)
+				.then(() => this.wait_for_ready())
+				.then(() => this.upload_scripts())
+				.then(() => {this.server_ready = true})
 				.catch(response => window.alert(response))
 				.finally(() => {
 					this.creating_server = false
@@ -94,135 +88,96 @@ export default {
 				await new Promise(r => setTimeout(r, 60000));
 				return response
 			}
-			return whileLoop(host)
+			return whileLoop(this.ip)
 		},
-		upload_scripts(host){
-			let requestObj = jsonrpc.request('1', 'upload_scripts', {host: host})
+		upload_scripts(){
+			let requestObj = jsonrpc.request('1', 'upload_scripts', {host: this.ip})
 			return axios
 				.post('/dashboard/rpc/', requestObj)
+				.then(response => this.handle_error(response))
 		},
 		refresh_server_details(){
 			this.busy = true
 			this.get_server_ip()
-			.then(response => this.get_fpp(response.data.result.ip))
-			.then(response => this.get_q(response.data.result.ip))
-				.then(response => {
-					console.log("Success: ", response)
-					this.busy = false
-				})
+			.then(response => this.get_fpp())
+			.then(response => this.get_q())
+			.then(response => {this.busy = false})
 			.catch(response => window.alert(response))
 		},
 		get_server_ip(){
 			let requestObj = jsonrpc.request('1', 'fetch_all_servers')
 			return axios
 				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this.handle_get_server_ip(response)))
+				.then(response => {
+					this.handle_error(response)
+					this.ip = response.data.result.ip})
 		},
 		get_server_status(host){
 			let requestObj = jsonrpc.request('1', 'get_server_status', {host: host})
 			return axios
 				.post('/dashboard/rpc/', requestObj)
+				.then(response => this.handle_error(response))
 		},
-		get_fpp(host){
-			console.log(host)
-			let requestObj = jsonrpc.request('1', 'get_fpp', {host: host})
+		get_fpp(){
+			console.log()
+			let requestObj = jsonrpc.request('1', 'get_fpp', {host: this.ip})
 			return axios
 				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this.handle_get_fpp(response)))
+				.then(response => this.handle_error(response))
+				.then(response => {
+					this.server_settings.jack_fpp = response.data.result.value
+					return response
+				})
 		},
-		get_q(host){
-			let requestObj = jsonrpc.request('1', 'get_q', {host: host})
+		get_q(){
+			let requestObj = jsonrpc.request('1', 'get_q', {host: this.ip})
 			return axios
 				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this.handle_get_q(response)))
+				.then(response => this.handle_error(response))
+				.then(response => {
+					this.server_settings.jacktrip_q = response.data.result.value
+					return response
+				})
 		},
-		set_q(host, q_value){
+		set_q(q_value){
 			this.busy = true
-			this.selected_server_settings.jacktrip_q = q_value
-			let requestObj = jsonrpc.request('1', 'set_q', {host: host, q_value: q_value})
+			let requestObj = jsonrpc.request('1', 'set_q', {host: this.ip, q_value: q_value})
 			axios
 				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this.handle_set_q(response)))
+				.then(response => (this.handle_error(response)))
+				.then(() => this.restart_jacktrip())
+				.then(() => this.get_q())
 				.then(() => {this.busy = false})
 				.catch(response => window.alert(response))
 		},
-		set_fpp(host, fpp_value){
+		set_fpp(fpp_value){
 			this.busy = true
-			this.selected_server_settings.jack_fpp = fpp_value
-			let requestObj = jsonrpc.request('1', 'set_fpp', {host: host, fpp_value: fpp_value})
+			let requestObj = jsonrpc.request('1', 'set_fpp', {host: this.ip, fpp_value: fpp_value})
 			axios
 				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this.handle_set_fpp(response)))
+				.then(response => (this.handle_error(response)))
+				.then(() => this.restart_jackd())
+				.then(() => this.get_fpp())
 				.then(() => {this.busy = false})
 				.catch(response => window.alert(response))
 		},
-		restart_jacktrip(host){
-			let requestObj = jsonrpc.request('1', 'restart_jacktrip', {host: host})
+		restart_jacktrip(){
+			let requestObj = jsonrpc.request('1', 'restart_jacktrip', {host: this.ip})
 			axios
 				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this.handle_restart_jacktrip(response)))
+				.then(response => (this.handle_error(response)))
 		},
-		restart_jackd(host){
-			let requestObj = jsonrpc.request('1', 'restart_jackd', {host: host})
+		restart_jackd(){
+			let requestObj = jsonrpc.request('1', 'restart_jackd', {host: this.ip})
 			axios
 				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this.handle_restart_jackd(response)))
+				.then(response => (this.handle_error(response)))
 		},
-		handle_create_server(response){
-			console.log(response)
+		handle_error(response){
 			if (response.data.error){
 				throw new Error(response.data.error.message);
 			}
-			this.ip = response.data.result.ip
 			return response
-		},
-		handle_get_server_ip(response){
-			console.log(response)
-			if (response.data.error){
-				throw new Error(response.data.error.message);
-			}
-			this.ip = response.data.result.ip
-			return response
-		},
-		handle_get_fpp(response){
-			if (response.data.error){
-				throw new Error(response.data.error.message);
-			}
-			this.selected_server_settings.jack_fpp = response.data.result.value
-			this.server_settings.jack_fpp = response.data.result.value
-			return response
-		},
-		handle_get_q(response){
-			if (response.data.error){
-				throw new Error(response.data.error.message);
-			}
-			this.selected_server_settings.jacktrip_q = response.data.result.value
-			this.server_settings.jacktrip_q = response.data.result.value
-			return response
-		},
-		handle_set_q(response){
-			if (response.data.error){
-				throw new Error(response.data.error.message);
-			}
-			this.restart_jacktrip(this.ip)
-		},
-		handle_set_fpp(response){
-			if (response.data.error){
-				throw new Error(response.data.error.message);
-			}
-			this.restart_jackd(this.ip)
-		},
-		handle_restart_jacktrip(response){
-			if (response.data.error){
-				throw new Error(response.data.error.message);
-			}
-			this.get_q(this.ip)
-		},
-		handle_restart_jackd(response){
-			if (response.data.error){
-				throw new Error(response.data.error.message);
-			}
-			this.get_fpp(this.ip)
 		},
 	},
   mounted () {
