@@ -82,6 +82,121 @@ def _read_config_file(result, lookup):
 
 @http_basic_auth_login_required
 @rpc_method
+def create_server():
+    """
+    Create a py_patcher server on Linode.
+    """
+
+    my_linodes = client.linode.instances()
+    if len(my_linodes) >= int(MAX_LINODES):
+        raise RuntimeError("max server number of {} reached".format(MAX_LINODES))
+
+    # Nanode for safety, while developing
+    type_id = "g6-nanode-1"
+    # type_id = "g6-dedicated-8"
+    # curl https://api.linode.com/v4/linode/types | jq '."data"[] | ."label"'
+
+    # London
+    region_id = "eu-west"
+    image = "linode/ubuntu18.04"
+
+    linode, password = client.linode.instance_create(type_id, region_id,
+                            image=image, authorized_keys=public_key)
+
+    if not linode:
+        raise RuntimeError("it didn't work")
+
+    return {"ip": linode.ipv4[0]}
+
+
+@http_basic_auth_login_required
+@rpc_method
+def upload_scripts(host):
+    # Change this to genuine file and pass in ENV vars or strings from NAW db entry
+
+    scripts_path = os.path.join(BASE_DIR, 'dashboard/jacktrip-server-automation/scripts')
+    templates_path = os.path.join(BASE_DIR, 'dashboard/jacktrip-server-automation/templates')
+
+    if os.path.isfile('{}/darkice.cfg'.format(templates_path)):
+        print ("Darkice config found")
+    else:
+        raise RuntimeError("Please create custom darkice config file")
+
+    c = _get_fabric_client(host)
+
+    _upload_files(c, scripts_path)
+    _upload_files(c, templates_path)
+    c.put('{}/darkice.cfg'.format(templates_path))
+
+    _run_scripts(c)
+
+    return {"message": "successfully uploaded and installed scripts to {}".format(host)}
+
+
+@http_basic_auth_login_required
+@rpc_method
+def fetch_all_servers():
+    """
+    Fetch all linode server instances
+    """
+    # Right now this just returns the first linode as there should only be one
+    my_linodes = client.linode.instances()
+    ips = []
+
+    if len(my_linodes) == 0:
+        raise RuntimeError("No servers running")
+
+    for current_linode in my_linodes:
+        print(current_linode.ipv4[0])
+        ips.append(current_linode.ipv4[0])
+
+    return {"ip": ips[0]}
+
+
+@http_basic_auth_login_required
+@rpc_method
+def delete_one_server(host):
+    """
+    Delete all linode server instances
+    """
+    message = _delete_one_server(host)
+    return {"message": message}
+
+
+@http_basic_auth_login_required
+@rpc_method
+def delete_all_servers():
+    """
+    Delete all linode server instances
+    """
+    message = _delete_all_servers()
+    return {"message": message}
+
+
+@http_basic_auth_login_required
+@rpc_method
+def get_server_status(host):
+    """
+    Get the status of our linode server.
+    """
+
+    my_linodes = client.linode.instances()
+    if len(my_linodes) == 0:
+        raise RuntimeError("No servers running")
+
+    for current_linode in my_linodes:
+        if (current_linode.ipv4[0] == host):
+            print(current_linode.status)
+            return {
+                "status": current_linode.status,
+                "ip": host
+            }
+    
+    raise RuntimeError("Could not find server with this ip{}".format(host))
+
+
+@http_basic_auth_login_required
+@rpc_method
 def get_fpp(host):
     """
     Fetch the current JACK fpp (frames per period) value from a py_patcher server.
@@ -170,116 +285,3 @@ def restart_jackd(host):
     result = _get_fabric_client(host).run('sudo systemctl restart jackd.service')
     return {"exitcode": result.exited}
 
-
-@http_basic_auth_login_required
-@rpc_method
-def create_server():
-    """
-    Create a py_patcher server on Linode.
-    """
-
-    my_linodes = client.linode.instances()
-    if len(my_linodes) >= int(MAX_LINODES):
-        raise RuntimeError("max server number of {} reached".format(MAX_LINODES))
-
-    # Nanode for safety, while developing
-    type_id = "g6-nanode-1"
-    # type_id = "g6-dedicated-8"
-    # curl https://api.linode.com/v4/linode/types | jq '."data"[] | ."label"'
-
-    # London
-    region_id = "eu-west"
-    image = "linode/ubuntu18.04"
-
-    linode, password = client.linode.instance_create(type_id, region_id,
-                            image=image, authorized_keys=public_key)
-
-    if not linode:
-        raise RuntimeError("it didn't work")
-
-    return {"ip": linode.ipv4[0]}
-
-@http_basic_auth_login_required
-@rpc_method
-def get_server_status(host):
-    """
-    Get the status of our linode server.
-    """
-
-    my_linodes = client.linode.instances()
-    if len(my_linodes) == 0:
-        raise RuntimeError("No servers running")
-
-    for current_linode in my_linodes:
-        if (current_linode.ipv4[0] == host):
-            print(current_linode.status)
-            return {
-                "status": current_linode.status,
-                "ip": host
-            }
-    
-    raise RuntimeError("Could not find server with this ip{}".format(host))
-
-
-@http_basic_auth_login_required
-@rpc_method
-def fetch_all_servers():
-    """
-    Fetch all linode server instances
-    """
-    # Right now this just returns the first linode as there should only be one
-    my_linodes = client.linode.instances()
-    ips = []
-
-    if len(my_linodes) == 0:
-        raise RuntimeError("No servers running")
-
-    for current_linode in my_linodes:
-        print(current_linode.ipv4[0])
-        ips.append(current_linode.ipv4[0])
-
-    return {"ip": ips[0]}
-
-
-@http_basic_auth_login_required
-@rpc_method
-def delete_one_server(host):
-    """
-    Delete all linode server instances
-    """
-    message = _delete_one_server(host)
-    return {"message": message}
-
-
-@http_basic_auth_login_required
-@rpc_method
-def delete_all_servers():
-    """
-    Delete all linode server instances
-    """
-    message = _delete_all_servers()
-    return {"message": message}
-
-
-@http_basic_auth_login_required
-@rpc_method
-def upload_scripts(host):
-    # Change this to genuine file and pass in ENV vars or strings from NAW db entry
-
-    scripts_path = os.path.join(BASE_DIR, 'dashboard/jacktrip-server-automation/scripts')
-    templates_path = os.path.join(BASE_DIR, 'dashboard/jacktrip-server-automation/templates')
-
-    if os.path.isfile('{}/darkice.cfg'.format(templates_path)):
-        print ("Darkice config found")
-    else:
-        raise RuntimeError("Please create custom darkice config file")
-
-    c = _get_fabric_client(host)
-
-    _upload_files(c, scripts_path)
-    _upload_files(c, templates_path)
-    c.put('{}/darkice.cfg'.format(templates_path))
-
-    _run_scripts(c)
-
-    return {"message": "successfully uploaded and installed scripts to {}".format(host)}
