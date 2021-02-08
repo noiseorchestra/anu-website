@@ -12,3 +12,6 @@ frontend/
 
 hooks/
 - pre-build <-- contains scripts which will run on the dokku host before building docker image
+
+docker-compose.yml <-- for local deploy only
+Dockerfile <-- for dokku deploy
