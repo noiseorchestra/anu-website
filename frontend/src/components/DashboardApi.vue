@@ -105,10 +105,11 @@ export default {
 			.then(response => this.get_fpp())
 			.then(response => this.get_q())
 			.then(response => {
-				this.disabled = false
-				this.creating_server = false
 				this.server_ready = true})
 			.catch(response => window.alert(response))
+			.finally(() => {
+				this.creating_server = false
+				this.disabled = false})
 		},
 		get_server_ip(){
 			let requestObj = jsonrpc.request('1', 'fetch_all_servers')
@@ -180,10 +181,16 @@ export default {
 				.then(response => (this.handle_error(response)))
 		},
 		delete_server(){
+			this.disabled = true
 			let requestObj = jsonrpc.request('1', 'delete_all_servers')
 			axios
 				.post('/dashboard/rpc/', requestObj)
 				.then(response => (this.handle_error(response)))
+				.then(() => {
+					this.disabled = false
+					this.creating_server = false
+					this.server_ready = false})
+
 		},
 		handle_error(response){
 			if (response.data.error){
