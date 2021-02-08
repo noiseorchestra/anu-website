@@ -5,7 +5,7 @@
 			<div class="api-container-child jacktrip-queue">
 				<div class="key">JackTrip queue:</div>
 				<div class="values">
-					<div v-bind:class="{'deactivate': busy}" v-for="value in q_values">
+					<div v-bind:class="{'deactivate': disabled}" v-for="value in q_values">
 						<button class="api-button" v-bind:class="{'selected': server_settings.jacktrip_q == value}" v-on:click="set_q(value)">{{value}}</button>
 					</div>
 				</div>
@@ -13,21 +13,24 @@
 			<div class="api-container-child jack-fpp">
 				<div class="key">JACK fpp:</div>
 				<div class="values">
-					<div v-bind:class="{'deactivate': busy}" v-for="value in fpp_values">
+					<div v-bind:class="{'deactivate': disabled}" v-for="value in fpp_values">
 						<button class="api-button" v-bind:class="{'selected': server_settings.jack_fpp == value}" v-on:click="set_fpp(value)">{{value}}</button>
 					</div>
 				</div>
 			</div>
 			<div class="api-container-child server-details">
 				<div class="key">Server IP:</div>
-				<div class="values">
+				<div v-bind:class="{'deactivate': disabled}" class="values">
 					<div>{{ip}}</div><div><button class="api-button" v-on:click="refresh_server_details()">refresh</button></div>
 				</div>
 			</div>
 			<div class="api-container-child server-automation">
 				<div class="key">Servers:</div>
 				<div class="values">
-					<div><button class="api-button" v-on:click="create_server()">new server</button></div>
+					<div v-bind:class="{'deactivate': creating_server}">
+						<button v-if="!server_ready" class="api-button" v-on:click="create_server()">new server</button>
+						<button v-else class="api-button" v-on:click="delete_server()">delete server</button>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -42,8 +45,8 @@ export default {
 	name: 'DashboarApi',
 	data () {
 		return {
-			busy: true,
-			creating_server: false,
+			disabled: true,
+			creating_server: true,
 			server_ready: false,
 			ip: "",
 			server_settings: {
@@ -56,7 +59,7 @@ export default {
 	},
 	methods: {
 		create_server(){
-			this.busy = true
+			this.disabled = true
 			this.creating_server = true
 			let requestObj = jsonrpc.request('1', 'create_server')
 			axios
@@ -69,7 +72,7 @@ export default {
 				.catch(response => window.alert(response))
 				.finally(() => {
 					this.creating_server = false
-					this.busy = false
+					this.disabled = false
 				})
 		},
 		wait_for_ready(host){
@@ -97,11 +100,14 @@ export default {
 				.then(response => this.handle_error(response))
 		},
 		refresh_server_details(){
-			this.busy = true
+			this.disabled = true
 			this.get_server_ip()
 			.then(response => this.get_fpp())
 			.then(response => this.get_q())
-			.then(response => {this.busy = false})
+			.then(response => {
+				this.disabled = false
+				this.creating_server = false
+				this.server_ready = true})
 			.catch(response => window.alert(response))
 		},
 		get_server_ip(){
@@ -140,25 +146,25 @@ export default {
 				})
 		},
 		set_q(q_value){
-			this.busy = true
+			this.disabled = true
 			let requestObj = jsonrpc.request('1', 'set_q', {host: this.ip, q_value: q_value})
 			axios
 				.post('/dashboard/rpc/', requestObj)
 				.then(response => (this.handle_error(response)))
 				.then(() => this.restart_jacktrip())
 				.then(() => this.get_q())
-				.then(() => {this.busy = false})
+				.then(() => {this.disabled = false})
 				.catch(response => window.alert(response))
 		},
 		set_fpp(fpp_value){
-			this.busy = true
+			this.disabled = true
 			let requestObj = jsonrpc.request('1', 'set_fpp', {host: this.ip, fpp_value: fpp_value})
 			axios
 				.post('/dashboard/rpc/', requestObj)
 				.then(response => (this.handle_error(response)))
 				.then(() => this.restart_jackd())
 				.then(() => this.get_fpp())
-				.then(() => {this.busy = false})
+				.then(() => {this.disabled = false})
 				.catch(response => window.alert(response))
 		},
 		restart_jacktrip(){
@@ -173,6 +179,12 @@ export default {
 				.post('/dashboard/rpc/', requestObj)
 				.then(response => (this.handle_error(response)))
 		},
+		delete_server(){
+			let requestObj = jsonrpc.request('1', 'delete_all_servers')
+			axios
+				.post('/dashboard/rpc/', requestObj)
+				.then(response => (this.handle_error(response)))
+		},
 		handle_error(response){
 			if (response.data.error){
 				throw new Error(response.data.error.message);
@@ -181,7 +193,7 @@ export default {
 		},
 	},
   mounted () {
-		// this.refresh_server_details()
+		this.refresh_server_details()
   }
 }
 </script>
