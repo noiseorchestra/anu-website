@@ -1,6 +1,7 @@
 import { mount } from '@vue/test-utils'
 import DashboardApi from '@/components/DashboardApi.vue'
 import axios from 'axios';
+import jsonrpc from 'jsonrpc-lite'
 
 jest.mock('axios');
 
@@ -23,21 +24,22 @@ describe('checkForError method in DashboardApi.vue', () => {
   })
 })
 
-describe('getAndSetServerIP method in DashboardApi.vue', () => {
-  it('Should get and set server ip', () => {
+describe('executeRPC method in DashboardApi.vue', () => {
+  it('Should execute an RPC based on requestObj', () => {
     const wrapper = mount(DashboardApi)
 
-    const dummy_host = "234.234.324.234"
+    let requestObj = jsonrpc.request('1', 'fetch_all_servers', {host: "234.234.234.234"})
     const ip = '123.123.123.123'
     const resp = {
         data: {
             result: {
-                ip: "123.123.123.123"
+                value: "123.123.123.123"
             }
         }}
     
     axios.post.mockResolvedValue(resp);
   
-    return wrapper.vm.getAndSetServerIP().then(data => expect(wrapper.vm.ip).toEqual(ip));
+    return wrapper.vm.executeRPC(requestObj).then(data => {
+        expect(data).toEqual(ip)});
   })
 })

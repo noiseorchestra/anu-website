@@ -203,6 +203,13 @@ export default {
 				.post('/dashboard/rpc/', requestObj)
 				.then(response => (this.checkForError(response)))
 		},
+		executeRPC(requestObj){
+			return axios
+				.post('/dashboard/rpc/', requestObj)
+				.then(response => (this.checkForError(response)))
+				.then(response => {return response.data.result.value})
+				.catch(response => handleServerCallError(response))
+		},
 		checkForError(response){
 			console.log(response)
 			if (response.data.error){
