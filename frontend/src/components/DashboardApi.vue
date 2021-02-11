@@ -6,7 +6,7 @@
 				<div class="key">JackTrip queue: </div>
 				<div class="values">
 					<div v-bind:key="value" v-bind:class="{'deactivate': disabled}" v-for="value in q_values">
-						<button class="api-button" v-bind:class="{'selected': server_settings.jacktrip_q == value}" v-on:click="set_q(ip, value)">{{value}}</button>
+						<button class="api-button" v-bind:class="{'selected': server_settings.jacktrip_q == value}" v-on:click="setQ(ip, value)">{{value}}</button>
 					</div>
 				</div>
 			</div>
@@ -14,14 +14,14 @@
 				<div class="key">JACK fpp: </div>
 				<div class="values">
 					<div v-bind:key="value" v-bind:class="{'deactivate': disabled}" v-for="value in fpp_values">
-						<button class="api-button" v-bind:class="{'selected': server_settings.jack_fpp == value}" v-on:click="set_fpp(ip, value)">{{value}}</button>
+						<button class="api-button" v-bind:class="{'selected': server_settings.jack_fpp == value}" v-on:click="setFpp(ip, value)">{{value}}</button>
 					</div>
 				</div>
 			</div>
 			<div class="api-container-child server-details">
 				<div class="key">Server IP: </div>
 				<div class="values">
-					<div v-if="ip">{{ip}}</div><div><button class="api-button" v-on:click="refresh_server_details()">refresh</button></div>
+					<div v-if="ip">{{ip}}</div><div><button class="api-button" v-on:click="refreshServerDetails()">refresh</button></div>
 				</div>
 			</div>
 			<div class="api-container-child server-details">
@@ -67,69 +67,41 @@ export default {
 	},
 	methods: {
 		create_server(){
-			this._serverCallStarted()
+			this.serverCallStarted()
 			this.creating_server = true
 			let requestObj = jsonrpc.request('1', 'create_server')
+			// make post call to RPC API
 			axios
 				.post('/dashboard/rpc/', requestObj)
-				.then(response => this._raise_error(response))
-				.then(() => this._get_and_set_server_ip())
-				.then(() => this._wait_for_ready(this.ip))
-				.then(() => this._upload_scripts(this.ip))
-				.then(() => this._handleServerCreateSuccess())
-				.catch(response => this._handleServerCallError(response))
-				.finally(() => this._handleServerCallFinally())
+				// check response for error
+				.then(response => this.checkForError(response))
+				// perform follow up tasks
+				.then(() => this.getAndSetServerIP())
+				.then(() => this.waitForReady(this.ip))
+				.then(() => this.uploadScripts(this.ip))
+				// handle succesful completion
+				.then(() => this.handleServerCreateSuccess())
+				// catch errors
+				.catch(response => this.handleServerCallError(response))
+				// execute in all situations
+				.finally(() => this.handleServerCallFinally())
 		},
-		delete_server(){
-			this._serverCallStarted()
-			let requestObj = jsonrpc.request('1', 'delete_all_servers')
-			axios
-				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this._raise_error(response)))
-				.then(() => this._handleServerDeleteSuccess())
-				.catch(response => this._handleServerCallError(response))
-				.finally(response => this._handleServerCallFinally(response))
-		},
-		refresh_server_details(){
-			this._serverCallStarted()
-			this._get_and_set_server_ip()
-			.then(() => this._get_server_status(this.ip))
-			.then(() => this._get_fpp(this.ip))
-			.then(() => this._get_q(this.ip))
+		refreshServerDetails(){
+			this.serverCallStarted()
+			this.getAndSetServerIP()
+			.then(() => this.getServerStatus(this.ip))
+			.then(() => this.getFpp(this.ip))
+			.then(() => this.getQ(this.ip))
 			.then(() => this._handleServerCallSuccess())
-			.catch(response => this._handleServerCallError(response))
-			.finally(() => this._handleServerCallFinally())
+			.catch(response => this.handleServerCallError(response))
+			.finally(() => this.handleServerCallFinally())
 		},
-		set_q(host, q_value){
-			this._serverCallStarted()
-			let requestObj = jsonrpc.request('1', 'set_q', {host: host, q_value: q_value})
-			axios
-				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this._raise_error(response)))
-				.then(() => this._restart_jacktrip(host))
-				.then(() => this._get_q(host))
-				.then(() => this._handleServerCallSuccess())
-				.catch(response => this._handleServerCallError(response))
-				.finally(() => this._handleServerCallFinally())
-		},
-		set_fpp(host, fpp_value){
-			this._serverCallStarted()
-			let requestObj = jsonrpc.request('1', 'set_fpp', {host: host, fpp_value: fpp_value})
-			axios
-				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this._raise_error(response)))
-				.then(() => this._restart_jackd(host))
-				.then(() => this._get_fpp(host))
-				.then(() => this._handleServerCallSuccess())
-				.catch(response => this._handleServerCallError(response))
-				.finally(() => this._handleServerCallFinally())
-		},
-		_wait_for_ready(host){
+		waitForReady(host){
 			const whileLoop = async (host) => {
 				let response, status, count = 0;
 				while (status !== "running") {
 					count++;
-					status = await this._get_server_status(host)
+					status = await this.getServerStatus(host)
 					if (count === 20) {
 						throw new Error("Timeout, waited too long for server to boot.");
 					}
@@ -142,61 +114,95 @@ export default {
 			}
 			return whileLoop(host)
 		},
-		_upload_scripts(host){
+		uploadScripts(host){
 			this.server_status = "installing dependencies (will take approx. 10mins)"
 			let requestObj = jsonrpc.request('1', 'upload_scripts', {host: host})
 			return axios
 				.post('/dashboard/rpc/', requestObj)
-				.then(response => this._raise_error(response))
+				.then(response => this.checkForError(response))
 				.then(() => setTimeout(() => {
 					this.server_status = "rebooting"
 				}, 60000))
 		},
-		_get_and_set_server_ip(){
+		delete_server(){
+			this.serverCallStarted()
+			let requestObj = jsonrpc.request('1', 'delete_all_servers')
+			axios
+				.post('/dashboard/rpc/', requestObj)
+				.then(response => (this.checkForError(response)))
+				.then(() => this._handleServerDeleteSuccess())
+				.catch(response => this.handleServerCallError(response))
+				.finally(response => this.handleServerCallFinally(response))
+		},
+		setQ(host, q_value){
+			this.serverCallStarted()
+			let requestObj = jsonrpc.request('1', 'set_q', {host: host, q_value: q_value})
+			axios
+				.post('/dashboard/rpc/', requestObj)
+				.then(response => (this.checkForError(response)))
+				.then(() => this.restartJackTrip(host))
+				.then(() => this.getQ(host))
+				.then(() => this._handleServerCallSuccess())
+				.catch(response => this.handleServerCallError(response))
+				.finally(() => this.handleServerCallFinally())
+		},
+		setFpp(host, fpp_value){
+			this.serverCallStarted()
+			let requestObj = jsonrpc.request('1', 'set_fpp', {host: host, fpp_value: fpp_value})
+			axios
+				.post('/dashboard/rpc/', requestObj)
+				.then(response => (this.checkForError(response)))
+				.then(() => this.restartJack(host))
+				.then(() => this.getFpp(host))
+				.then(() => this._handleServerCallSuccess())
+				.catch(response => this.handleServerCallError(response))
+				.finally(() => this.handleServerCallFinally())
+		},
+		getAndSetServerIP(){
 			let requestObj = jsonrpc.request('1', 'fetch_all_servers')
 			return axios
 				.post('/dashboard/rpc/', requestObj)
 				.then(response => {
-					this._raise_error(response)
+					this.checkForError(response)
 					this.ip = response.data.result.ip
 					return response.data.result.ip})
 		},
-		_get_server_status(host){
+		getServerStatus(host){
 			let requestObj = jsonrpc.request('1', 'get_server_status', {host: host})
 			return axios
 				.post('/dashboard/rpc/', requestObj)
-				.then(response => this._raise_error(response))
+				.then(response => this.checkForError(response))
 				.then(response => {
 					this.server_status = response.data.result.status
 					return response.data.result.status})
 		},
-		_get_fpp(host){
+		getFpp(host){
 			let requestObj = jsonrpc.request('1', 'get_fpp', {host: host})
 			return axios
 				.post('/dashboard/rpc/', requestObj)
-				.then(response => this._raise_error(response))
+				.then(response => this.checkForError(response))
 				.then(response => {this.server_settings.jack_fpp = response.data.result.value})
 		},
-		_get_q(host){
+		getQ(host){
 			let requestObj = jsonrpc.request('1', 'get_q', {host: host})
 			return axios
 				.post('/dashboard/rpc/', requestObj)
-				.then(response => this._raise_error(response))
+				.then(response => this.checkForError(response))
 				.then(response => {this.server_settings.jacktrip_q = response.data.result.value})
 		},
-		_restart_jacktrip(host){
+		restartJackTrip(host){
 			let requestObj = jsonrpc.request('1', 'restart_jacktrip', {host: host})
 			return axios
 				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this._raise_error(response)))
+				.then(response => (this.checkForError(response)))
 		},
-		_restart_jackd(host){
+		restartJack(host){
 			let requestObj = jsonrpc.request('1', 'restart_jackd', {host: host})
 			return axios
 				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this._raise_error(response)))
+				.then(response => (this.checkForError(response)))
 		},
-		_raise_error(response){
+		checkForError(response){
 			if (response.data.error){
 				throw new Error(response.data.error.message);
 			}
@@ -206,9 +212,9 @@ export default {
 			this.server_ready = true
 			this.disabled = false
 		},
-		_handleServerCreateSuccess(){
+		handleServerCreateSuccess(){
 			this.server_ready = true
-			this.refresh_server_details()
+			this.refreshServerDetails()
 		},
 		_handleServerDeleteSuccess(){
 			this.server_ready = false
@@ -216,21 +222,21 @@ export default {
 			this.disabled = true
 			this.server_status = "no server"
 		},
-		_handleServerCallFinally(){
+		handleServerCallFinally(){
 			this.creating_server = false
 			this.server_call_in_progress = false
 		},
-		_handleServerCallError(response){
+		handleServerCallError(response){
 			window.alert(response)
 			this.server_status += " (error)"
 		},
-		_serverCallStarted(){
+		serverCallStarted(){
 			this.server_call_in_progress = true
 			this.disabled = true
 		}
 	},
   mounted () {
-		this.refresh_server_details()
+		this.refreshServerDetails()
   }
 }
 </script>
