@@ -48,7 +48,7 @@ import jsonrpc from 'jsonrpc-lite'
 import axios from 'axios'
 
 export default {
-	name: 'DashboarApi',
+	name: 'DashboardApi',
 	data () {
 		return {
 			disabled: true,
@@ -188,7 +188,7 @@ export default {
 			return axios
 				.post('/dashboard/rpc/', requestObj)
 				.then(response => this.checkForError(response))
-				.then(response => {this.server_settings.jacktrip_q = response.data.result.value})
+				.then(response => { return response.data.result.value})
 		},
 		restartJackTrip(host){
 			let requestObj = jsonrpc.request('1', 'restart_jacktrip', {host: host})
@@ -236,7 +236,7 @@ export default {
 		}
 	},
   mounted () {
-		this.refreshServerDetails()
+		// this.refreshServerDetails()
   }
 }
 </script>
