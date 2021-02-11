@@ -41,7 +41,7 @@ describe('executeRPC method in DashboardApi.vue', () => {
   
     return wrapper.vm.executeRPC(requestObj).then(data => {
         expect(data).toEqual(ip)
-        expect(wrapper.vm.server_call_in_progress).toEqual(false)
+        expect(wrapper.vm.rpc_count).toEqual(0)
     });
   })
 })

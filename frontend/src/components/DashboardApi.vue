@@ -55,6 +55,7 @@ export default {
 			creating_server: true,
 			server_ready: false,
 			server_call_in_progress: false,
+			rpc_count: 0,
 			server_status: "no server",
 			ip: false,
 			server_settings: {
@@ -66,41 +67,46 @@ export default {
 		}
 	},
 	methods: {
-		create_server(){
-			this.onStartRPC()
-			this.creating_server = true
+		// create_server(){
+		// 	this.onStartRPC()
+		// 	this.creating_server = true
+		// 	let requestObj = jsonrpc.request('1', 'create_server')
+		// 	// make "create_server" post call to RPC API
+		// 	axios
+		// 		.post('/dashboard/rpc/', requestObj)
+		// 		// check response for error
+		// 		.then(response => this.checkForError(response))
+		// 		// perform follow up tasks
+		// 		// .then(() => this.getAndSetServerIP())
+		// 		// .then(() => this.waitForReady(this.ip))
+		// 		// .then(() => this.uploadScripts(this.ip))
+		// 		// handle succesful completion
+		// 		.then(() => this.handleServerCreateSuccess())
+		// 		// catch errors
+		// 		.catch(response => this.handleServerCallError(response))
+		// 		// execute in all situations
+		// 		.finally(() => this.handleServerCallFinally())
+		// },
+		// refreshServerDetails(){
+			// this.onStartRPC()
+			// this.getAndSetServerIP()
+			// 	.then(() => this.getServerStatus(this.ip))
+			// 	// .then(() => this.getFpp(this.ip))
+			// 	// .then(() => this.getQ(this.ip))
+			// 	.then(() => this.handleServerCallSuccess())
+			// 	.catch(response => this.handleServerCallError(response))
+			// 	.finally(() => this.handleServerCallFinally())
+		// },
+		createServer(){
 			let requestObj = jsonrpc.request('1', 'create_server')
-			// make "create_server" post call to RPC API
-			axios
-				.post('/dashboard/rpc/', requestObj)
-				// check response for error
-				.then(response => this.checkForError(response))
-				// perform follow up tasks
-				.then(() => this.getAndSetServerIP())
-				.then(() => this.waitForReady(this.ip))
-				.then(() => this.uploadScripts(this.ip))
-				// handle succesful completion
-				.then(() => this.handleServerCreateSuccess())
-				// catch errors
-				.catch(response => this.handleServerCallError(response))
-				// execute in all situations
-				.finally(() => this.handleServerCallFinally())
-		},
-		refreshServerDetails(){
-			this.onStartRPC()
-			this.getAndSetServerIP()
-				.then(() => this.getServerStatus(this.ip))
-				.then(() => this.getFpp(this.ip))
-				.then(() => this.getQ(this.ip))
-				.then(() => this.handleServerCallSuccess())
-				.catch(response => this.handleServerCallError(response))
-				.finally(() => this.handleServerCallFinally())
+			return this.executeRPC(requestObj)
 		},
 		waitForReady(host){
 			const whileLoop = async (host) => {
 				let response, status, count = 0;
 				while (status !== "running") {
 					count++;
+					// this needs adapting to new return object
 					status = await this.getServerStatus(host)
 					if (count === 20) {
 						throw new Error("Timeout, waited too long for server to boot.");
@@ -114,94 +120,56 @@ export default {
 			}
 			return whileLoop(host)
 		},
+		// uploadScripts(host){
+		// 	// this needs refactoring too
+		// 	this.server_status = "installing dependencies (will take approx. 10mins)"
+		// 	let requestObj = jsonrpc.request('1', 'upload_scripts', {host: host})
+		// 	return axios
+		// 		.post('/dashboard/rpc/', requestObj)
+		// 		.then(response => this.checkForError(response))
+		// 		.then(() => setTimeout(() => {
+		// 			this.server_status = "rebooting"
+		// 		}, 60000))
+		// },
 		uploadScripts(host){
-			this.server_status = "installing dependencies (will take approx. 10mins)"
 			let requestObj = jsonrpc.request('1', 'upload_scripts', {host: host})
-			return axios
-				.post('/dashboard/rpc/', requestObj)
-				.then(response => this.checkForError(response))
-				.then(() => setTimeout(() => {
-					this.server_status = "rebooting"
-				}, 60000))
+			return this.executeRPC(requestObj)		
 		},
-		delete_server(){
-			this.onStartRPC()
+		deleteServer(){
 			let requestObj = jsonrpc.request('1', 'delete_all_servers')
-			axios
-				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this.checkForError(response)))
-				.then(() => this.handleServerDeleteSuccess())
-				.catch(response => this.handleServerCallError(response))
-				.finally(response => this.handleServerCallFinally(response))
+			return this.executeRPC(requestObj)		
 		},
 		setQ(host, q_value){
-			this.onStartRPC()
 			let requestObj = jsonrpc.request('1', 'set_q', {host: host, q_value: q_value})
-			axios
-				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this.checkForError(response)))
-				.then(() => this.restartJackTrip(host))
-				.then(() => this.getQ(host))
-				.then(() => this.handleServerCallSuccess())
-				.catch(response => this.handleServerCallError(response))
-				.finally(() => this.handleServerCallFinally())
+			return this.executeRPC(requestObj)		
 		},
 		setFpp(host, fpp_value){
-			this.onStartRPC()
 			let requestObj = jsonrpc.request('1', 'set_fpp', {host: host, fpp_value: fpp_value})
-			axios
-				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this.checkForError(response)))
-				.then(() => this.restartJack(host))
-				.then(() => this.getFpp(host))
-				.then(() => this.handleServerCallSuccess())
-				.catch(response => this.handleServerCallError(response))
-				.finally(() => this.handleServerCallFinally())
+			return this.executeRPC(requestObj)		
 		},
-		getAndSetServerIP(){
+		getServerIP(){
 			let requestObj = jsonrpc.request('1', 'fetch_all_servers')
-			return axios
-				.post('/dashboard/rpc/', requestObj)
-				.then(response => this.checkForError(response))
-				.then(response => {
-					this.ip = response.data.result.ip
-					return response.data.result.ip})
-				.catch(response => this.handleServerCallError(response))
+			return this.executeRPC(requestObj)
 		},
 		getServerStatus(host){
 			let requestObj = jsonrpc.request('1', 'get_server_status', {host: host})
-			return axios
-				.post('/dashboard/rpc/', requestObj)
-				.then(response => this.checkForError(response))
-				.then(response => {
-					this.server_status = response.data.result.status
-					return response.data.result.status})
+			return this.executeRPC(requestObj)
 		},
 		getFpp(host){
 			let requestObj = jsonrpc.request('1', 'get_fpp', {host: host})
-			return axios
-				.post('/dashboard/rpc/', requestObj)
-				.then(response => this.checkForError(response))
-				.then(response => {this.server_settings.jack_fpp = response.data.result.value})
+			return this.executeRPC(requestObj)
 		},
 		getQ(host){
 			let requestObj = jsonrpc.request('1', 'get_q', {host: host})
-			return axios
-				.post('/dashboard/rpc/', requestObj)
-				.then(response => this.checkForError(response))
-				.then(response => {this.server_settings.jacktrip_q = response.data.result.value})
+			return this.executeRPC(requestObj)
 		},
 		restartJackTrip(host){
 			let requestObj = jsonrpc.request('1', 'restart_jacktrip', {host: host})
-			return axios
-				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this.checkForError(response)))
+			return this.executeRPC(requestObj)
 		},
 		restartJack(host){
 			let requestObj = jsonrpc.request('1', 'restart_jackd', {host: host})
-			return axios
-				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this.checkForError(response)))
+			return executeRPC(requestObj)
 		},
 		executeRPC(requestObj){
 			this.onStartRPC()
@@ -219,34 +187,33 @@ export default {
 			}
 			return response
 		},
-		handleServerCallSuccess(){
-			this.server_ready = true
-			this.disabled = false
-		},
-		handleServerCreateSuccess(){
-			this.server_ready = true
-			this.refreshServerDetails()
-		},
-		handleServerDeleteSuccess(){
-			this.server_ready = false
-			this.ip = false
-			this.disabled = true
-			this.server_status = "no server"
-		},
-		handleServerCallFinally(){
-			this.creating_server = false
-			this.server_call_in_progress = false
-		},
-		handleServerCallError(response){
-			window.alert(response)
-			this.server_status += " (error)"
-		},
+		// handleServerCallSuccess(){
+		// 	this.server_ready = true
+		// 	this.disabled = false
+		// },
+		// handleServerCreateSuccess(){
+		// 	this.server_ready = true
+		// 	// this.refreshServerDetails()
+		// },
+		// handleServerDeleteSuccess(){
+		// 	this.server_ready = false
+		// 	this.ip = false
+		// 	this.disabled = true
+		// 	this.server_status = "no server"
+		// },
+		// handleServerCallFinally(){
+		// 	this.creating_server = false
+		// 	this.server_call_in_progress = false
+		// },
+		// handleServerCallError(response){
+		// 	window.alert(response)
+		// 	this.server_status += " (error)"
+		// },
 		onStartRPC(){
-			this.server_call_in_progress = true
-			this.disabled = true
+			this.rpc_count += 1
 		},
 		onFinishRPC(){
-			this.server_call_in_progress = false
+			this.rpc_count -= 1
 		} 
 	},
   mounted () {
