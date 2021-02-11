@@ -27,7 +27,7 @@
 			<div class="api-container-child server-details">
 				<div class="key">status: </div>
 				<div v-bind:class="{'deactivate': disabled}" class="values">
-					<div>{{server_status}}</div>
+					<div>{{serverStatus}}</div>
 				</div>
 			</div>
 			<div class="api-container-child server-automation">
@@ -55,7 +55,7 @@ export default {
 			creating_server: true,
 			server_ready: false,
 			rpc_count: 0,
-			server_status: "no server",
+			serverStatus: "no server",
 			ip: false,
 			server_settings: {
 				jack_fpp: null,
@@ -73,32 +73,27 @@ export default {
 		}
   	},
   	methods: {
-		// create_server(){
-		// 	this.onStartRPC()
-		// 	this.creating_server = true
-		// 	let requestObj = jsonrpc.request('1', 'create_server')
-		// 	// make "create_server" post call to RPC API
-		// 	axios
-		// 		.post('/dashboard/rpc/', requestObj)
-		// 		// check response for error
-		// 		.then(response => this.checkForError(response))
-		// 		// perform follow up tasks
-		// 		// .then(() => this.getAndSetServerIP())
-		// 		// .then(() => this.waitForReady(this.ip))
-		// 		// .then(() => this.uploadScripts(this.ip))
-		// 		// handle succesful completion
-		// 		.then(() => this.handleServerCreateSuccess())
-		// 		// catch errors
-		// 		.catch(response => this.handleServerCallError(response))
-		// 		// execute in all situations
-		// 		.finally(() => this.handleServerCallFinally())
-		// },
-		async fetchServerDetails () {
+		async initServer () {
+			this.creating_server = true
+			// create the server
+			let host = await this.createServer()
+			// wait for server to boot
+			await waitForReady(host)
+			// extra wait to be safe
+			this.serverStatus += " (waiting)"
+			await new Promise(r => setTimeout(r, 60000));
+			this.serverStatus = "installing dependencies (will take approx. 10mins)"
+			await uploadScripts(host)
+			// extra wait while rebooting
+			await new Promise(r => setTimeout(r, 60000));
+			await this.fetchServerDetails(host)
+			this.creating_server = false
+			this.server_ready = true
+		},
+		async fetchServerDetails (host) {
 			try {
-				let host = await this.getServerIP()
 				let fpp = await this.getFpp(host)
 				let q = await this.getQ(host)
-				this.ip = host
 				this.fpp = fpp
 				this.q = q
 			} catch (e) {
@@ -107,40 +102,27 @@ export default {
 				console.log('Finally!');
 			}
 		},
+		async waitForReady (host) {
+			let response, status, count = 0;
+			while (status !== "running") {
+				count++;
+				status = await this.getServerStatus(host)
+				this.serverStatus = status
+				if (count === 20) {
+					throw new Error("Timeout, waited too long for server to boot.");
+				}
+				await new Promise(r => setTimeout(r, 5000));
+			}
+			return response
+		},
 		createServer(){
 			let requestObj = jsonrpc.request('1', 'create_server')
 			return this.executeRPC(requestObj)
 		},
-		waitForReady(host){
-			const whileLoop = async (host) => {
-				let response, status, count = 0;
-				while (status !== "running") {
-					count++;
-					// this needs adapting to new return object
-					status = await this.getServerStatus(host)
-					if (count === 20) {
-						throw new Error("Timeout, waited too long for server to boot.");
-					}
-					await new Promise(r => setTimeout(r, 5000));
-				}
-				// Extra wait as port 22 doesn't seem to be open straight away
-				this.server_status += " (waiting)"
-				await new Promise(r => setTimeout(r, 60000));
-				return response
-			}
-			return whileLoop(host)
+		uploadScripts(host){
+			let requestObj = jsonrpc.request('1', 'upload_scripts', {host: host})
+			return this.executeRPC(requestObj)
 		},
-		// uploadScripts(host){
-		// 	// this needs refactoring too
-		// 	this.server_status = "installing dependencies (will take approx. 10mins)"
-		// 	let requestObj = jsonrpc.request('1', 'upload_scripts', {host: host})
-		// 	return axios
-		// 		.post('/dashboard/rpc/', requestObj)
-		// 		.then(response => this.checkForError(response))
-		// 		.then(() => setTimeout(() => {
-		// 			this.server_status = "rebooting"
-		// 		}, 60000))
-		// },
 		uploadScripts(host){
 			let requestObj = jsonrpc.request('1', 'upload_scripts', {host: host})
 			return this.executeRPC(requestObj)		
