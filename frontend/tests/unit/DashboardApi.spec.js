@@ -93,3 +93,29 @@ describe("executeRPC method in DashboardApi.vue", () => {
     });
   });
 });
+
+describe("fetchServerDetails async method in DashboardApi.vue", () => {
+  it("should fetch fpp and q from server and update component", () => {
+    const wrapper = mount(DashboardApi);
+ 
+    const ip = "123.123.123.123";
+    const resp1 = {
+      data: {
+        result: "256"
+      },
+    };
+    const resp2 = {
+      data: {
+        result: "6"
+      },
+    };
+
+    axios.post.mockResolvedValueOnce(resp1);
+    axios.post.mockResolvedValueOnce(resp2);
+
+    return wrapper.vm.fetchServerDetails(ip).then((data) => {
+      expect(wrapper.vm.q).toEqual("6");
+      expect(wrapper.vm.fpp).toEqual("256");
+    });
+  });
+});
