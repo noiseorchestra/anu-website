@@ -182,7 +182,7 @@ export default {
 			return axios
 				.post('/dashboard/rpc/', requestObj)
 				.then(response => (this.checkForError(response)))
-				.then(response => {return response.data.result.value})
+				.then(response => {return response.data.result})
 				.catch(response => handleServerCallError(response))
 				.finally(() => this.onFinishRPC())
 		},
