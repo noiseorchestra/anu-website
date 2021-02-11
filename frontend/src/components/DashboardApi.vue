@@ -162,10 +162,11 @@ export default {
 			let requestObj = jsonrpc.request('1', 'fetch_all_servers')
 			return axios
 				.post('/dashboard/rpc/', requestObj)
+				.then(response => this.checkForError(response))
 				.then(response => {
-					this.checkForError(response)
 					this.ip = response.data.result.ip
 					return response.data.result.ip})
+				.catch(response => this.handleServerCallError(response))
 		},
 		getServerStatus(host){
 			let requestObj = jsonrpc.request('1', 'get_server_status', {host: host})
@@ -188,7 +189,7 @@ export default {
 			return axios
 				.post('/dashboard/rpc/', requestObj)
 				.then(response => this.checkForError(response))
-				.then(response => { return response.data.result.value})
+				.then(response => {this.server_settings.jacktrip_q = response.data.result.value})
 		},
 		restartJackTrip(host){
 			let requestObj = jsonrpc.request('1', 'restart_jacktrip', {host: host})
@@ -203,6 +204,7 @@ export default {
 				.then(response => (this.checkForError(response)))
 		},
 		checkForError(response){
+			console.log(response)
 			if (response.data.error){
 				throw new Error(response.data.error.message);
 			}

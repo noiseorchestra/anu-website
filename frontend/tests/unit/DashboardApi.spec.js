@@ -23,8 +23,8 @@ describe('checkForError method in DashboardApi.vue', () => {
   })
 })
 
-describe('getQ method in DashboardApi.vue', () => {
-  it('Should return Q value', () => {
+describe('getAndSetServerIP method in DashboardApi.vue', () => {
+  it('Should get and set server ip', () => {
     const wrapper = mount(DashboardApi)
 
     const dummy_host = "234.234.324.234"
@@ -32,13 +32,12 @@ describe('getQ method in DashboardApi.vue', () => {
     const resp = {
         data: {
             result: {
-                value: "123.123.123.123"
+                ip: "123.123.123.123"
             }
         }}
     
     axios.post.mockResolvedValue(resp);
   
-    wrapper.vm.getQ(dummy_host).then(data => expect(wrapper.vm.ip).toEqual(ip));
+    return wrapper.vm.getAndSetServerIP().then(data => expect(wrapper.vm.ip).toEqual(ip));
   })
 })
-
