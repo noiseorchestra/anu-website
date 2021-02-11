@@ -102,16 +102,17 @@ export default {
 				console.log('Finally!');
 			}
 		},
-		async waitForReady (host) {
-			let response, status, count = 0;
-			while (status !== "running") {
+		async waitForReady (host, interval=5000, attempts=20) {
+			let response, count = 0;
+			while (response !== "running") {
 				count++;
-				status = await this.getServerStatus(host)
-				this.serverStatus = status
-				if (count === 20) {
+				response = await this.getServerStatus(host)
+				this.serverStatus = response
+				if (count == attempts) {
+					console.log("ERROR")
 					throw new Error("Timeout, waited too long for server to boot.");
 				}
-				await new Promise(r => setTimeout(r, 5000));
+				await new Promise(r => setTimeout(r, interval));
 			}
 			return response
 		},

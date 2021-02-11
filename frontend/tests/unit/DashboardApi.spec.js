@@ -81,7 +81,7 @@ describe("executeRPC method in DashboardApi.vue", () => {
     const ip = "123.123.123.123";
     const resp = {
       data: {
-        result: "123.123.123.123"
+        result: "123.123.123.123",
       },
     };
 
@@ -97,16 +97,16 @@ describe("executeRPC method in DashboardApi.vue", () => {
 describe("fetchServerDetails async method in DashboardApi.vue", () => {
   it("should fetch fpp and q from server and update component", () => {
     const wrapper = mount(DashboardApi);
- 
+
     const ip = "123.123.123.123";
     const resp1 = {
       data: {
-        result: "256"
+        result: "256",
       },
     };
     const resp2 = {
       data: {
-        result: "6"
+        result: "6",
       },
     };
 
@@ -117,5 +117,43 @@ describe("fetchServerDetails async method in DashboardApi.vue", () => {
       expect(wrapper.vm.q).toEqual("6");
       expect(wrapper.vm.fpp).toEqual("256");
     });
+  });
+});
+
+describe("waitForReady async method in DashboardApi.vue", () => {
+  it("should block until server status is 'running'", async () => {
+    const ip = "123.123.123.123";
+    const resp1 = "provisioning";
+    const resp2 = "booting";
+    const resp3 = "running";
+
+    const wrapper = mount(DashboardApi);
+
+    wrapper.vm.getServerStatus = jest.fn();
+
+    wrapper.vm.getServerStatus.mockResolvedValueOnce(resp1);
+    wrapper.vm.getServerStatus.mockResolvedValueOnce(resp2);
+    wrapper.vm.getServerStatus.mockResolvedValueOnce(resp3);
+
+    let data = await wrapper.vm.waitForReady(ip, 50, 10);
+    expect(data).toEqual("running");
+  });
+});
+
+describe("waitForReady async method in DashboardApi.vue", () => {
+  it("should throw an error if waiting too long", () => {
+    const ip = "123.123.123.123";
+    const wrapper = mount(DashboardApi);
+
+    wrapper.vm.getServerStatus = jest.fn();
+    wrapper.vm.getServerStatus.mockResolvedValue("booting");
+
+    return wrapper.vm
+      .waitForReady(ip, 50, 10)
+      .catch((e) =>
+        expect(e).toEqual(
+          new Error("Timeout, waited too long for server to boot.")
+        )
+      );
   });
 });
