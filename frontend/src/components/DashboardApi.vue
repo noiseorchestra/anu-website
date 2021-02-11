@@ -67,7 +67,7 @@ export default {
 	},
 	methods: {
 		create_server(){
-			this.serverCallStarted()
+			this.onStartRPC()
 			this.creating_server = true
 			let requestObj = jsonrpc.request('1', 'create_server')
 			// make "create_server" post call to RPC API
@@ -87,7 +87,7 @@ export default {
 				.finally(() => this.handleServerCallFinally())
 		},
 		refreshServerDetails(){
-			this.serverCallStarted()
+			this.onStartRPC()
 			this.getAndSetServerIP()
 				.then(() => this.getServerStatus(this.ip))
 				.then(() => this.getFpp(this.ip))
@@ -125,7 +125,7 @@ export default {
 				}, 60000))
 		},
 		delete_server(){
-			this.serverCallStarted()
+			this.onStartRPC()
 			let requestObj = jsonrpc.request('1', 'delete_all_servers')
 			axios
 				.post('/dashboard/rpc/', requestObj)
@@ -135,7 +135,7 @@ export default {
 				.finally(response => this.handleServerCallFinally(response))
 		},
 		setQ(host, q_value){
-			this.serverCallStarted()
+			this.onStartRPC()
 			let requestObj = jsonrpc.request('1', 'set_q', {host: host, q_value: q_value})
 			axios
 				.post('/dashboard/rpc/', requestObj)
@@ -147,7 +147,7 @@ export default {
 				.finally(() => this.handleServerCallFinally())
 		},
 		setFpp(host, fpp_value){
-			this.serverCallStarted()
+			this.onStartRPC()
 			let requestObj = jsonrpc.request('1', 'set_fpp', {host: host, fpp_value: fpp_value})
 			axios
 				.post('/dashboard/rpc/', requestObj)
@@ -204,11 +204,13 @@ export default {
 				.then(response => (this.checkForError(response)))
 		},
 		executeRPC(requestObj){
+			this.onStartRPC()
 			return axios
 				.post('/dashboard/rpc/', requestObj)
 				.then(response => (this.checkForError(response)))
 				.then(response => {return response.data.result.value})
 				.catch(response => handleServerCallError(response))
+				.finally(() => this.onFinishRPC())
 		},
 		checkForError(response){
 			console.log(response)
@@ -239,10 +241,13 @@ export default {
 			window.alert(response)
 			this.server_status += " (error)"
 		},
-		serverCallStarted(){
+		onStartRPC(){
 			this.server_call_in_progress = true
 			this.disabled = true
-		}
+		},
+		onFinishRPC(){
+			this.server_call_in_progress = false
+		} 
 	},
   mounted () {
 		// this.refreshServerDetails()

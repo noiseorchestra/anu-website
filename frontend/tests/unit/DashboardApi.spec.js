@@ -40,6 +40,8 @@ describe('executeRPC method in DashboardApi.vue', () => {
     axios.post.mockResolvedValue(resp);
   
     return wrapper.vm.executeRPC(requestObj).then(data => {
-        expect(data).toEqual(ip)});
+        expect(data).toEqual(ip)
+        expect(wrapper.vm.server_call_in_progress).toEqual(false)
+    });
   })
 })
