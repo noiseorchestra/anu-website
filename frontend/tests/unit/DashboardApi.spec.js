@@ -81,9 +81,7 @@ describe("executeRPC method in DashboardApi.vue", () => {
     const ip = "123.123.123.123";
     const resp = {
       data: {
-        result: {
-          value: "123.123.123.123",
-        },
+        result: "123.123.123.123"
       },
     };
 
