@@ -5,23 +5,23 @@
 			<div class="api-container-child jacktrip-queue">
 				<div class="key">JackTrip queue: </div>
 				<div class="values">
-					<div v-bind:key="value" v-bind:class="{'deactivate': disabled}" v-for="value in q_values">
-						<button class="api-button" v-bind:class="{'selected': server_settings.jacktrip_q == value}" v-on:click="setQ(ip, value)">{{value}}</button>
+					<div v-bind:key="value" v-bind:class="{'deactivate': disabled}" v-for="value in qValues">
+						<button class="api-button" v-bind:class="{'selected': q == value}" v-on:click="setQ(ip, value)">{{value}}</button>
 					</div>
 				</div>
 			</div>
 			<div class="api-container-child jack-fpp">
 				<div class="key">JACK fpp: </div>
 				<div class="values">
-					<div v-bind:key="value" v-bind:class="{'deactivate': disabled}" v-for="value in fpp_values">
-						<button class="api-button" v-bind:class="{'selected': server_settings.jack_fpp == value}" v-on:click="setFpp(ip, value)">{{value}}</button>
+					<div v-bind:key="value" v-bind:class="{'deactivate': disabled}" v-for="value in fppValues">
+						<button class="api-button" v-bind:class="{'selected': fpp == value}" v-on:click="setFpp(ip, value)">{{value}}</button>
 					</div>
 				</div>
 			</div>
 			<div class="api-container-child server-details">
 				<div class="key">Server IP: </div>
 				<div class="values">
-					<div v-if="ip">{{ip}}</div><div><button class="api-button" v-on:click="refreshServerDetails()">refresh</button></div>
+					<div v-if="ip">{{ip}}</div><div><button class="api-button" v-on:click="fetchServerDetails(ip)">refresh</button></div>
 				</div>
 			</div>
 			<div class="api-container-child server-details">
@@ -33,9 +33,9 @@
 			<div class="api-container-child server-automation">
 				<div class="key"></div>
 				<div class="values">
-					<div v-bind:class="{'deactivate': creating_server}">
-						<button v-if="!ip" class="api-button" v-on:click="create_server()">new server</button>
-						<button v-else class="api-button" v-on:click="delete_server()">delete server</button>
+					<div v-bind:class="{'deactivate': creatingServer}">
+						<button v-if="!ip" class="api-button" v-on:click="initServer()">new server</button>
+						<button v-else class="api-button" v-on:click="deleteServer()">delete server</button>
 					</div>
 				</div>
 			</div>
@@ -51,30 +51,28 @@ export default {
 	name: 'DashboardApi',
 	data () {
 		return {
-			disabled: true,
-			creating_server: true,
-			server_ready: false,
-			rpc_count: 0,
+			disabled: false,
+			creatingServer: true,
+			serverReady: false,
+			rpcCount: 0,
 			serverStatus: "no server",
-			ip: false,
-			server_settings: {
-				jack_fpp: null,
-				jacktrip_q: null,
-			},
-			q_values: [4, 6, 8, 10, 12, 14, 16],
-			fpp_values: [64, 128, 256, 512],
+			ip: null,
+			q: null,
+			fpp: null,
+			qValues: [4, 6, 8, 10, 12, 14, 16],
+			fppValues: [64, 128, 256, 512],
 		}
 	},
 	computed: {
-    // a computed getter
+		// a computed getter
 		serverCallInProgress: function () {
 		// `this` points to the vm instance
-		return this.rpc_count != 0;
+		return this.rpcCount != 0;
 		}
   	},
   	methods: {
 		async initServer () {
-			this.creating_server = true
+			this.creatingServer = true
 			// create the server
 			let host = await this.createServer()
 			// wait for server to boot
@@ -87,8 +85,8 @@ export default {
 			// extra wait while rebooting
 			await new Promise(r => setTimeout(r, 60000));
 			await this.fetchServerDetails(host)
-			this.creating_server = false
-			this.server_ready = true
+			this.creatingServer = false
+			this.serverReady = true
 		},
 		async fetchServerDetails (host) {
 			try {
@@ -180,21 +178,21 @@ export default {
 			return response
 		},
 		// handleServerCallSuccess(){
-		// 	this.server_ready = true
+		// 	this.serverReady = true
 		// 	this.disabled = false
 		// },
 		// handleServerCreateSuccess(){
-		// 	this.server_ready = true
+		// 	this.serverReady = true
 		// 	// this.refreshServerDetails()
 		// },
 		// handleServerDeleteSuccess(){
-		// 	this.server_ready = false
+		// 	this.serverReady = false
 		// 	this.ip = false
 		// 	this.disabled = true
 		// 	this.server_status = "no server"
 		// },
 		// handleServerCallFinally(){
-		// 	this.creating_server = false
+		// 	this.creatingServer = false
 		// 	this.server_call_in_progress = false
 		// },
 		// handleServerCallError(response){
@@ -202,10 +200,10 @@ export default {
 		// 	this.server_status += " (error)"
 		// },
 		onStartRPC(){
-			this.rpc_count += 1
+			this.rpcCount += 1
 		},
 		onFinishRPC(){
-			this.rpc_count -= 1
+			this.rpcCount -= 1
 		} 
 	},
   mounted () {

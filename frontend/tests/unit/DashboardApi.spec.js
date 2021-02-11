@@ -6,26 +6,26 @@ import jsonrpc from "jsonrpc-lite";
 jest.mock("axios");
 
 describe("onStartRPC method in DashboardApi.vue", () => {
-  it("should increment rpc_count data attribute", () => {
+  it("should increment rpcCount data attribute", () => {
     const wrapper = mount(DashboardApi);
 
-    expect(wrapper.vm.rpc_count).toBe(0);
+    expect(wrapper.vm.rpcCount).toBe(0);
     wrapper.vm.onStartRPC();
-    expect(wrapper.vm.rpc_count).toBe(1);
+    expect(wrapper.vm.rpcCount).toBe(1);
   });
 });
 
 describe("onFinishRPC method in DashboardApi.vue", () => {
-  it("should decrese rpc_count data attribute", () => {
+  it("should decrese rpcCount data attribute", () => {
     const wrapper = mount(DashboardApi, {
       data() {
-        return { rpc_count: 1 };
+        return { rpcCount: 1 };
       },
     });
 
-    expect(wrapper.vm.rpc_count).toBe(1);
+    expect(wrapper.vm.rpcCount).toBe(1);
     wrapper.vm.onFinishRPC();
-    expect(wrapper.vm.rpc_count).toBe(0);
+    expect(wrapper.vm.rpcCount).toBe(0);
   });
 });
 
@@ -33,7 +33,7 @@ describe("toggle deactivate class in DashboardApi.vue", () => {
   it("should toggle component if more than 0 RPC in progress", async () => {
     const wrapper = mount(DashboardApi, {
       data() {
-        return { rpc_count: 0 };
+        return { rpcCount: 0 };
       },
     });
 
@@ -89,7 +89,7 @@ describe("executeRPC method in DashboardApi.vue", () => {
 
     return wrapper.vm.executeRPC(requestObj).then((data) => {
       expect(data).toEqual(ip);
-      expect(wrapper.vm.rpc_count).toEqual(0);
+      expect(wrapper.vm.rpcCount).toEqual(0);
     });
   });
 });
