@@ -21,7 +21,7 @@
 			<div class="api-container-child server-details">
 				<div class="key">Server IP: </div>
 				<div class="values">
-					<div v-if="ip">{{ip}}</div><div><button class="api-button" v-on:click="fetchServerDetails(ip)">refresh</button></div>
+					<div v-if="ip">{{ip}}</div><div><button class="api-button" v-on:click="fetchServerIp()">refresh</button></div>
 				</div>
 			</div>
 			<div class="api-container-child server-details">
@@ -72,15 +72,18 @@ export default {
 			// create the server
 			let host = await this.createServer()
 			// wait for server to boot
-			await waitForReady(host)
+			await this.waitForReady(host)
 			// extra wait to be safe
 			this.serverStatus += " (waiting)"
 			await new Promise(r => setTimeout(r, 60000));
 			this.serverStatus = "installing dependencies (will take approx. 10mins)"
-			await uploadScripts(host)
+			await this.uploadScripts(host)
 			// extra wait while rebooting
 			await new Promise(r => setTimeout(r, 60000));
 			await this.fetchServerDetails(host)
+		},
+		async fetchServerIp(){
+			this.ip = await this.getServerIP()
 		},
 		async fetchServerDetails (host) {
 			try {
@@ -89,7 +92,7 @@ export default {
 				this.fpp = fpp
 				this.q = q
 			} catch (e) {
-				handleServerCallError(e)
+				this.handleServerCallError(e)
 			} finally {
 				console.log('Finally!');
 			}
@@ -98,6 +101,7 @@ export default {
 			let response, count = 0;
 			while (response !== "running") {
 				count++;
+				console.log(host)
 				response = await this.getServerStatus(host)
 				this.serverStatus = response
 				if (count == attempts) {
@@ -154,15 +158,17 @@ export default {
 		},
 		restartJack(host){
 			let requestObj = jsonrpc.request('1', 'restart_jackd', {host: host})
-			return executeRPC(requestObj)
+			return this.executeRPC(requestObj)
 		},
 		executeRPC(requestObj){
 			this.onStartRPC()
 			return axios
 				.post('/dashboard/rpc/', requestObj)
 				.then(response => (this.checkForError(response)))
-				.then(response => {return response.data.result})
-				.catch(response => handleServerCallError(response))
+				.then(response => {
+					console.log(response)
+					return response.data.result})
+				.catch(response => this.handleServerCallError(response))
 				.finally(() => this.onFinishRPC())
 		},
 		checkForError(response){
@@ -189,10 +195,10 @@ export default {
 		// 	this.creatingServer = false
 		// 	this.server_call_in_progress = false
 		// },
-		// handleServerCallError(response){
-		// 	window.alert(response)
-		// 	this.server_status += " (error)"
-		// },
+		handleServerCallError(response){
+			window.alert(response)
+			this.server_status += " (error)"
+		},
 		onStartRPC(){
 			this.rpcCount += 1
 		},
