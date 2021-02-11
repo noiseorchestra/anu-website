@@ -70,7 +70,7 @@ export default {
 			this.serverCallStarted()
 			this.creating_server = true
 			let requestObj = jsonrpc.request('1', 'create_server')
-			// make post call to RPC API
+			// make "create_server" post call to RPC API
 			axios
 				.post('/dashboard/rpc/', requestObj)
 				// check response for error
@@ -89,12 +89,12 @@ export default {
 		refreshServerDetails(){
 			this.serverCallStarted()
 			this.getAndSetServerIP()
-			.then(() => this.getServerStatus(this.ip))
-			.then(() => this.getFpp(this.ip))
-			.then(() => this.getQ(this.ip))
-			.then(() => this.handleServerCallSuccess())
-			.catch(response => this.handleServerCallError(response))
-			.finally(() => this.handleServerCallFinally())
+				.then(() => this.getServerStatus(this.ip))
+				.then(() => this.getFpp(this.ip))
+				.then(() => this.getQ(this.ip))
+				.then(() => this.handleServerCallSuccess())
+				.catch(response => this.handleServerCallError(response))
+				.finally(() => this.handleServerCallFinally())
 		},
 		waitForReady(host){
 			const whileLoop = async (host) => {
