@@ -6,6 +6,31 @@ import jsonrpc from 'jsonrpc-lite'
 jest.mock('axios');
 
 
+describe('onStartRPC method in DashboardApi.vue', () => {
+  it('should increment rpc_count data attribute', () => {
+    const wrapper = mount(DashboardApi)
+
+    expect(wrapper.vm.rpc_count).toBe(0)
+    wrapper.vm.onStartRPC();
+    expect(wrapper.vm.rpc_count).toBe(1)
+  })
+})
+
+describe('onFinishRPC method in DashboardApi.vue', () => {
+  it('should decrese rpc_count data attribute', () => {
+
+    const wrapper = mount(DashboardApi, {
+        data () {
+            return {rpc_count: 1}
+        }
+    })
+    
+    expect(wrapper.vm.rpc_count).toBe(1)
+    wrapper.vm.onFinishRPC();
+    expect(wrapper.vm.rpc_count).toBe(0)
+  })
+})
+
 describe('checkForError method in DashboardApi.vue', () => {
   it('throws an error if the RPC failed', () => {
     const wrapper = mount(DashboardApi)
