@@ -61,10 +61,7 @@ def _check_server_status(linodes, host):
     for linode in linodes:
         if (linode.ipv4[0] == host):
             print(linode.status)
-            return {
-                "status": linode.status,
-                "ip": host
-            }
+            return linode.status
     raise RuntimeError("Could not find server with this ip{}".format(host))
 
 def _delete_all_servers(linodes):
@@ -132,7 +129,7 @@ def create_server():
     if not linode:
         raise RuntimeError("it didn't work")
 
-    return {"ip": linode.ipv4[0]}
+    return linode.ipv4[0]
 
 
 @http_basic_auth_login_required
@@ -156,7 +153,7 @@ def upload_scripts(host):
 
     _run_scripts(c)
 
-    return {"message": "successfully uploaded and installed scripts to {}".format(host)}
+    return "successfully uploaded and installed scripts to {}".format(host)
 
 
 @http_basic_auth_login_required
@@ -168,7 +165,7 @@ def fetch_all_servers():
     # Right now this just returns the first linode as there should only be one
     linodes = client.linode.instances()
     ips = _get_all_ips(linodes)
-    return {"ip": ips[0]}
+    return ips[0]
 
 
 @http_basic_auth_login_required
@@ -179,7 +176,7 @@ def delete_one_server(host):
     """
     linodes = client.linode.instances()
     message = _delete_one_server(linodes, host)
-    return {"message": message}
+    return message
 
 
 @http_basic_auth_login_required
@@ -190,7 +187,7 @@ def delete_all_servers():
     """
     linodes = client.linode.instances()
     message = _delete_all_servers(linodes)
-    return {"message": message}
+    return message
 
 
 @http_basic_auth_login_required
@@ -219,10 +216,7 @@ def get_fpp(host):
 
     value = _read_config_file(result, "FPP")
 
-    return {
-        "value": value,
-        "ip": host
-    }
+    return value
 
 
 @http_basic_auth_login_required
@@ -242,11 +236,7 @@ def get_q(host):
 
     value = _read_config_file(result, "Q")
 
-    return {
-        "value": value,
-        "ip": host
-    }
-
+    return value
 
 @http_basic_auth_login_required
 @rpc_method
@@ -272,7 +262,7 @@ def set_q(host, q_value):
 
     result = _get_fabric_client(host).run('echo "Q=%s" > /etc/jacktrip_pypatcher/jacktrip.conf' % (q_value))
 
-    return {"exitcode": result.exited}
+    return result.exited
 
 
 @http_basic_auth_login_required
@@ -282,7 +272,7 @@ def restart_jacktrip(host):
     Restart JackTrip on a py_patcher server.
     """
     result = _get_fabric_client(host).run('sudo systemctl restart jacktrip.service')
-    return {"exitcode": result.exited}
+    return result.exited
 
 
 @http_basic_auth_login_required
@@ -292,5 +282,5 @@ def restart_jackd(host):
     Restart JACK on a py_patcher server.
     """
     result = _get_fabric_client(host).run('sudo systemctl restart jackd.service')
-    return {"exitcode": result.exited}
+    return result.exited
 
