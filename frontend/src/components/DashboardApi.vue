@@ -92,7 +92,7 @@ export default {
 			.then(() => this.getServerStatus(this.ip))
 			.then(() => this.getFpp(this.ip))
 			.then(() => this.getQ(this.ip))
-			.then(() => this._handleServerCallSuccess())
+			.then(() => this.handleServerCallSuccess())
 			.catch(response => this.handleServerCallError(response))
 			.finally(() => this.handleServerCallFinally())
 		},
@@ -130,7 +130,7 @@ export default {
 			axios
 				.post('/dashboard/rpc/', requestObj)
 				.then(response => (this.checkForError(response)))
-				.then(() => this._handleServerDeleteSuccess())
+				.then(() => this.handleServerDeleteSuccess())
 				.catch(response => this.handleServerCallError(response))
 				.finally(response => this.handleServerCallFinally(response))
 		},
@@ -142,7 +142,7 @@ export default {
 				.then(response => (this.checkForError(response)))
 				.then(() => this.restartJackTrip(host))
 				.then(() => this.getQ(host))
-				.then(() => this._handleServerCallSuccess())
+				.then(() => this.handleServerCallSuccess())
 				.catch(response => this.handleServerCallError(response))
 				.finally(() => this.handleServerCallFinally())
 		},
@@ -154,7 +154,7 @@ export default {
 				.then(response => (this.checkForError(response)))
 				.then(() => this.restartJack(host))
 				.then(() => this.getFpp(host))
-				.then(() => this._handleServerCallSuccess())
+				.then(() => this.handleServerCallSuccess())
 				.catch(response => this.handleServerCallError(response))
 				.finally(() => this.handleServerCallFinally())
 		},
@@ -208,7 +208,7 @@ export default {
 			}
 			return response
 		},
-		_handleServerCallSuccess(){
+		handleServerCallSuccess(){
 			this.server_ready = true
 			this.disabled = false
 		},
@@ -216,7 +216,7 @@ export default {
 			this.server_ready = true
 			this.refreshServerDetails()
 		},
-		_handleServerDeleteSuccess(){
+		handleServerDeleteSuccess(){
 			this.server_ready = false
 			this.ip = false
 			this.disabled = true
