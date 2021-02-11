@@ -93,16 +93,20 @@ export default {
 		// 		// execute in all situations
 		// 		.finally(() => this.handleServerCallFinally())
 		// },
-		// refreshServerDetails(){
-			// this.onStartRPC()
-			// this.getAndSetServerIP()
-			// 	.then(() => this.getServerStatus(this.ip))
-			// 	// .then(() => this.getFpp(this.ip))
-			// 	// .then(() => this.getQ(this.ip))
-			// 	.then(() => this.handleServerCallSuccess())
-			// 	.catch(response => this.handleServerCallError(response))
-			// 	.finally(() => this.handleServerCallFinally())
-		// },
+		async fetchServerDetails () {
+			try {
+				let host = await this.getServerIP()
+				let fpp = await this.getFpp(host)
+				let q = await this.getQ(host)
+				this.ip = host
+				this.fpp = fpp
+				this.q = q
+			} catch (e) {
+				handleServerCallError(e)
+			} finally {
+				console.log('Finally!');
+			}
+		},
 		createServer(){
 			let requestObj = jsonrpc.request('1', 'create_server')
 			return this.executeRPC(requestObj)
