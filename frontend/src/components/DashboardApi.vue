@@ -1,5 +1,5 @@
 <template>
-	<div v-bind:class="{'deactivate': serverCallInProgress}" class="api-container">
+	<div v-bind:class="{'deactivate': disabled}" class="api-container">
 		<div class="current-info">
 			<div><h2>JackTrip Hub Server Settings</h2></div>
 			<div class="api-container-child jacktrip-queue">
@@ -33,7 +33,7 @@
 			<div class="api-container-child server-automation">
 				<div class="key"></div>
 				<div class="values">
-					<div v-bind:class="{'deactivate': creatingServer}">
+					<div>
 						<button v-if="!ip" class="api-button" v-on:click="initServer()">new server</button>
 						<button v-else class="api-button" v-on:click="deleteServer()">delete server</button>
 					</div>
@@ -51,9 +51,6 @@ export default {
 	name: 'DashboardApi',
 	data () {
 		return {
-			disabled: false,
-			creatingServer: true,
-			serverReady: false,
 			rpcCount: 0,
 			serverStatus: "no server",
 			ip: null,
@@ -65,14 +62,13 @@ export default {
 	},
 	computed: {
 		// a computed getter
-		serverCallInProgress: function () {
+		disabled: function () {
 		// `this` points to the vm instance
 		return this.rpcCount != 0;
 		}
   	},
   	methods: {
 		async initServer () {
-			this.creatingServer = true
 			// create the server
 			let host = await this.createServer()
 			// wait for server to boot
@@ -85,8 +81,6 @@ export default {
 			// extra wait while rebooting
 			await new Promise(r => setTimeout(r, 60000));
 			await this.fetchServerDetails(host)
-			this.creatingServer = false
-			this.serverReady = true
 		},
 		async fetchServerDetails (host) {
 			try {
