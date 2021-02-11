@@ -37,15 +37,19 @@ describe("toggle deactivate class in DashboardApi.vue", () => {
       },
     });
 
-    expect(wrapper.find(".api-container").classes()).not.toContain('deactivate')
+    expect(wrapper.find(".api-container").classes()).not.toContain(
+      "deactivate"
+    );
     wrapper.vm.onStartRPC();
-    await wrapper.vm.$nextTick()
+    await wrapper.vm.$nextTick();
     expect(wrapper.vm.serverCallInProgress).toBe(true);
-    expect(wrapper.find(".api-container").classes()).toContain('deactivate')
+    expect(wrapper.find(".api-container").classes()).toContain("deactivate");
     wrapper.vm.onFinishRPC();
-    await wrapper.vm.$nextTick()
+    await wrapper.vm.$nextTick();
     expect(wrapper.vm.serverCallInProgress).toBe(false);
-    expect(wrapper.find(".api-container").classes()).not.toContain('deactivate')
+    expect(wrapper.find(".api-container").classes()).not.toContain(
+      "deactivate"
+    );
   });
 });
 
