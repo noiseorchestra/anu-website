@@ -29,6 +29,26 @@ describe("onFinishRPC method in DashboardApi.vue", () => {
   });
 });
 
+describe("toggle deactivate class in DashboardApi.vue", () => {
+  it("should toggle component if more than 0 RPC in progress", async () => {
+    const wrapper = mount(DashboardApi, {
+      data() {
+        return { rpc_count: 0 };
+      },
+    });
+
+    expect(wrapper.find(".api-container").classes()).not.toContain('deactivate')
+    wrapper.vm.onStartRPC();
+    await wrapper.vm.$nextTick()
+    expect(wrapper.vm.serverCallInProgress).toBe(true);
+    expect(wrapper.find(".api-container").classes()).toContain('deactivate')
+    wrapper.vm.onFinishRPC();
+    await wrapper.vm.$nextTick()
+    expect(wrapper.vm.serverCallInProgress).toBe(false);
+    expect(wrapper.find(".api-container").classes()).not.toContain('deactivate')
+  });
+});
+
 describe("checkForError method in DashboardApi.vue", () => {
   it("throws an error if the RPC failed", () => {
     const wrapper = mount(DashboardApi);

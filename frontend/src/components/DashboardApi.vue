@@ -1,5 +1,5 @@
 <template>
-	<div v-bind:class="{'deactivate': server_call_in_progress}" class="api-container">
+	<div v-bind:class="{'deactivate': serverCallInProgress}" class="api-container">
 		<div class="current-info">
 			<div><h2>JackTrip Hub Server Settings</h2></div>
 			<div class="api-container-child jacktrip-queue">
@@ -54,7 +54,6 @@ export default {
 			disabled: true,
 			creating_server: true,
 			server_ready: false,
-			server_call_in_progress: false,
 			rpc_count: 0,
 			server_status: "no server",
 			ip: false,
@@ -66,7 +65,14 @@ export default {
 			fpp_values: [64, 128, 256, 512],
 		}
 	},
-	methods: {
+	computed: {
+    // a computed getter
+		serverCallInProgress: function () {
+		// `this` points to the vm instance
+		return this.rpc_count != 0;
+		}
+  	},
+  	methods: {
 		// create_server(){
 		// 	this.onStartRPC()
 		// 	this.creating_server = true
