@@ -6,23 +6,23 @@ import api from "../../assets/js/dashboardApi.js";
 
 jest.mock("axios");
 
-describe("fetchServerDetails from dashboardApi", () => {
-  it("should return server details on success or error", async () => {
-    const mockResponseSuccess = (payload) => {
-      return {
-        data: {
-          result: payload,
-        },
-      };
-    };
-    let mockResponseError = {
-      data: {
-        error: {
-          message: "Error",
-        },
-      },
-    };
+const mockResponseSuccess = (payload) => {
+  return {
+    data: {
+      result: payload,
+    },
+  };
+};
+let mockResponseError = {
+  data: {
+    error: {
+      message: "Error",
+    },
+  },
+};
 
+describe("fetchServerDetails from dashboardApi", () => {
+  it("should return server details on success or throw error", async () => {
     axios.post.mockResolvedValueOnce(mockResponseSuccess("123.123.123.123"));
     axios.post.mockResolvedValueOnce(mockResponseSuccess("256"));
     axios.post.mockResolvedValueOnce(mockResponseSuccess("8"));
@@ -36,9 +36,79 @@ describe("fetchServerDetails from dashboardApi", () => {
     });
 
     axios.post.mockResolvedValueOnce(mockResponseError);
-    let errorResponse = await expect(api.fetchServerDetails()).rejects.toThrow(
-      new Error("Error")
-    );
+    await expect(api.fetchServerDetails()).rejects.toThrow(new Error("Error"));
+  });
+});
+
+describe("changePyPatcherFpp from dashboardApi", () => {
+  it("should return server details on success or throw error", async () => {
+    axios.post.mockResolvedValueOnce(mockResponseSuccess("0"));
+    axios.post.mockResolvedValueOnce(mockResponseSuccess("0"));
+    axios.post.mockResolvedValueOnce(mockResponseSuccess("123.123.123.123"));
+    axios.post.mockResolvedValueOnce(mockResponseSuccess("256"));
+    axios.post.mockResolvedValueOnce(mockResponseSuccess("8"));
+
+    let response = await api.changePyPatcherFpp("123.123.123.123", "256");
+    expect(response).toStrictEqual({
+      ip: "123.123.123.123",
+      fpp: "256",
+      q: "8",
+      serverStatus: "running",
+    });
+
+    axios.post.mockResolvedValueOnce(mockResponseError);
+    await expect(api.changePyPatcherFpp()).rejects.toThrow(new Error("Error"));
+  });
+});
+
+describe("changePyPatcherQ from dashboardApi", () => {
+  it("should return server details on success or throw error", async () => {
+    axios.post.mockResolvedValueOnce(mockResponseSuccess("0"));
+    axios.post.mockResolvedValueOnce(mockResponseSuccess("0"));
+    axios.post.mockResolvedValueOnce(mockResponseSuccess("123.123.123.123"));
+    axios.post.mockResolvedValueOnce(mockResponseSuccess("256"));
+    axios.post.mockResolvedValueOnce(mockResponseSuccess("8"));
+
+    let response = await api.changePyPatcherQ("123.123.123.123", "8");
+    expect(response).toStrictEqual({
+      ip: "123.123.123.123",
+      fpp: "256",
+      q: "8",
+      serverStatus: "running",
+    });
+
+    axios.post.mockResolvedValueOnce(mockResponseError);
+    await expect(api.changePyPatcherQ()).rejects.toThrow(new Error("Error"));
+  });
+});
+
+describe("executeRPC method in dashboardApi", () => {
+  it("Should execute an RPC based on requestObj or throw error", async () => {
+    let requestObj = jsonrpc.request("1", "fetch_all_servers", {
+      host: "234.234.234.234",
+    });
+
+    const ip = "123.123.123.123";
+
+    axios.post.mockResolvedValue(mockResponseSuccess(ip));
+
+    let response = await api.executeRPC(requestObj);
+    expect(response).toEqual(ip);
+
+    axios.post.mockResolvedValueOnce(mockResponseError);
+    await expect(api.executeRPC()).rejects.toThrow(new Error("Error"));
+  });
+});
+
+describe("checkForError method in dashboardApi", () => {
+  it("Should throw error if RPC response contains error message", async () => {
+    let mockResponse = mockResponseSuccess("0");
+    let response = api.checkForError(mockResponse);
+    expect(response).toEqual(mockResponse);
+
+    expect(() => {
+      api.checkForError(mockResponseError);
+    }).toThrow(new Error("Error"));
   });
 });
 
@@ -105,29 +175,6 @@ describe("fetchServerDetails from dashboardApi", () => {
 //     expect(() => {
 //       wrapper.vm.checkForError(mockResponse);
 //     }).toThrow(new Error("Error"));
-//   });
-// });
-
-// describe("executeRPC method in DashboardApi.vue", () => {
-//   it("Should execute an RPC based on requestObj", () => {
-//     const wrapper = mount(DashboardApi);
-
-//     let requestObj = jsonrpc.request("1", "fetch_all_servers", {
-//       host: "234.234.234.234",
-//     });
-//     const ip = "123.123.123.123";
-//     const resp = {
-//       data: {
-//         result: "123.123.123.123",
-//       },
-//     };
-
-//     axios.post.mockResolvedValue(resp);
-
-//     return wrapper.vm.executeRPC(requestObj).then((data) => {
-//       expect(data).toEqual(ip);
-//       expect(wrapper.vm.rpcCount).toEqual(0);
-//     });
 //   });
 // });
 

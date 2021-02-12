@@ -41,7 +41,7 @@ const dashboardApi = {
       let response = await dashboardApi.fetchServerDetails();
       return response;
     } catch (error) {
-      return error.message;
+      throw new Error(error.message);
     }
   },
   async changePyPatcherQ(host, value) {
@@ -51,7 +51,7 @@ const dashboardApi = {
       let response = await dashboardApi.fetchServerDetails();
       return response;
     } catch (error) {
-      return error.message;
+      throw new Error(error.message);
     }
   },
   createServer() {
@@ -120,11 +120,7 @@ const dashboardApi = {
     return response;
   },
   handleServerCallError(error) {
-    console.log(error.message);
     throw new Error(error.message);
-  },
-  test(hello) {
-    console.log(hello);
   },
 };
 
