@@ -48,7 +48,7 @@ def _get_all_ips(linodes):
 
     ips = []
     if len(linodes) == 0:
-        raise RuntimeError("No servers running")
+        raise RuntimeError("No servers running, try creating one first")
     for linode in linodes:
         print(linode.ipv4[0])
         ips.append(linode.ipv4[0])
@@ -56,18 +56,18 @@ def _get_all_ips(linodes):
 
 def _check_server_status(linodes, host):
     if len(linodes) == 0:
-        raise RuntimeError("No servers running")
+        raise RuntimeError("No servers running, try creating one first")
 
     for linode in linodes:
         if (linode.ipv4[0] == host):
             print(linode.status)
             return linode.status
-    raise RuntimeError("Could not find server with this ip{}".format(host))
+    raise RuntimeError("Could not find server with this ip {}".format(host))
 
 def _delete_all_servers(linodes):
 
     if len(linodes) == 0:
-        return "no linodes to delete"
+        RuntimeError("No linodes to delete")
     else:
         for linode in linodes:
             print("delete: ", linode.label)
@@ -79,7 +79,7 @@ def _delete_one_server(linodes, host):
     message = "Linode {} could not be found".format(current_linode.ipv4[0])
 
     if len(linodes) == 0:
-        message = "no linodes to delete"
+        RuntimeError("No linodes to delete")
     else:
         for linode in linodes:
             if linode.ipv4[0] == host:
@@ -89,10 +89,14 @@ def _delete_one_server(linodes, host):
     return message
 
 def _upload_files(c, dir_path):
-    for filename in os.listdir(dir_path):
-        print('Upload: {}/{}'.format(dir_path, filename))
-        result = c.put('{}/{}'.format(dir_path, filename))
-        print("Uploaded {0.local} to {0.remote}".format(result))
+    try:
+        for filename in os.listdir(dir_path):
+            print('Upload: {}/{}'.format(dir_path, filename))
+            result = c.put('{}/{}'.format(dir_path, filename))
+            print("Uploaded {0.local} to {0.remote}".format(result))
+    except Exception as e:
+        console.log(e)
+        RuntimeError("Could not upload install scripts to server")
 
 def _check_exit_string(result):
     if result.exited != 0:
@@ -127,7 +131,7 @@ def create_server():
     linode = _init_linode_instance()
 
     if not linode:
-        raise RuntimeError("it didn't work")
+        raise RuntimeError("Could not create server")
 
     return linode.ipv4[0]
 
@@ -164,6 +168,8 @@ def fetch_all_servers():
     """
     # Right now this just returns the first linode as there should only be one
     linodes = client.linode.instances()
+    if len(linodes) == 0:
+        RuntimeError("No servers created yet")
     ips = _get_all_ips(linodes)
     return ips[0]
 
