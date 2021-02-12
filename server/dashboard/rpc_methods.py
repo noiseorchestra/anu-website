@@ -12,9 +12,15 @@ import os
 env = Env()
 env.read_env()
 
+# if running locally this will be the scripts location relative to the project folder
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+default_server_scripts_path = os.path.join(BASE_DIR, 'dashboard/jacktrip-server-automation/scripts')
+
+# if running in a container then this ENV var should be the path to the mounted volume countaining scripts
+SERVER_SCRIPTS_PATH = env("SERVER_SCRIPTS_PATH", default=default_server_scripts_path)
+
 LINODE_PAT = env("LINODE_PAT", default="")
 MAX_LINODES = env("MAX_LINODES", default=0)
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 f = open("/root/.ssh/id_rsa.pub", "r")
 public_key = f.read().rstrip('\n')
@@ -141,8 +147,8 @@ def create_server():
 def upload_scripts(host):
     # Change this to genuine file and pass in ENV vars or strings from NAW db entry
 
-    scripts_path = os.path.join(BASE_DIR, 'dashboard/jacktrip-server-automation/scripts')
-    templates_path = os.path.join(BASE_DIR, 'dashboard/jacktrip-server-automation/templates')
+    scripts_path = os.path.join(SERVER_SCRIPTS_PATH, '/scripts')
+    templates_path = os.path.join(SERVER_SCRIPTS_PATH, '/templates')
 
     if os.path.isfile('{}/darkice.cfg'.format(templates_path)):
         print ("Darkice config found")
