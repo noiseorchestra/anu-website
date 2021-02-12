@@ -210,7 +210,7 @@ export default {
 		},
 		onFinishRPC(){
 			this.rpcCount -= 1
-		} 
+		}
 	},
   mounted () {
 	this.fetchServerDetails()
