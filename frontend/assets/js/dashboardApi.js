@@ -37,8 +37,7 @@ const dashboardApi = {
   async changePyPatcherFpp(host, value) {
     try {
       await dashboardApi.setFpp(host, value);
-      await dashboardApi.restartJack(host);
-      let response = await dashboardApi.fetchServerDetails();
+      let response = await dashboardApi.restartJack(host);
       return response;
     } catch (error) {
       throw new Error(error.message);
@@ -47,8 +46,7 @@ const dashboardApi = {
   async changePyPatcherQ(host, value) {
     try {
       await dashboardApi.setQ(host, value);
-      await dashboardApi.restartJackTrip(host);
-      let response = await dashboardApi.fetchServerDetails();
+      let response = await dashboardApi.restartJackTrip(host);
       return response;
     } catch (error) {
       throw new Error(error.message);
