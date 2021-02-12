@@ -104,13 +104,13 @@ describe("onStartRPC method in DashboardApi.vue", () => {
 
     let wrapper = mount(DashboardApi);
     // wait for component to mount
-    await new Promise(r => setTimeout(r, 500));
+    await new Promise((r) => setTimeout(r, 500));
     expect(wrapper.vm.rpcCount).toBe(0);
     wrapper.vm.onStartRPC();
     expect(wrapper.vm.rpcCount).toBe(1);
     wrapper.vm.onFinishRPC();
     expect(wrapper.vm.rpcCount).toBe(0);
-    });
+  });
 });
 
 describe("toggle deactivate class in DashboardApi.vue", () => {
@@ -121,7 +121,7 @@ describe("toggle deactivate class in DashboardApi.vue", () => {
 
     let wrapper = mount(DashboardApi);
     // wait for component to mount
-    await new Promise(r => setTimeout(r, 500));
+    await new Promise((r) => setTimeout(r, 500));
     expect(wrapper.find(".api-container").classes()).not.toContain(
       "deactivate"
     );
@@ -146,8 +146,10 @@ describe("waitForReady async method in DashboardApi.vue", () => {
     api.getServerStatus = jest.fn();
     api.getServerStatus.mockResolvedValue("booting");
 
-    await expect(wrapper.vm.waitForReady(ip, 50, 10)).rejects.toThrow(new Error("Timeout, waited too long for server to boot."))
-    expect(api.getServerStatus).toHaveBeenCalledTimes(10)
+    await expect(wrapper.vm.waitForReady(ip, 50, 10)).rejects.toThrow(
+      new Error("Timeout, waited too long for server to boot.")
+    );
+    expect(api.getServerStatus).toHaveBeenCalledTimes(10);
   });
 });
 
@@ -162,7 +164,7 @@ describe("waitForReady async method in DashboardApi.vue", () => {
     api.getServerStatus.mockResolvedValueOnce("running");
 
     let response = await wrapper.vm.waitForReady(ip, 50, 10);
-    expect(response).toBe("running")
-    expect(api.getServerStatus).toHaveBeenCalledTimes(3)
+    expect(response).toBe("running");
+    expect(api.getServerStatus).toHaveBeenCalledTimes(3);
   });
 });
