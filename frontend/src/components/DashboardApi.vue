@@ -5,28 +5,28 @@
 			<div class="api-container-child jacktrip-queue">
 				<div class="key">JackTrip queue: </div>
 				<div class="values">
-					<div v-bind:key="value" v-bind:class="{'deactivate': disabled}" v-for="value in qValues">
-						<button class="api-button" v-bind:class="{'selected': q == value}" v-on:click="setQ(ip, value)">{{value}}</button>
+					<div v-bind:key="value" v-bind:class="{'deactivate': !q}" v-for="value in qValues">
+						<button class="api-button" v-bind:class="{'selected': q == value}" v-on:click="changePyPatcherQ(ip, value)">{{value}}</button>
 					</div>
 				</div>
 			</div>
 			<div class="api-container-child jack-fpp">
 				<div class="key">JACK fpp: </div>
 				<div class="values">
-					<div v-bind:key="value" v-bind:class="{'deactivate': disabled}" v-for="value in fppValues">
-						<button class="api-button" v-bind:class="{'selected': fpp == value}" v-on:click="setFpp(ip, value)">{{value}}</button>
+					<div v-bind:key="value" v-bind:class="{'deactivate': !fpp}" v-for="value in fppValues">
+						<button class="api-button" v-bind:class="{'selected': fpp == value}" v-on:click="changePyPatcherFpp(ip, value)">{{value}}</button>
 					</div>
 				</div>
 			</div>
 			<div class="api-container-child server-details">
 				<div class="key">Server IP: </div>
 				<div class="values">
-					<div v-if="ip">{{ip}}</div><div><button class="api-button" v-on:click="fetchServerIp()">refresh</button></div>
+					<div v-if="ip">{{ip}}</div><div><button class="api-button" v-on:click="fetchServerDetails()">refresh</button></div>
 				</div>
 			</div>
 			<div class="api-container-child server-details">
 				<div class="key">status: </div>
-				<div v-bind:class="{'deactivate': disabled}" class="values">
+				<div class="values">
 					<div>{{serverStatus}}</div>
 				</div>
 			</div>
@@ -52,7 +52,7 @@ export default {
 	data () {
 		return {
 			rpcCount: 0,
-			serverStatus: "no server",
+			serverStatus: "checking server...",
 			ip: null,
 			q: null,
 			fpp: null,
@@ -64,53 +64,75 @@ export default {
 		// a computed getter
 		disabled: function () {
 		// `this` points to the vm instance
-		return this.rpcCount != 0;
+			let disabled = true ? (this.creatingServer || this.rpcCount != 0) : false
+		return disabled
 		}
   	},
   	methods: {
 		async initServer () {
-			// create the server
-			let host = await this.createServer()
-			// wait for server to boot
-			await this.waitForReady(host)
-			// extra wait to be safe
-			this.serverStatus += " (waiting)"
-			await new Promise(r => setTimeout(r, 60000));
-			this.serverStatus = "installing dependencies (will take approx. 10mins)"
-			await this.uploadScripts(host)
-			// extra wait while rebooting
-			await new Promise(r => setTimeout(r, 60000));
-			await this.fetchServerDetails(host)
-		},
-		async fetchServerIp(){
-			this.ip = await this.getServerIP()
-		},
-		async fetchServerDetails (host) {
 			try {
-				let fpp = await this.getFpp(host)
-				let q = await this.getQ(host)
-				this.fpp = fpp
-				this.q = q
-			} catch (e) {
-				this.handleServerCallError(e)
+				this.creatingServer = true
+				// create the server
+				let host = await this.createServer()
+				// wait for server to boot
+				await this.waitForReady(host)
+				this.serverStatus = "installing dependencies (will take approx. 10mins)"
+				// extra wait to be safe
+				await new Promise(r => setTimeout(r, 60000));
+				await this.uploadScripts(host)
+				// extra wait while rebooting
+				await new Promise(r => setTimeout(r, 120000));
+				await this.fetchServerDetails()
+			} catch(error) {
+				window.alert(error)				
 			} finally {
-				console.log('Finally!');
+				this.creatingServer = false
+			}
+		},
+		async fetchServerDetails () {
+			try {
+				let host = await this.getServerIP()
+				this.ip = host
+				this.fpp = await this.getFpp(host)
+				this.q = await this.getQ(host)
+				this.serverStatus = "running"
+			} catch (error) {
+				this.ip = null
+				this.fpp = null
+				this.q = null
+				this.serverStatus = error.message
 			}
 		},
 		async waitForReady (host, interval=5000, attempts=20) {
 			let response, count = 0;
 			while (response !== "running") {
 				count++;
-				console.log(host)
 				response = await this.getServerStatus(host)
 				this.serverStatus = response
 				if (count == attempts) {
-					console.log("ERROR")
 					throw new Error("Timeout, waited too long for server to boot.");
 				}
 				await new Promise(r => setTimeout(r, interval));
 			}
 			return response
+		},
+		changePyPatcherFpp(host, value){
+			this.setFpp(host, value)
+			.then(() => this.restartJack(host))
+			.then(() => this.fetchServerDetails())
+			.catch(error => {
+				this.serverStatus = error.message
+			})
+
+		},
+		changePyPatcherQ(host, value){
+			this.setQ(host, value)
+			.then(() => this.restartJackTrip(host))
+			.then(() => this.fetchServerDetails())
+			.catch(error => {
+				this.serverStatus = error.message
+			})
+
 		},
 		createServer(){
 			let requestObj = jsonrpc.request('1', 'create_server')
@@ -120,13 +142,17 @@ export default {
 			let requestObj = jsonrpc.request('1', 'upload_scripts', {host: host})
 			return this.executeRPC(requestObj)
 		},
-		uploadScripts(host){
-			let requestObj = jsonrpc.request('1', 'upload_scripts', {host: host})
-			return this.executeRPC(requestObj)		
-		},
 		deleteServer(){
 			let requestObj = jsonrpc.request('1', 'delete_all_servers')
-			return this.executeRPC(requestObj)		
+			return this.executeRPC(requestObj)
+				.then(() => {
+					this.ip = null
+					this.fpp = null
+					this.q = null
+					this.serverStatus = "Server deleted"
+				}).catch(error => {
+					window.alert(error.message)
+				})
 		},
 		setQ(host, q_value){
 			let requestObj = jsonrpc.request('1', 'set_q', {host: host, q_value: q_value})
@@ -134,7 +160,7 @@ export default {
 		},
 		setFpp(host, fpp_value){
 			let requestObj = jsonrpc.request('1', 'set_fpp', {host: host, fpp_value: fpp_value})
-			return this.executeRPC(requestObj)		
+			return this.executeRPC(requestObj)
 		},
 		getServerIP(){
 			let requestObj = jsonrpc.request('1', 'fetch_all_servers')
@@ -165,10 +191,8 @@ export default {
 			return axios
 				.post('/dashboard/rpc/', requestObj)
 				.then(response => (this.checkForError(response)))
-				.then(response => {
-					console.log(response)
-					return response.data.result})
-				.catch(response => this.handleServerCallError(response))
+				.then(response => {return response.data.result})
+				.catch(error => this.handleServerCallError(error))
 				.finally(() => this.onFinishRPC())
 		},
 		checkForError(response){
@@ -177,27 +201,9 @@ export default {
 			}
 			return response
 		},
-		// handleServerCallSuccess(){
-		// 	this.serverReady = true
-		// 	this.disabled = false
-		// },
-		// handleServerCreateSuccess(){
-		// 	this.serverReady = true
-		// 	// this.refreshServerDetails()
-		// },
-		// handleServerDeleteSuccess(){
-		// 	this.serverReady = false
-		// 	this.ip = false
-		// 	this.disabled = true
-		// 	this.server_status = "no server"
-		// },
-		// handleServerCallFinally(){
-		// 	this.creatingServer = false
-		// 	this.server_call_in_progress = false
-		// },
-		handleServerCallError(response){
-			window.alert(response)
-			this.server_status += " (error)"
+		handleServerCallError(error){
+			this.serverStatus = error.message
+			throw new Error(error.message)
 		},
 		onStartRPC(){
 			this.rpcCount += 1
@@ -207,8 +213,8 @@ export default {
 		} 
 	},
   mounted () {
-		// this.refreshServerDetails()
-  }
+	this.fetchServerDetails()
+	}
 }
 </script>
 
