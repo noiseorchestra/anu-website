@@ -88,17 +88,17 @@ export default {
 			}
 		},
 		async refreshDetails() {
-			this.onStartRPC()
 			try {
+				this.onStartRPC()
+				this.ip = null
+				this.fpp = null
+				this.q = null
+				this.ip = await api.getServerIP()
 				const { ip, fpp, q, serverStatus } = await api.fetchServerDetails()
-				this.ip = ip
 				this.fpp = fpp
 				this.q = q
 				this.serverStatus = serverStatus
 			} catch(error) {
-				this.ip = null
-				this.fpp = null
-				this.q = null
 				this.serverStatus = error.message
 			} finally {
 				this.onFinishRPC()
