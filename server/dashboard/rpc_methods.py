@@ -1,13 +1,8 @@
 from modernrpc.core import rpc_method
 from modernrpc.auth.basic import http_basic_auth_login_required
 from fabric import Connection
-import paramiko
 from invoke import Responder
 from environs import Env
-from linode_api4 import LinodeClient
-import schedule
-import time
-import os
 
 env = Env()
 env.read_env()
@@ -134,7 +129,6 @@ def create_server():
         raise RuntimeError("Could not create server")
 
     return linode.ipv4[0]
-
 
 @http_basic_auth_login_required
 @rpc_method
@@ -292,4 +286,3 @@ def restart_jackd(host):
     """
     result = _get_fabric_client(host).run('sudo systemctl restart jackd.service')
     return result.exited
-
