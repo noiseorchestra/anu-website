@@ -1,7 +1,7 @@
 {
     "scripts": {
       "dokku": {
-        "predeploy": "python manage.py collectstatic --noinput",
+        "predeploy": "python /code/server/manage.py collectstatic --noinput",
         "postdeploy": "ssh-keygen -f /root/.ssh/id_rsa -t rsa -N ''"
       }
     }
