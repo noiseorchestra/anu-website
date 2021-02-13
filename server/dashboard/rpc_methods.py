@@ -12,13 +12,8 @@ import os
 env = Env()
 env.read_env()
 
-# if running locally this will be the scripts location relative to the project folder
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-default_server_scripts_path = os.path.join(BASE_DIR, 'dashboard/jacktrip-server-automation/scripts')
-
-# if running in a container then this ENV var should be the path to the mounted volume countaining scripts
-SERVER_SCRIPTS_PATH = env("SERVER_SCRIPTS_PATH", default=default_server_scripts_path)
-
+# hard coded path to script files folder
+SERVER_SCRIPTS_PATH = "/app/storage/jacktrip-server-automation"
 LINODE_PAT = env("LINODE_PAT", default="")
 MAX_LINODES = env("MAX_LINODES", default=0)
 
@@ -73,7 +68,7 @@ def _check_server_status(linodes, host):
 def _delete_all_servers(linodes):
 
     if len(linodes) == 0:
-        RuntimeError("No linodes to delete")
+        raise RuntimeError("No linodes to delete")
     else:
         for linode in linodes:
             print("delete: ", linode.label)
@@ -82,26 +77,26 @@ def _delete_all_servers(linodes):
 
 def _delete_one_server(linodes, host):
 
-    message = "Linode {} could not be found".format(current_linode.ipv4[0])
+    message = "Linode {} could not be found".format(host)
 
     if len(linodes) == 0:
-        RuntimeError("No linodes to delete")
+        raise RuntimeError("No linodes to delete")
     else:
         for linode in linodes:
             if linode.ipv4[0] == host:
                 print("delete: ", linode.label)
                 linode.delete()
-                message = "deleted {}".format(linode.ipv4[0])
-    return message
+                return "deleted {}".format(linode.ipv4[0])
 
-def _upload_files(c, dir_path):
+    raise RuntimeError("Could not find server with this ip {}".format(host))
+
+def _upload_files(c, folder_path, files):
     try:
-        for filename in os.listdir(dir_path):
-            print('Upload: {}/{}'.format(dir_path, filename))
-            result = c.put('{}/{}'.format(dir_path, filename))
-            print("Uploaded {0.local} to {0.remote}".format(result))
+        for filename in files:
+            print('Upload: {}/{}'.format(folder_path, filename))
+            result = c.put('{}/{}'.format(folder_path, filename))
+            # print("Uploaded {0.local} to {0.remote}".format(result))
     except Exception as e:
-        console.log(e)
         RuntimeError("Could not upload install scripts to server")
 
 def _check_exit_string(result):
@@ -113,8 +108,8 @@ def _run_scripts(c):
     c.run('./install.sh')
     c.run('reboot', warn=True)
 
-def _check_max_linode_instances(linodes):
-    if len(linodes) >= int(MAX_LINODES):
+def _check_max_linode_instances(linodes, max):
+    if len(linodes) >= int(max):
         raise RuntimeError("max server number of {} reached".format(MAX_LINODES))
 
 
@@ -133,7 +128,7 @@ def create_server():
     """
 
     linodes = client.linode.instances()
-    _check_max_linode_instances(linodes)
+    _check_max_linode_instances(linodes, MAX_LINODES)
     linode = _init_linode_instance()
 
     if not linode:
@@ -147,18 +142,21 @@ def create_server():
 def upload_scripts(host):
     # Change this to genuine file and pass in ENV vars or strings from NAW db entry
 
-    scripts_path = os.path.join(SERVER_SCRIPTS_PATH, '/scripts')
-    templates_path = os.path.join(SERVER_SCRIPTS_PATH, '/templates')
+    scripts_path = '{}/scripts'.format(SERVER_SCRIPTS_PATH)
+    templates_path = '{}/templates'.format(SERVER_SCRIPTS_PATH)
 
-    if os.path.isfile('{}/darkice.cfg'.format(templates_path)):
+    scripts = os.listdir(scripts_path)
+    templates = os.listdir(templates_path)
+
+    if os.path.isfile('{}/darkice.cfg'.format(SERVER_SCRIPTS_PATH)):
         print ("Darkice config found")
     else:
         raise RuntimeError("Please create custom darkice config file")
 
     c = _get_fabric_client(host)
 
-    _upload_files(c, scripts_path)
-    _upload_files(c, templates_path)
+    _upload_files(c, scripts_path, scripts)
+    _upload_files(c, templates_path, templates)
     c.put('{}/darkice.cfg'.format(templates_path))
 
     _run_scripts(c)
