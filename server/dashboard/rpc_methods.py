@@ -17,6 +17,8 @@ SERVER_SCRIPTS_PATH = "/app/storage/jacktrip-server-automation"
 LINODE_PAT = env("LINODE_PAT", default="")
 MAX_LINODES = env("MAX_LINODES", default=0)
 
+client = LinodeClient('{}'.format(LINODE_PAT))
+
 def _get_fabric_client(host):
     private_key = paramiko.rsakey.RSAKey.from_private_key_file(filename="/root/.ssh/id_rsa")
     return Connection(host, "root", connect_kwargs={
@@ -25,7 +27,6 @@ def _get_fabric_client(host):
     )
 
 def _init_linode_instance():
-    client = LinodeClient('{}'.format(LINODE_PAT))
 
     f = open("/root/.ssh/id_rsa.pub", "r")
     public_key = f.read().rstrip('\n')
