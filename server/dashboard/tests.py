@@ -1,11 +1,15 @@
 from django.test import TestCase
 from django.urls import resolve
+from unittest.mock import Mock
 from .views import dashboard
 from .models import NoiseAudioWeb
 from django.contrib.auth import get_user_model
-
+from  .rpc_methods import (_check_exit_string, _upload_files, _check_max_linode_instances, _get_all_ips, _check_server_status, _delete_all_servers, _delete_one_server, _read_config_file)
+import os
 
 class DashboardTests(TestCase):
+
+# View tests
 
     def setUp(self):
         self.naw = NoiseAudioWeb.objects.create(
@@ -55,3 +59,69 @@ class DashboardTests(TestCase):
             view.func.__name__,
             dashboard.__name__
         )
+
+# API tests
+
+    def test_upload_files(self):
+        c = Mock(spec=["put"])
+        path = "/app/storage/jacktrip-server-automation/scripts"
+        filename = "file1"
+        _upload_files(c, path, [filename])
+        c.put.assert_called_with('{}/{}'.format(path, filename))
+
+    def test_check_max_linode_instances(self):
+        self.assertRaises(RuntimeError, _check_max_linode_instances, ["one", "two"], 1)
+        self.assertRaises(RuntimeError, _check_max_linode_instances, ["one", "two"], 2)
+        _check_max_linode_instances(["one", "two"], 3)
+    
+    def test_get_all_ips(self):
+        self.assertRaises(RuntimeError, _get_all_ips, [])
+        linode = Mock(ipv4=["123,123,123,123"])
+        ips = _get_all_ips([linode])
+        self.assertEqual(ips, ["123,123,123,123"])
+
+    def test_check_server_status(self):
+        with self.assertRaises(RuntimeError, msg="No servers running, try creating one first"):
+            _check_server_status([], "123,123,123,123")
+        linode = Mock(ipv4=["234.234.234.234"])
+        with self.assertRaises(RuntimeError, msg="Could not find server with this ip 234.234.234.234"):
+            _check_server_status([linode], "123,123,123,123")
+        linode = Mock(ipv4=["123,123,123,123"], status="running")
+        status = _check_server_status([linode], "123,123,123,123")
+        self.assertEqual(status, "running")
+
+    def test_delete_all_servers(self):
+        with self.assertRaises(RuntimeError, msg="No linodes to delete"):
+            _delete_all_servers([])
+        linode1 = Mock(spec=["delete"], label="linode1")
+        linode2 = Mock(spec=["delete"], label="linode1")
+        response = _delete_all_servers([linode1, linode2])
+        self.assertEqual(response, "deleted all linodes")
+        linode1.delete.assert_called()
+        linode2.delete.assert_called()    
+        
+    def test_delete_one_server(self):
+        with self.assertRaises(RuntimeError, msg="No linodes to delete"):
+            _delete_one_server([], "123.123.123.123")
+        linode1 = Mock(spec=["delete"], label="linode1", ipv4=["234.234.234.234"])
+        with self.assertRaises(RuntimeError, msg="Could not find server with this ip 123.123.123.123"):
+            _delete_one_server([], "123.123.123.123")
+        linode1 = Mock(spec=["delete"], label="linode1", ipv4=["123.123.123.123"])
+        response = _delete_one_server([linode1], "123.123.123.123")
+        self.assertEqual(response, "deleted 123.123.123.123")
+        linode1.delete.assert_called()
+
+    def test_check_exit_string(self):
+        result_zero = Mock(exited=0)
+        self.assertTrue(_check_exit_string(result_zero))
+        result_non_zero = Mock(exited=1)
+        self.assertFalse(_check_exit_string(result_non_zero))
+
+    def test_read_config_file(self):
+        result = Mock(stdout="first_key=1\nsecond_key=2\nthird_key=3")
+        value = _read_config_file(result, "first_key")
+        self.assertEqual(value, "1")
+        value = _read_config_file(result, "second_key")
+        self.assertEqual(value, "2")
+        value = _read_config_file(result, "third_key")
+        self.assertEqual(value, "3")

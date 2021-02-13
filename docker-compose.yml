@@ -9,6 +9,7 @@ services:
     command: sh launch-dev.sh
     volumes:
       - .:/code
+      - ./jacktrip-server-automation:/app/storage/jacktrip-server-automation
     ports:
       - 8000:8000
     depends_on:

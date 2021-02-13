@@ -1,1 +1,2 @@
-web: gunicorn config.wsgi -b 0.0.0.0:8000 --workers=3
+web: gunicorn config.wsgi -b 0.0.0.0:8000 --workers=3 --threads 2 --reload
+release: python /code/server/manage.py collectstatic --noinput

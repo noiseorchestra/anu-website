@@ -1,179 +1,226 @@
 <template>
-	<div class="api-container">
-		<div class="current-info">
-			<div><h2>JackTrip Hub Server Settings</h2></div>
-			<div class="value-picker jacktrip-queue">
-				<div class="key">JackTrip queue:</div>
-				<div class="values">
-					<div v-bind:class="{'deactivate': busy}" v-for="value in q_values">
-						<button v-bind:class="{'selected': selected_server_settings.jacktrip_q == value}" v-on:click="set_q(value)">{{value}}</button>
-					</div>
-				</div>
-			</div>
-			<div class="value-picker jack-fpp">
-				<div class="key">JACK fpp:</div>
-				<div class="values">
-					<div v-bind:class="{'deactivate': busy}" v-for="value in fpp_values">
-						<button v-bind:class="{'selected': selected_server_settings.jack_fpp == value}" v-on:click="set_fpp(value)">{{value}}</button>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+  <div v-bind:class="{ deactivate: disabled }" class="api-container">
+    <div class="current-info">
+      <div><h2>JackTrip Hub Server Settings</h2></div>
+      <div class="api-container-child jacktrip-queue">
+        <div class="key">JackTrip queue:</div>
+        <div class="values">
+          <div
+            v-bind:key="value"
+            v-bind:class="{ deactivate: !q }"
+            v-for="value in qValues"
+          >
+            <button
+              class="api-button"
+              v-bind:class="{ selected: q == value }"
+              v-on:click="changePyPatcherQ(ip, value)"
+            >
+              {{ value }}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="api-container-child jack-fpp">
+        <div class="key">JACK fpp:</div>
+        <div class="values">
+          <div
+            v-bind:key="value"
+            v-bind:class="{ deactivate: !fpp }"
+            v-for="value in fppValues"
+          >
+            <button
+              class="api-button"
+              v-bind:class="{ selected: fpp == value }"
+              v-on:click="changePyPatcherFpp(ip, value)"
+            >
+              {{ value }}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="api-container-child server-details">
+        <div class="key">Server IP:</div>
+        <div class="values">
+          <div v-if="ip">{{ ip }}</div>
+          <div>
+            <button class="api-button" v-on:click="refreshDetails()">
+              refresh
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="api-container-child server-details">
+        <div class="key">status:</div>
+        <div class="values">
+          <div>{{ serverStatus }}</div>
+        </div>
+      </div>
+      <div class="api-container-child server-automation">
+        <div class="key"></div>
+        <div class="values">
+          <div>
+            <button v-if="!ip" class="api-button" v-on:click="initServer()">
+              new server
+            </button>
+            <button v-else class="api-button" v-on:click="deleteServer()">
+              delete server
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import jsonrpc from 'jsonrpc-lite'
-import axios from 'axios'
+import api from "../../assets/js/dashboardApi.js";
 
 export default {
-  name: 'DashboarApi',
-	data () {
+  name: "DashboardApi",
+  data() {
     return {
-			busy: false,
-			q_values: [4, 6, 8, 10, 12, 14, 16],
-			fpp_values: [64, 128, 256, 512],
-			selected_server_settings: {
-				jack_fpp: null,
-				jacktrip_q: null,
-			},
-      server_settings: {
-				jack_fpp: null,
-				jacktrip_q: null,
-			}
-    }
+      rpcCount: 0,
+      serverStatus: "checking server...",
+      ip: null,
+      q: null,
+      fpp: null,
+      qValues: [4, 6, 8, 10, 12, 14, 16],
+      fppValues: [64, 128, 256, 512],
+    };
   },
-	methods: {
-		set_q(q_value){
-			this.busy = true
-			this.selected_server_settings.jacktrip_q = q_value
-			let requestObj = jsonrpc.request('1', 'set_q', {q_value: q_value})
-			axios
-				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this.handle_set_q(response)))
-		},
-		set_fpp(fpp_value){
-			this.busy = true
-			this.selected_server_settings.jack_fpp = fpp_value
-			let requestObj = jsonrpc.request('1', 'set_fpp', {fpp_value: fpp_value})
-			axios
-				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this.handle_set_fpp(response)))
-		},
-		get_fpp(){
-			let requestObj = jsonrpc.request('1', 'get_fpp')
-			axios
-				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this.handle_get_fpp(response)))
-		},
-		get_q(){
-			let requestObj = jsonrpc.request('1', 'get_q')
-			axios
-				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this.handle_get_q(response)))
-		},
-		restart_jacktrip(){
-			let requestObj = jsonrpc.request('1', 'restart_jacktrip')
-			axios
-				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this.handle_restart_jacktrip(response)))
-		},
-		restart_jackd(){
-			let requestObj = jsonrpc.request('1', 'restart_jackd')
-			axios
-				.post('/dashboard/rpc/', requestObj)
-				.then(response => (this.handle_restart_jackd(response)))
-		},
-		handle_get_fpp(response){
-			// need error checking
-			this.selected_server_settings.jack_fpp = response.data.result
-			this.server_settings.jack_fpp = response.data.result
-		},
-		handle_get_q(response){
-			// need error checking
-			this.selected_server_settings.jacktrip_q = response.data.result
-			this.server_settings.jacktrip_q = response.data.result
-		},
-		handle_set_q(response){
-			// need error checking
-			this.restart_jacktrip()
-		},
-		handle_set_fpp(response){
-			// need error checking
-			this.restart_jackd()
-		},
-		handle_restart_jacktrip(response){
-			// need error checking
-			console.log("JackTrip restarted with response:", response)
-			this.get_q()
-			this.busy = false
-		},
-		handle_restart_jackd(response){
-			// need error checking
-			console.log("JACKD restarted with response:", response)
-			this.get_fpp()
-			this.busy = false
-		},
-	},
-  mounted () {
-		this.get_fpp()
-		this.get_q()
-  }
-}
+  computed: {
+    // a computed getter
+    disabled: function () {
+      // `this` points to the vm instance
+      return this.rpcCount != 0;
+    },
+  },
+  methods: {
+    async initServer() {
+      this.onStartRPC();
+      // create the server
+      try {
+        let host = await api.createServer();
+        // wait for server to boot
+        await this.waitForReady(host);
+        this.serverStatus =
+          "installing dependencies (will take approx. 10mins)";
+        // extra wait to be safe
+        await new Promise((r) => setTimeout(r, 120000));
+        await api.uploadScripts(host);
+        // extra wait while rebooting
+        await new Promise((r) => setTimeout(r, 120000));
+      } catch (error) {
+        this.serverStatus = error.message;
+      } finally {
+        this.refreshDetails();
+        this.onFinishRPC();
+      }
+    },
+    async refreshDetails() {
+      try {
+        this.onStartRPC();
+        this.ip = null;
+        this.fpp = null;
+        this.q = null;
+        this.ip = await api.getServerIP();
+        const { ip, fpp, q, serverStatus } = await api.fetchServerDetails();
+        this.fpp = fpp;
+        this.q = q;
+        this.serverStatus = serverStatus;
+      } catch (error) {
+        this.serverStatus = error.message;
+      } finally {
+        this.onFinishRPC();
+      }
+    },
+    async waitForReady(host, interval = 5000, attempts = 20) {
+      let response,
+        count = 0;
+      while (response !== "running") {
+        count++;
+        response = await api.getServerStatus(host);
+        this.serverStatus = response;
+        if (count == attempts) {
+          throw new Error("Timeout, waited too long for server to boot.");
+        }
+        await new Promise((r) => setTimeout(r, interval));
+      }
+      return response;
+    },
+    async changePyPatcherFpp(host, value) {
+      this.onStartRPC();
+      try {
+        await api.changePyPatcherFpp(host, value);
+      } catch (error) {
+        this.serverStatus = error.message;
+      } finally {
+        this.refreshDetails();
+        this.onFinishRPC();
+      }
+    },
+    async changePyPatcherQ(host, value) {
+      this.onStartRPC();
+      try {
+        await api.changePyPatcherQ(host, value);
+      } catch (error) {
+        this.serverStatus = error.message;
+      } finally {
+        this.refreshDetails();
+        this.onFinishRPC();
+      }
+    },
+    async deleteServer() {
+      this.onStartRPC();
+      try {
+        await api.deleteServer();
+        this.ip = null;
+        this.fpp = null;
+        this.q = null;
+        this.serverStatus = "Server deleted";
+      } catch (error) {
+        this.serverStatus = error.message;
+      } finally {
+        this.onFinishRPC();
+      }
+    },
+    onStartRPC() {
+      this.rpcCount += 1;
+    },
+    onFinishRPC() {
+      this.rpcCount -= 1;
+    },
+  },
+  mounted() {
+    this.refreshDetails();
+  },
+};
 </script>
 
 <style scoped lang="scss">
 @import "@/scss/_variables.scss";
+@import "@/scss/_common.scss";
+@include api-style;
 
-button {
-	font-weight: bold;
-	text-decoration: none;
-	padding-left: 2px;
-	padding-right: 2px;
-	margin-left: 2px;
-	margin-right: 2px;
-	color: map-get($colors, "dark");
-	background-color: map-get($colors, "highlight");
-  border: none;
-	width: 40px;
-  display: inline-block;
-  margin: 4px 2px;
-  cursor: pointer;
+.api-container {
+  display: flex;
+  flex-direction: column;
+  color: map-get($colors, "bright");
+  height: 100%;
 }
 
-.api-container{
-	display: flex;
-	flex-direction: column;
-	color: map-get($colors, "bright");
-	height: 100%;
-}
-
-.value-picker {
-	display: flex;
-	flex-direction: row;
+.api-container-child {
+  display: flex;
+  flex-direction: row;
 }
 
 .key {
-	flex: 0 0 80px;
+  flex: 0 0 80px;
 }
 
 .values {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
-
-.selected {
-	font-weight: bold;
-	background-color: map-get($colors, "bright");
-}
-
-.deactivate {
-	& button {
-		cursor: not-allowed;
-    pointer-events: none;
-		background-color: grey;
-	}
-}
-
 </style>

@@ -2,8 +2,17 @@
   <div class="dashboard-info">
     <div class="title"><h2>{{naw.name}}</h2></div>
     <div class="info">
-      <div v-for="(value, key) in naw">
-        <b>{{key}}</b> : {{value}}
+      <div>
+        <b>name</b> : {{naw.name}}
+      </div>
+      <div>
+        <b>owner</b> : {{naw.owner}}
+      </div>
+      <div>
+        <b>about</b> : {{naw.about}}
+      </div>
+      <div>
+        <b>stream url</b> : {{naw.stream_address}}
       </div>
     </div>
   </div>

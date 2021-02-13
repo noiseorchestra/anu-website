@@ -48,6 +48,7 @@ export default {
 @include base-style;
 @include link-style;
 @include nav-style;
+
 </style>
 
 <style scoped lang="scss">
