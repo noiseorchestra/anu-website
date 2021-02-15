@@ -29,11 +29,11 @@
 
 **ENV vars**
 
-`AWS_ACCESS_KEY_ID=your-storage-access-key-id`
-`AWS_SECRET_ACCESS_KEY=your-storage-access-key`
-`AWS_STORAGE_BUCKET_NAME=your-storage-container-name`
-`LINODE_PAT=your-linode-pat-key`
-`MAX_LINODES=1`
+- `AWS_ACCESS_KEY_ID=your-storage-access-key-id`
+- `AWS_SECRET_ACCESS_KEY=your-storage-access-key`
+- `AWS_STORAGE_BUCKET_NAME=your-storage-container-name`
+- `LINODE_PAT=your-linode-pat-key`
+- `MAX_LINODES=1`
 
 **jacktrip-server-automation API**
 
