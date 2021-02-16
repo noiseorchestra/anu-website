@@ -109,7 +109,7 @@ export default {
         await new Promise((r) => setTimeout(r, 120000));
         await api.uploadScripts(host);
         // extra wait while rebooting
-        await new Promise((r) => setTimeout(r, 120000));
+        await new Promise((r) => setTimeout(r, 180000));
       } catch (error) {
         this.serverStatus = error.message;
       } finally {
