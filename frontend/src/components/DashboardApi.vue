@@ -104,12 +104,13 @@ export default {
         // wait for server to boot
         await this.waitForReady(host);
         this.serverStatus =
-          "installing dependencies (will take approx. 10mins)";
+          "Installing dependencies (will take approx. 10mins)";
         // extra wait to be safe
         await new Promise((r) => setTimeout(r, 120000));
         await api.uploadScripts(host);
         // extra wait while rebooting
-        await new Promise((r) => setTimeout(r, 180000));
+        this.serverStatus = "Installation complete, rebooting server";
+        await new Promise((r) => setTimeout(r, 240000));
       } catch (error) {
         this.serverStatus = error.message;
       } finally {
