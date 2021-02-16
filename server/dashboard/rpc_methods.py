@@ -155,7 +155,7 @@ def upload_scripts(host):
 
     _upload_files(c, scripts_path, scripts)
     _upload_files(c, templates_path, templates)
-    c.put('{}/darkice.cfg'.format(templates_path))
+    c.put('{}/darkice.cfg'.format(SERVER_SCRIPTS_PATH))
 
     _run_scripts(c)
 
