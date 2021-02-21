@@ -1,6 +1,6 @@
 <template>
   <div class="page-content">
-    <PageContent :page="page"></PageContent>
+    <PageContent :page="page" />
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 import PageContent from '@/components/PageContent.vue'
 
 export default {
-  name: 'page',
+  name: 'Page',
   components: {
     PageContent
   },

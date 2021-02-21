@@ -1,10 +1,18 @@
 <template>
   <main>
     <div class="dashboard grid">
-  		<div class="grid-item info"><DashboardInfo :naw="naw"></DashboardInfo></div>
-      <div class="grid-item stream"><DashboardStream/></div>
-  		<div class="grid-item recordings"><DashboardRecordings/></div>
-      <div class="grid-item api"><DashboardApi/></div>
+      <div class="grid-item info">
+        <DashboardInfo :naw="naw" />
+      </div>
+      <div class="grid-item stream">
+        <DashboardStream />
+      </div>
+      <div class="grid-item recordings">
+        <DashboardRecordings />
+      </div>
+      <div class="grid-item api">
+        <DashboardApi />
+      </div>
       <!-- <img src="../assets/anu-background-transparent.png"> -->
     </div>
   </main>
@@ -17,7 +25,7 @@ import DashboardRecordings from '@/components/DashboardRecordings.vue'
 import DashboardApi from '@/components/DashboardApi.vue'
 
 export default {
-  name: 'page',
+  name: 'Page',
   components: {
     DashboardInfo,
     DashboardStream,
