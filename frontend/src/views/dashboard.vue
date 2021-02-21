@@ -19,21 +19,21 @@
 </template>
 
 <script>
-import DashboardInfo from '@/components/DashboardInfo.vue'
-import DashboardStream from '@/components/DashboardStream.vue'
-import DashboardRecordings from '@/components/DashboardRecordings.vue'
-import DashboardApi from '@/components/DashboardApi.vue'
+import DashboardInfo from "@/components/DashboardInfo.vue";
+import DashboardStream from "@/components/DashboardStream.vue";
+import DashboardRecordings from "@/components/DashboardRecordings.vue";
+import DashboardApi from "@/components/DashboardApi.vue";
 
 export default {
-  name: 'Page',
+  name: "Page",
   components: {
     DashboardInfo,
     DashboardStream,
-		DashboardRecordings,
-    DashboardApi
+    DashboardRecordings,
+    DashboardApi,
   },
-	props: {naw: Object},
-}
+  props: { naw: Object },
+};
 </script>
 
 <style scoped lang="scss">
@@ -57,18 +57,18 @@ export default {
 }
 
 .grid-item {
-  outline: 3px solid map-get($colors, "bright");;
+  outline: 3px solid map-get($colors, "bright");
   padding: 2px;
   overflow-y: auto;
 }
 
 @media (min-width: map-get($breakpoints, "medium")) {
-	.grid {
+  .grid {
     grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: 160px;
     padding: 30px;
     padding-top: 40px;
-	}
+  }
   .grid-item {
     padding: 10px;
   }
@@ -77,6 +77,4 @@ export default {
     min-width: 330px;
   }
 }
-
-
 </style>

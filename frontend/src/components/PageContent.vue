@@ -1,23 +1,17 @@
 <template>
-  <div
-    class="page-body"
-    tabindex="0"
-  >
+  <div class="page-body" tabindex="0">
     <div class="text-wrapper">
       <h1>{{ page.title }}</h1>
-      <div
-        class="text"
-        v-html="page.body"
-      />
+      <div class="text" v-html="page.body" />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'PageContent',
-  props: {page: Object},
-}
+  name: "PageContent",
+  props: { page: Object },
+};
 </script>
 
 <style scoped lang="scss">
@@ -45,5 +39,4 @@ export default {
   padding: 20px;
   padding-top: 30px;
 }
-
 </style>

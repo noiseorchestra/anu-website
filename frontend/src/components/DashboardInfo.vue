@@ -4,39 +4,31 @@
       <h2>{{ naw.name }}</h2>
     </div>
     <div class="info">
-      <div>
-        <b>name</b> : {{ naw.name }}
-      </div>
-      <div>
-        <b>owner</b> : {{ naw.owner }}
-      </div>
-      <div>
-        <b>about</b> : {{ naw.about }}
-      </div>
-      <div>
-        <b>stream url</b> : {{ naw.stream_address }}
-      </div>
+      <div><b>name</b> : {{ naw.name }}</div>
+      <div><b>owner</b> : {{ naw.owner }}</div>
+      <div><b>about</b> : {{ naw.about }}</div>
+      <div><b>stream url</b> : {{ naw.stream_address }}</div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'DashboardInfo',
+  name: "DashboardInfo",
   props: {
     naw: {
       type: Object,
-      default: function() {
+      default: function () {
         return {
           name: "Name",
           owner: "Owner",
           about: "about",
           stream_address: "Stream Address",
-        }
-      }
-    }
+        };
+      },
+    },
   },
-}
+};
 </script>
 
 <style lang="scss">
@@ -46,5 +38,4 @@ export default {
   width: 100%;
   overflow-wrap: anywhere;
 }
-
 </style>

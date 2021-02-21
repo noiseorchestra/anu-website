@@ -15,11 +15,7 @@
     <div class="skygod-text">
       <AnuSkyGodText />
     </div>
-    <svg
-      class="skygod"
-      viewBox="0 0 100 100"
-      @click="refreshGifs"
-    >
+    <svg class="skygod" viewBox="0 0 100 100" @click="refreshGifs">
       <use xlink:href="#skygod" />
     </svg>
     <svg
@@ -38,31 +34,31 @@
 </template>
 
 <script>
-import AnuGif from '@/components/AnuGif.vue'
-import AnuSkyGodText from '@/components/AnuSkyGodText.vue'
+import AnuGif from "@/components/AnuGif.vue";
+import AnuSkyGodText from "@/components/AnuSkyGodText.vue";
 
 export default {
-  name: 'AnuSkyGod',
-	components: {
-		AnuGif,
-		AnuSkyGodText
-	},
-	data () {
-    return {
-      image: require('../../assets/anu-line-small.png'),
-      gif: require('../../assets/anu.gif'),
-			changeGifs: true
-    }
+  name: "AnuSkyGod",
+  components: {
+    AnuGif,
+    AnuSkyGodText,
   },
-	methods: {
-		refreshGifs () {
-			this.changeGifs = false
-			this.$nextTick(() => {
-				this.changeGifs = true
-			})
-		}
-	}
-}
+  data() {
+    return {
+      image: require("../../assets/anu-line-small.png"),
+      gif: require("../../assets/anu.gif"),
+      changeGifs: true,
+    };
+  },
+  methods: {
+    refreshGifs() {
+      this.changeGifs = false;
+      this.$nextTick(() => {
+        this.changeGifs = true;
+      });
+    },
+  },
+};
 </script>
 
 <style lang="scss">
@@ -73,34 +69,33 @@ export default {
 @import "@/scss/_variables.scss";
 
 .skygod-text {
-	position: fixed;
-	top: 0px;
-	left: 0px;
-	z-index: -100;
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: -100;
 }
 
 .bg-overlay {
-	position: fixed;
-	top: 0px;
-	left: 0px;
-	z-index: -2000;
-	height: 100vh;
-	width: 100vw;
-	background-color: map-get($colors, "bright");
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: -2000;
+  height: 100vh;
+  width: 100vw;
+  background-color: map-get($colors, "bright");
 }
 
 .defs-only {
-	position: fixed;
-	left: -100px;
+  position: fixed;
+  left: -100px;
 }
 
 .skygod {
-	position: fixed;
-	top: 10vh;
-	left: 10vw;
-	height: 80vh;
-	width: 80vw;
-	fill: map-get($colors, "dark");
+  position: fixed;
+  top: 10vh;
+  left: 10vw;
+  height: 80vh;
+  width: 80vw;
+  fill: map-get($colors, "dark");
 }
-
 </style>

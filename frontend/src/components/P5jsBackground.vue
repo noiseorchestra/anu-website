@@ -3,15 +3,15 @@
 </template>
 
 <script>
-import P5 from 'p5'
+import P5 from "p5";
 
 export default {
-  name: 'P5jsBackground',
-  data: function() {
-    return {sketch: null}
+  name: "P5jsBackground",
+  data: function () {
+    return { sketch: null };
   },
   created: function () {
-    const sketch = s => {
+    const sketch = (s) => {
       let fr = 1;
 
       let ORANGE;
@@ -29,65 +29,100 @@ export default {
       let STONE;
 
       s.preload = () => {
-        SHUKOV = s.loadImage (require('../../assets/SHUKOV.png'));
-        METRO = s.loadImage (require('../../assets/METRO.png'))
-        ORANGE = s.loadImage (require('../../assets/ORANGE.png'));
-        CACTUS = s.loadImage (require('../../assets/CACTUS.png'));
-        CAM = s.loadImage (require('../../assets/CAM.png'));
-        COSMOS =s.loadImage (require('../../assets/COSMOS.png'));
-        CRYS = s.loadImage (require('../../assets/CRYS.png'));
-        MILL = s.loadImage (require('../../assets/MILL.png'));
-        MOSCOW = s.loadImage (require('../../assets/MOSCOW.png'));
-        LIGHT = s.loadImage (require('../../assets/LIGHT.png'));
-        HIRO = s.loadImage (require('../../assets/HIRO.png'));
-        TABLET = s.loadImage (require('../../assets/TABLET.png'));
-        STONE = s.loadImage (require('../../assets/STONE.png'));
-      }
+        SHUKOV = s.loadImage(require("../../assets/SHUKOV.png"));
+        METRO = s.loadImage(require("../../assets/METRO.png"));
+        ORANGE = s.loadImage(require("../../assets/ORANGE.png"));
+        CACTUS = s.loadImage(require("../../assets/CACTUS.png"));
+        CAM = s.loadImage(require("../../assets/CAM.png"));
+        COSMOS = s.loadImage(require("../../assets/COSMOS.png"));
+        CRYS = s.loadImage(require("../../assets/CRYS.png"));
+        MILL = s.loadImage(require("../../assets/MILL.png"));
+        MOSCOW = s.loadImage(require("../../assets/MOSCOW.png"));
+        LIGHT = s.loadImage(require("../../assets/LIGHT.png"));
+        HIRO = s.loadImage(require("../../assets/HIRO.png"));
+        TABLET = s.loadImage(require("../../assets/TABLET.png"));
+        STONE = s.loadImage(require("../../assets/STONE.png"));
+      };
 
       s.setup = () => {
         s.createCanvas(window.innerWidth, window.innerHeight + 100);
         s.frameRate(fr);
-      }
+      };
 
       s.draw = () => {
-        let width = window.innerWidth + 200
-        let height = window.innerHeight + 200
+        let width = window.innerWidth + 200;
+        let height = window.innerHeight + 200;
         s.clear();
         s.background(220, 10);
-        s.image(SHUKOV,s.random(width) - 200,s.random(height) - 200,180,180);
-        s.image (METRO,s.random(width) - 200,s.random(height) - 200,200,180);
-        s.image (ORANGE,s.random(width) - 200,s.random(height) - 200,150,150);
-        s.image (CACTUS, s.random (width) - 200,s.random(height) - 200,200,200);
-        s.image (CAM, s.random (width) - 200,s.random(height) - 200,200,200);
-        s.image (COSMOS, s.random (width) - 200,s.random(height) - 200,200,200);
-        s.image (CRYS,s.random (width) - 200,s.random(height) - 200,200,200);
-        s.image (MILL,s.random (width) - 200,s.random(height) - 200,200,200);
-        s.image (MOSCOW,s.random (width) - 200,s.random(height) - 200,200,200);
-        s.image (LIGHT,s.random (width) - 200,s.random(height) - 200,200,200);
-        s.image (HIRO,s.random (width) - 200,s.random(height) - 200,300,285);
-        s.image (TABLET,s.random (width) - 200,s.random(height) - 200,200,200);
-        s.image (STONE,s.random (width) - 200,s.random(height) - 200,170,230);
-      }
-      this.sketch = s
-    }
-    let canvas = new P5(sketch, 'canvas');
+        s.image(
+          SHUKOV,
+          s.random(width) - 200,
+          s.random(height) - 200,
+          180,
+          180
+        );
+        s.image(METRO, s.random(width) - 200, s.random(height) - 200, 200, 180);
+        s.image(
+          ORANGE,
+          s.random(width) - 200,
+          s.random(height) - 200,
+          150,
+          150
+        );
+        s.image(
+          CACTUS,
+          s.random(width) - 200,
+          s.random(height) - 200,
+          200,
+          200
+        );
+        s.image(CAM, s.random(width) - 200, s.random(height) - 200, 200, 200);
+        s.image(
+          COSMOS,
+          s.random(width) - 200,
+          s.random(height) - 200,
+          200,
+          200
+        );
+        s.image(CRYS, s.random(width) - 200, s.random(height) - 200, 200, 200);
+        s.image(MILL, s.random(width) - 200, s.random(height) - 200, 200, 200);
+        s.image(
+          MOSCOW,
+          s.random(width) - 200,
+          s.random(height) - 200,
+          200,
+          200
+        );
+        s.image(LIGHT, s.random(width) - 200, s.random(height) - 200, 200, 200);
+        s.image(HIRO, s.random(width) - 200, s.random(height) - 200, 300, 285);
+        s.image(
+          TABLET,
+          s.random(width) - 200,
+          s.random(height) - 200,
+          200,
+          200
+        );
+        s.image(STONE, s.random(width) - 200, s.random(height) - 200, 170, 230);
+      };
+      this.sketch = s;
+    };
+    let canvas = new P5(sketch, "canvas");
   },
   mounted() {
-    window.addEventListener('resize', this.handleResize);
+    window.addEventListener("resize", this.handleResize);
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener("resize", this.handleResize);
   },
   methods: {
     handleResize: function () {
       // Calculate new canvas size based on window
       this.$nextTick(() => {
-        this.sketch.resizeCanvas(window.innerWidth, window.innerHeight)
-      })
+        this.sketch.resizeCanvas(window.innerWidth, window.innerHeight);
+      });
     },
-  }
-}
-
+  },
+};
 </script>
 
 <style scoped>

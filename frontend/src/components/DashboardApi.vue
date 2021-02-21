@@ -1,14 +1,9 @@
 <template>
-  <div
-    :class="{ deactivate: disabled }"
-    class="api-container"
-  >
+  <div :class="{ deactivate: disabled }" class="api-container">
     <div class="current-info">
       <div><h2>JackTrip Hub Server Settings</h2></div>
       <div class="api-container-child jacktrip-queue">
-        <div class="key">
-          JackTrip queue:
-        </div>
+        <div class="key">JackTrip queue:</div>
         <div class="values">
           <div
             v-for="value in qValues"
@@ -26,9 +21,7 @@
         </div>
       </div>
       <div class="api-container-child jack-fpp">
-        <div class="key">
-          JACK fpp:
-        </div>
+        <div class="key">JACK fpp:</div>
         <div class="values">
           <div
             v-for="value in fppValues"
@@ -46,27 +39,20 @@
         </div>
       </div>
       <div class="api-container-child server-details">
-        <div class="key">
-          Server IP:
-        </div>
+        <div class="key">Server IP:</div>
         <div class="values">
           <div v-if="ip">
             {{ ip }}
           </div>
           <div>
-            <button
-              class="api-button"
-              @click="refreshDetails()"
-            >
+            <button class="api-button" @click="refreshDetails()">
               refresh
             </button>
           </div>
         </div>
       </div>
       <div class="api-container-child server-details">
-        <div class="key">
-          status:
-        </div>
+        <div class="key">status:</div>
         <div class="values">
           <div>{{ serverStatus }}</div>
         </div>
@@ -75,18 +61,10 @@
         <div class="key" />
         <div class="values">
           <div>
-            <button
-              v-if="!ip"
-              class="api-button"
-              @click="initServer()"
-            >
+            <button v-if="!ip" class="api-button" @click="initServer()">
               new server
             </button>
-            <button
-              v-else
-              class="api-button"
-              @click="deleteServer()"
-            >
+            <button v-else class="api-button" @click="deleteServer()">
               delete server
             </button>
           </div>

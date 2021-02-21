@@ -5,15 +5,15 @@
 </template>
 
 <script>
-import PageContent from '@/components/PageContent.vue'
+import PageContent from "@/components/PageContent.vue";
 
 export default {
-  name: 'Page',
+  name: "Page",
   components: {
-    PageContent
+    PageContent,
   },
-	props: {page: Object},
-}
+  props: { page: Object },
+};
 </script>
 
 <style scoped lang="scss">
@@ -44,5 +44,4 @@ export default {
   overflow-y: auto;
   // max-height: 100%;
 }
-
 </style>
