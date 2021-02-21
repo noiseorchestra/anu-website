@@ -1,10 +1,10 @@
 <template>
   <div class="home-container">
     <div @click="shouldShowLogo=false">
-      <BackgroundLogo v-if="shouldShowLogo"/>
+      <BackgroundLogo v-if="shouldShowLogo" />
       <div v-else>
         <div>
-          <AnuSkyGod/>
+          <AnuSkyGod />
         </div>
       </div>
     </div>
@@ -14,14 +14,12 @@
 <script>
 import BackgroundLogo from '@/components/BackgroundLogo.vue'
 import AnuSkyGod from '@/components/AnuSkyGod.vue'
-import AnuSkyGodText from '@/components/AnuSkyGodText.vue'
 
 export default {
   name: 'Home',
   components: {
     BackgroundLogo,
     AnuSkyGod,
-    AnuSkyGodText
   },
   data () {
     return {shouldShowLogo: true}

@@ -1,16 +1,41 @@
 <template>
-	<div class="recordings-container">
-		<h2>Recordings</h2>
-		<div class="recordings-item" v-for="recording in recordings">
-			<div class="recordings-item-content with-player" v-if="recording.url">
-				<div class="recordings-item-content-child player" player><audio v-bind:src="recording.url" controls="true"/></div>
-				<div class="recordings-item-content-child button"><a v-bind:href="recording.url">download</a></div>
-			</div>
-			<div class="recordings-item-content no-player" v-else>
-				<div class="recordings-item-content-child"><a href="#0" v-on:click="get_download_url(recording.file)">{{ recording.dateTime }}</a></div>
-			</div>
-	  </div>
-	</div>
+  <div class="recordings-container">
+    <h2>Recordings</h2>
+    <div
+      v-for="recording in recordings"
+      :key="recording.url"
+      class="recordings-item"
+    >
+      <div
+        v-if="recording.url"
+        class="recordings-item-content with-player"
+      >
+        <div
+          class="recordings-item-content-child player"
+          player
+        >
+          <audio
+            :src="recording.url"
+            controls="true"
+          />
+        </div>
+        <div class="recordings-item-content-child button">
+          <a :href="recording.url">download</a>
+        </div>
+      </div>
+      <div
+        v-else
+        class="recordings-item-content no-player"
+      >
+        <div class="recordings-item-content-child">
+          <a
+            href="#0"
+            @click="get_download_url(recording.file)"
+          >{{ recording.dateTime }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -23,6 +48,11 @@ export default {
       recordings: null,
 			download_links: [],
     }
+  },
+  mounted () {
+    axios
+      .get('/dashboard/recordings')
+      .then(response => (this.set_recordings(response.data.recordings)))
   },
 	methods: {
 		set_recordings(recordings) {
@@ -54,12 +84,7 @@ export default {
 			console.log(date.toLocaleString())
 			return date.toLocaleString()
 		}
-	},
-  mounted () {
-    axios
-      .get('/dashboard/recordings')
-      .then(response => (this.set_recordings(response.data.recordings)))
-  }
+	}
 }
 </script>
 

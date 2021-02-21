@@ -1,17 +1,20 @@
 <template>
-	<transition name="fade">
-	  <div title="text" v-if="show">
-			<p>Dedicated to the Ancient Ones, to the Sky Anu, Lord of Future who rides on a whispering south wind, to Addu, easier of storms who can fill the sky with brightness, to Indra and Thor for electricity burnt across the night sky, to Malah, Lord of Courage and Bravery, to Zahgurim whose number is twenty three, to Itzamna, Spirit of Early Mists and Showers, to Ixel Chel, the Spider-that-catches-the dew-of-Morning, to Kak U Pacat, who works in fire, to Schmuun, the Silent One, to the serpent Ouroboros, who encircles us all, to Pan, God of Panic, to the nameless gods of dispersal and emptiness, to Armillaria Ostoyae, endless formless network under our feet, to Hassan I Sabbah, Master of Rap Assasins.</p>
+  <transition name="fade">
+    <div
+      v-if="show"
+      title="text"
+    >
+      <p>Dedicated to the Ancient Ones, to the Sky Anu, Lord of Future who rides on a whispering south wind, to Addu, easier of storms who can fill the sky with brightness, to Indra and Thor for electricity burnt across the night sky, to Malah, Lord of Courage and Bravery, to Zahgurim whose number is twenty three, to Itzamna, Spirit of Early Mists and Showers, to Ixel Chel, the Spider-that-catches-the dew-of-Morning, to Kak U Pacat, who works in fire, to Schmuun, the Silent One, to the serpent Ouroboros, who encircles us all, to Pan, God of Panic, to the nameless gods of dispersal and emptiness, to Armillaria Ostoyae, endless formless network under our feet, to Hassan I Sabbah, Master of Rap Assasins.</p>
 
-			<p>“Who grabbed a corner of the sky and thunder and lighting tore as they pulled it back and revealed what was underneath…”</p>
+      <p>“Who grabbed a corner of the sky and thunder and lighting tore as they pulled it back and revealed what was underneath…”</p>
 
-			<p>To all the scribes and artists and practitioners of magic through whom these spirits have been manifested…</p>
+      <p>To all the scribes and artists and practitioners of magic through whom these spirits have been manifested…</p>
 
-			<p>NOTHING IS TRUE. EVERYTHING IS PERMITTED</p>
+      <p>NOTHING IS TRUE. EVERYTHING IS PERMITTED</p>
 
-			<p>After William S Burroughs’ Cities of the Red Night</p>
-		</div>
-	</transition>
+      <p>After William S Burroughs’ Cities of the Red Night</p>
+    </div>
+  </transition>
 </template>
 
 <script>

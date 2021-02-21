@@ -1,9 +1,18 @@
 <template>
-	<div class="footer-content">
-		<a class="nav-link" href="https://noiseorchestra.org/">Noise Orchestra</a> -
-		<a class="nav-link" href="https://github.com/noiseorchestra">GitHub</a> -
-		<a class="nav-link" href="/contact">Contact</a>
-	</div>
+  <div class="footer-content">
+    <a
+      class="nav-link"
+      href="https://noiseorchestra.org/"
+    >Noise Orchestra</a> -
+    <a
+      class="nav-link"
+      href="https://github.com/noiseorchestra"
+    >GitHub</a> -
+    <a
+      class="nav-link"
+      href="/contact"
+    >Contact</a>
+  </div>
 </template>
 
 <script>

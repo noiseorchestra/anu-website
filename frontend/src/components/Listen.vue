@@ -1,9 +1,15 @@
 <template>
   <div class="listen-wrapper">
     <div class="listen grid">
-      <div class="grid-item upcomming"><ListenStreamEvents/></div>
-  		<div class="grid-item stream"><DashboardStream/></div>
-			<div class="grid-item recordings"><ListenRecordings/></div>
+      <div class="grid-item upcomming">
+        <ListenStreamEvents />
+      </div>
+      <div class="grid-item stream">
+        <DashboardStream />
+      </div>
+      <div class="grid-item recordings">
+        <ListenRecordings />
+      </div>
       <!-- <img src="../assets/anu-background-transparent.png"> -->
     </div>
   </div>
@@ -15,7 +21,7 @@ import ListenStreamEvents from '@/components/ListenStreamEvents.vue'
 import DashboardStream from '@/components/DashboardStream.vue'
 
 export default {
-  name: 'page',
+  name: 'Page',
   components: {
 		ListenRecordings,
 		ListenStreamEvents,

@@ -1,49 +1,90 @@
 <template>
-	<nav id="desktop-nav" aria-label="standard-nav-bar" role="navigation">
-		<ul>
-			<li v-for="route in routes" v-if="route.title == 'Home'">
-				<router-link class="nav-link" :key="`/${route.slug}`" :to="`/${route.slug}`">
-					{{route.title}}
-				</router-link>
-			</li>
-			<li>
-				<a class="nav-link nonav" href="#">
-					About
-				</a>
-				<ul class="dropdown">
-					<li v-for="route in routes" v-if="route.nav_parents == 'About'">
-						<router-link class="nav-link" :key="`/${route.slug}`" :to="`/${route.slug}`">
-							{{route.title}}
-						</router-link>
-					</li>
-				</ul>
-			</li>
-			<li>
-				<a class="nav-link nonav" href="#">
-					How To
-				</a>
-				<ul class="dropdown">
-					<li v-for="route in routes" v-if="route.nav_parents == 'How To'">
-						<router-link class="nav-link" :key="`/${route.slug}`" :to="`/${route.slug}`">
-							{{route.title}}
-						</router-link>
-					</li>
-				</ul>
-			</li>
-			<!-- <li v-for="route in routes" v-if="route.title == 'Listen'">
+  <nav
+    id="desktop-nav"
+    aria-label="standard-nav-bar"
+    role="navigation"
+  >
+    <ul>
+      <li
+        v-for="route in routes"
+        v-if="route.title == 'Home'"
+        :key="route.slug"
+      >
+        <router-link
+          :key="`/${route.slug}`"
+          class="nav-link"
+          :to="`/${route.slug}`"
+        >
+          {{ route.title }}
+        </router-link>
+      </li>
+      <li>
+        <a
+          class="nav-link nonav"
+          href="#"
+        >
+          About
+        </a>
+        <ul class="dropdown">
+          <li
+            v-for="route in routes"
+            v-if="route.nav_parents == 'About'"
+            :key="route.slug"
+          >
+            <router-link
+              :key="`/${route.slug}`"
+              class="nav-link"
+              :to="`/${route.slug}`"
+            >
+              {{ route.title }}
+            </router-link>
+          </li>
+        </ul>
+      </li>
+      <li>
+        <a
+          class="nav-link nonav"
+          href="#"
+        >
+          How To
+        </a>
+        <ul class="dropdown">
+          <li
+            v-for="route in routes"
+            v-if="route.nav_parents == 'How To'"
+            :key="route.slug"
+          >
+            <router-link
+              :key="`/${route.slug}`"
+              class="nav-link"
+              :to="`/${route.slug}`"
+            >
+              {{ route.title }}
+            </router-link>
+          </li>
+        </ul>
+      </li>
+      <!-- <li v-for="route in routes" v-if="route.title == 'Listen'">
 				<router-link class="nav-link" :key="`/${route.slug}`" :to="`/${route.slug}`">
 					{{route.title}}
 				</router-link>
 			</li> -->
-		</ul>
-	</nav>
+    </ul>
+  </nav>
 </template>
 
 <script>
 export default {
   name: 'NavBar',
   props: {
-    routes: Array
+    routes: {
+      type: Array,
+      default: function() { return [{
+        name: "Home",
+        slug: "home",
+        nav_parents:""
+      }]}
+    }
   },
 }
 </script>

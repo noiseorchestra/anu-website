@@ -1,14 +1,24 @@
 <template>
-	<div class="stream-events-container">
-		<h2>Upcomming Live-Streams</h2>
-		<div class="stream-events-item" v-for="event in events">
-			<div class="stream-events-item-content with-player">
-				<div class="stream-events-item-content-child player"><a v-bind:href="event.link">{{event.title}}</a><b></b></div>
-				<div class="stream-events-item-content-child date">{{event.date}}</div>
-				<div class="stream-events-item-content-child info">{{event.info}}</div>
-			</div>
-	  </div>
-	</div>
+  <div class="stream-events-container">
+    <h2>Upcomming Live-Streams</h2>
+    <div
+      v-for="event in events"
+      :key="event.date"
+      class="stream-events-item"
+    >
+      <div class="stream-events-item-content with-player">
+        <div class="stream-events-item-content-child player">
+          <a :href="event.link">{{ event.title }}</a><b />
+        </div>
+        <div class="stream-events-item-content-child date">
+          {{ event.date }}
+        </div>
+        <div class="stream-events-item-content-child info">
+          {{ event.info }}
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -21,6 +31,11 @@ export default {
       events: null,
     }
   },
+  mounted () {
+    axios
+      .get('/sounds/events')
+      .then(response => (this.set_stream_events(response.data)))
+  },
 	methods: {
 		set_stream_events(events) {
 			events.forEach((event, i) => {
@@ -29,12 +44,7 @@ export default {
 			});
 			this.events = events
 		},
-	},
-  mounted () {
-    axios
-      .get('/sounds/events')
-      .then(response => (this.set_stream_events(response.data)))
-  }
+	}
 }
 </script>
 

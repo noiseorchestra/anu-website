@@ -1,7 +1,11 @@
 <template>
-	<div id="logo">
-	  <img id="background-logo" alt="ANU logo" v-bind:src="image"></img>
-	</div>
+  <div id="logo">
+    <img
+      id="background-logo"
+      alt="ANU logo"
+      :src="image"
+    >
+  </div>
 </template>
 
 <script>

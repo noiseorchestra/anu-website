@@ -1,14 +1,24 @@
 <template>
-	<div class="recordings-container">
-		<h2>Recordings</h2>
-		<div class="recordings-item" v-for="recording in recordings">
-			<div class="recordings-item-content with-player">
-				<div class="recordings-item-content-child player"><a v-bind:href="recording.link">{{recording.title}}</a><b></b></div>
-				<div class="recordings-item-content-child date">{{recording.date}}</div>
-				<div class="recordings-item-content-child info">{{recording.info}}</div>
-			</div>
-	  </div>
-	</div>
+  <div class="recordings-container">
+    <h2>Recordings</h2>
+    <div
+      v-for="recording in recordings"
+      :key="recording.date"
+      class="recordings-item"
+    >
+      <div class="recordings-item-content with-player">
+        <div class="recordings-item-content-child player">
+          <a :href="recording.link">{{ recording.title }}</a><b />
+        </div>
+        <div class="recordings-item-content-child date">
+          {{ recording.date }}
+        </div>
+        <div class="recordings-item-content-child info">
+          {{ recording.info }}
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -21,6 +31,11 @@ export default {
       recordings: null,
     }
   },
+  mounted () {
+    axios
+      .get('/sounds/recordings')
+      .then(response => (this.set_recordings(response.data)))
+  },
 	methods: {
 		set_recordings(recordings) {
 			recordings.forEach((recording, i) => {
@@ -29,12 +44,7 @@ export default {
 			});
 			this.recordings = recordings
 		},
-	},
-  mounted () {
-    axios
-      .get('/sounds/recordings')
-      .then(response => (this.set_recordings(response.data)))
-  }
+	}
 }
 </script>
 

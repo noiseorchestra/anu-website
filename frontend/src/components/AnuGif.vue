@@ -1,5 +1,14 @@
 <template>
-  <div class="anu-img" v-bind:class="{blink: blink}" v-bind:style="{top:top + 'px', left:left + 'px'}"><img alt="ANU gif" v-bind:src="src"></img></div>
+  <div
+    class="anu-img"
+    :class="{blink: blink}"
+    :style="{top:top + 'px', left:left + 'px'}"
+  >
+    <img
+      alt="ANU gif"
+      :src="src"
+    >
+  </div>
 </template>
 
 <script>

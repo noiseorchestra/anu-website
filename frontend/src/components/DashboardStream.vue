@@ -1,8 +1,11 @@
 <template>
-	<section class="live-stream">
-		<h2>Live Stream</h2>
-		<audio src="https://icecast.autonomousnoiseunit.co.uk/stream" controls="true"/>
-	</section>
+  <section class="live-stream">
+    <h2>Live Stream</h2>
+    <audio
+      src="https://icecast.autonomousnoiseunit.co.uk/stream"
+      controls="true"
+    />
+  </section>
 </template>
 
 <script>

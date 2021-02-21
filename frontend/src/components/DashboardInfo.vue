@@ -1,18 +1,20 @@
 <template>
   <div class="dashboard-info">
-    <div class="title"><h2>{{naw.name}}</h2></div>
+    <div class="title">
+      <h2>{{ naw.name }}</h2>
+    </div>
     <div class="info">
       <div>
-        <b>name</b> : {{naw.name}}
+        <b>name</b> : {{ naw.name }}
       </div>
       <div>
-        <b>owner</b> : {{naw.owner}}
+        <b>owner</b> : {{ naw.owner }}
       </div>
       <div>
-        <b>about</b> : {{naw.about}}
+        <b>about</b> : {{ naw.about }}
       </div>
       <div>
-        <b>stream url</b> : {{naw.stream_address}}
+        <b>stream url</b> : {{ naw.stream_address }}
       </div>
     </div>
   </div>
@@ -21,7 +23,19 @@
 <script>
 export default {
   name: 'DashboardInfo',
-  props: {naw: Object},
+  props: {
+    naw: {
+      type: Object,
+      default: function() {
+        return {
+          name: "Name",
+          owner: "Owner",
+          about: "about",
+          stream_address: "Stream Address",
+        }
+      }
+    }
+  },
 }
 </script>
 

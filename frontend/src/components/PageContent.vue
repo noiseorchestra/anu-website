@@ -1,10 +1,16 @@
 <template>
-  <div class="page-body" tabindex="0">
+  <div
+    class="page-body"
+    tabindex="0"
+  >
     <div class="text-wrapper">
-    <h1>{{page.title}}</h1>
-      <div class="text" v-html="page.body"></div>
+      <h1>{{ page.title }}</h1>
+      <div
+        class="text"
+        v-html="page.body"
+      />
     </div>
-    </div>
+  </div>
 </template>
 
 <script>

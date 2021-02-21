@@ -1,5 +1,5 @@
 <template>
-  <div id="canvas"></div>
+  <div id="canvas" />
 </template>
 
 <script>
@@ -75,6 +75,9 @@ export default {
   mounted() {
     window.addEventListener('resize', this.handleResize);
   },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
+  },
   methods: {
     handleResize: function () {
       // Calculate new canvas size based on window
@@ -82,9 +85,6 @@ export default {
         this.sketch.resizeCanvas(window.innerWidth, window.innerHeight)
       })
     },
-  },
-  beforeDestroy() {
-    window.removeEventListener('resize', this.handleResize);
   }
 }
 

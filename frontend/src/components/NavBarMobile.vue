@@ -1,39 +1,82 @@
 <template>
-	<span class="mobile-nav-wrapper">
-	  <Slide v-bind:width="width" :closeOnNavigation="true">
-			<div id="mobile-nav" aria-label="mobile-nav-bar">
-				<div class="nav-item" v-for="route in routes">
-					<router-link class="nav-link" v-if="route.title == 'Home'" :key="`/${route.slug}`" :to="`/${route.slug}`">
-						{{route.title}}
-					</router-link>
-				</div>
-				<div class="nav-item header no-nav"><a class="nav-link">About</a></div>
-				<div class="nav-items">
-					<div class="nav-item" v-for="route in routes">
-						<router-link class="nav-link" v-if="route.nav_parents == 'About'" :key="`/${route.slug}`" :to="`/${route.slug}`">
-							{{route.title}}
-						</router-link>
-					</div>
-				</div>
-				<div class="nav-item header no-nav"><a class="nav-link">How To</a></div>
-				<div class="nav-items">
-					<div class="nav-item" v-for="route in routes">
-						<router-link class="nav-link" v-if="route.nav_parents == 'How To'" :key="`/${route.slug}`" :to="`/${route.slug}`">
-							{{route.title}}
-						</router-link>
-					</div>
-				</div>
-			</div>
-	  </Slide>
-	</span>
+  <span class="mobile-nav-wrapper">
+    <Slide
+      :width="width"
+      :close-on-navigation="true"
+    >
+      <div
+        id="mobile-nav"
+        aria-label="mobile-nav-bar"
+      >
+        <div
+          v-for="route in routes"
+          :key="route.slug"
+          class="nav-item"
+        >
+          <router-link
+            v-if="route.title == 'Home'"
+            :key="`/${route.slug}`"
+            class="nav-link"
+            :to="`/${route.slug}`"
+          >
+            {{ route.title }}
+          </router-link>
+        </div>
+        <div class="nav-item header no-nav"><a class="nav-link">About</a></div>
+        <div class="nav-items">
+          <div
+            v-for="route in routes"
+            :key="route.slug"
+            class="nav-item"
+          >
+            <router-link
+              v-if="route.nav_parents == 'About'"
+              :key="`/${route.slug}`"
+              class="nav-link"
+              :to="`/${route.slug}`"
+            >
+              {{ route.title }}
+            </router-link>
+          </div>
+        </div>
+        <div class="nav-item header no-nav"><a class="nav-link">How To</a></div>
+        <div class="nav-items">
+          <div
+            v-for="route in routes"
+            :key="route.slug"
+            class="nav-item"
+          >
+            <router-link
+              v-if="route.nav_parents == 'How To'"
+              :key="`/${route.slug}`"
+              class="nav-link"
+              :to="`/${route.slug}`"
+            >
+              {{ route.title }}
+            </router-link>
+          </div>
+        </div>
+      </div>
+    </Slide>
+  </span>
 </template>
 <script>
 import { Slide } from 'vue-burger-menu'  // import the CSS transitions you wish to use, in this case we are using `Slide`
 
 export default {
 	name: 'NavBar',
+  components: {
+      Slide
+  },
 	props: {
-		routes: Array
+    routes: {
+      type: Array,
+      default: function() { return [{
+        name: "Home",
+        slug: "home",
+        nav_parents:""
+      }]}
+    }
 	},
 	computed: {
 		width() {
@@ -43,10 +86,7 @@ export default {
 				return "400"
 			}
 		}
-	},
-  components: {
-      Slide
-  }
+	}
 }
 </script>
 
