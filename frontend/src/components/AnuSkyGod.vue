@@ -34,19 +34,19 @@
 </template>
 
 <script>
-import AnuGif from "@/components/AnuGif.vue";
-import AnuSkyGodText from "@/components/AnuSkyGodText.vue";
+import AnuGif from '@/components/AnuGif.vue';
+import AnuSkyGodText from '@/components/AnuSkyGodText.vue';
 
 export default {
-  name: "AnuSkyGod",
+  name: 'AnuSkyGod',
   components: {
     AnuGif,
     AnuSkyGodText,
   },
   data() {
     return {
-      image: require("../../assets/anu-line-small.png"),
-      gif: require("../../assets/anu.gif"),
+      image: require('../../assets/anu-line-small.png'),
+      gif: require('../../assets/anu.gif'),
       changeGifs: true,
     };
   },
@@ -62,11 +62,11 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/scss/_variables.scss";
+@import '@/scss/_variables.scss';
 </style>
 
 <style scoped lang="scss">
-@import "@/scss/_variables.scss";
+@import '@/scss/_variables.scss';
 
 .skygod-text {
   position: fixed;
@@ -82,7 +82,7 @@ export default {
   z-index: -2000;
   height: 100vh;
   width: 100vw;
-  background-color: map-get($colors, "bright");
+  background-color: map-get($colors, 'bright');
 }
 
 .defs-only {
@@ -96,6 +96,6 @@ export default {
   left: 10vw;
   height: 80vh;
   width: 80vw;
-  fill: map-get($colors, "dark");
+  fill: map-get($colors, 'dark');
 }
 </style>

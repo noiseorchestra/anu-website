@@ -10,14 +10,14 @@
 
 <script>
 export default {
-  name: "DashboardStream",
+  name: 'DashboardStream',
 };
 </script>
 
 <style scoped lang="scss">
-@import "@/scss/_variables.scss";
+@import '@/scss/_variables.scss';
 
 .live-stream {
-  color: map-get($colors, "bright");
+  color: map-get($colors, 'bright');
 }
 </style>

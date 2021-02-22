@@ -9,20 +9,20 @@
 
 <script>
 export default {
-  name: "PageContent",
+  name: 'PageContent',
   props: { page: Object },
 };
 </script>
 
 <style scoped lang="scss">
-@import "@/scss/_variables.scss";
+@import '@/scss/_variables.scss';
 
 .page-body {
   .text {
     display: flex;
     flex-direction: column;
     /deep/img {
-      border: 2px solid map-get($colors, "bright");
+      border: 2px solid map-get($colors, 'bright');
       align-self: center;
       height: auto !important;
       max-width: 100% !important;
@@ -31,7 +31,7 @@ export default {
     }
   }
   overflow-x: hidden;
-  background-color: map-get($colors, "dark");
+  background-color: map-get($colors, 'dark');
   min-height: 100%;
 }
 

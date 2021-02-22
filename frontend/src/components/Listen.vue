@@ -16,12 +16,12 @@
 </template>
 
 <script>
-import ListenRecordings from "@/components/ListenRecordings.vue";
-import ListenStreamEvents from "@/components/ListenStreamEvents.vue";
-import DashboardStream from "@/components/DashboardStream.vue";
+import ListenRecordings from '@/components/ListenRecordings.vue';
+import ListenStreamEvents from '@/components/ListenStreamEvents.vue';
+import DashboardStream from '@/components/DashboardStream.vue';
 
 export default {
-  name: "Page",
+  name: 'Page',
   components: {
     ListenRecordings,
     ListenStreamEvents,
@@ -31,7 +31,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../scss/_variables.scss";
+@import '../scss/_variables.scss';
 
 .listen-wrapper {
   min-width: 100vw;
@@ -62,13 +62,13 @@ export default {
 }
 
 .grid-item {
-  outline: 3px solid map-get($colors, "bright");
+  outline: 3px solid map-get($colors, 'bright');
   padding: 2px;
   overflow-y: auto;
   background-color: black;
 }
 
-@media (min-width: map-get($breakpoints, "medium")) {
+@media (min-width: map-get($breakpoints, 'medium')) {
   .grid {
     grid-template-columns: repeat(2, 1fr);
     grid-auto-rows: 40vh;

@@ -2,7 +2,11 @@
   <span class="mobile-nav-wrapper">
     <Slide :width="width" :close-on-navigation="true">
       <div id="mobile-nav" aria-label="mobile-nav-bar">
-        <div v-for="route in routes" :key="route.slug" class="nav-item">
+        <div
+          v-for="route in routes"
+          :key="route.slug"
+          class="nav-item"
+        >
           <router-link
             v-if="route.title == 'Home'"
             :key="`/${route.slug}`"
@@ -12,9 +16,15 @@
             {{ route.title }}
           </router-link>
         </div>
-        <div class="nav-item header no-nav"><a class="nav-link">About</a></div>
+        <div class="nav-item header no-nav">
+          <a class="nav-link">About</a>
+        </div>
         <div class="nav-items">
-          <div v-for="route in routes" :key="route.slug" class="nav-item">
+          <div
+            v-for="route in routes"
+            :key="route.slug"
+            class="nav-item"
+          >
             <router-link
               v-if="route.nav_parents == 'About'"
               :key="`/${route.slug}`"
@@ -25,9 +35,15 @@
             </router-link>
           </div>
         </div>
-        <div class="nav-item header no-nav"><a class="nav-link">How To</a></div>
+        <div class="nav-item header no-nav">
+          <a class="nav-link">How To</a>
+        </div>
         <div class="nav-items">
-          <div v-for="route in routes" :key="route.slug" class="nav-item">
+          <div
+            v-for="route in routes"
+            :key="route.slug"
+            class="nav-item"
+          >
             <router-link
               v-if="route.nav_parents == 'How To'"
               :key="`/${route.slug}`"
@@ -43,10 +59,10 @@
   </span>
 </template>
 <script>
-import { Slide } from "vue-burger-menu"; // import the CSS transitions you wish to use, in this case we are using `Slide`
+import { Slide } from 'vue-burger-menu'; // import the CSS transitions you wish to use, in this case we are using `Slide`
 
 export default {
-  name: "NavBar",
+  name: 'NavBar',
   components: {
     Slide,
   },
@@ -56,9 +72,9 @@ export default {
       default: function () {
         return [
           {
-            name: "Home",
-            slug: "home",
-            nav_parents: "",
+            name: 'Home',
+            slug: 'home',
+            nav_parents: '',
           },
         ];
       },
@@ -69,7 +85,7 @@ export default {
       if (window.innerWidth < 400) {
         return window.innerWidth;
       } else {
-        return "400";
+        return '400';
       }
     },
   },
@@ -77,13 +93,13 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/scss/_variables.scss";
+@import '@/scss/_variables.scss';
 
 .mobile-nav-wrapper {
   display: block;
   z-index: 100;
 }
-@media (min-width: map-get($breakpoints, "medium")) {
+@media (min-width: map-get($breakpoints, 'medium')) {
   .mobile-nav-wrapper {
     display: none;
   }
@@ -96,14 +112,14 @@ export default {
   top: 10px !important;
 }
 .bm-burger-bars {
-  background-color: map-get($colors, "highlight") !important;
+  background-color: map-get($colors, 'highlight') !important;
 }
 .cross-style {
   top: 12px !important;
   right: 2px !important;
 }
 .bm-cross {
-  background: map-get($colors, "bright") !important;
+  background: map-get($colors, 'bright') !important;
 }
 .bm-cross-button {
   height: 24px !important;
@@ -116,14 +132,14 @@ export default {
   z-index: 1000 !important; /* Stay on top */
   top: 0;
   left: 0;
-  background-color: map-get($colors, "highlight") !important;
+  background-color: map-get($colors, 'highlight') !important;
   overflow-x: hidden; /* Disable horizontal scroll */
   padding-top: 30px !important; /* Place content 60px from the top */
   transition: 0.5s; /*0.5 second transition effect to slide in the sidenav*/
 }
 
 .bm-overlay {
-  background: map-get($colors, "bright") !important;
+  background: map-get($colors, 'bright') !important;
 }
 .bm-item-list {
   margin-left: 10% !important;
@@ -142,7 +158,7 @@ export default {
 </style>
 
 <style scoped lang="scss">
-@import "@/scss/_variables.scss";
+@import '@/scss/_variables.scss';
 
 #mobile-nav {
   display: flex;
@@ -160,7 +176,7 @@ export default {
 
 .no-nav {
   a:hover {
-    background-color: map-get($colors, "highlight");
+    background-color: map-get($colors, 'highlight');
   }
 }
 </style>

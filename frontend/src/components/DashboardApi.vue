@@ -61,7 +61,11 @@
         <div class="key" />
         <div class="values">
           <div>
-            <button v-if="!ip" class="api-button" @click="initServer()">
+            <button
+              v-if="!ip"
+              class="api-button"
+              @click="initServer()"
+            >
               new server
             </button>
             <button v-else class="api-button" @click="deleteServer()">
@@ -75,14 +79,14 @@
 </template>
 
 <script>
-import api from "../../assets/js/dashboardApi.js";
+import api from '../../assets/js/dashboardApi.js';
 
 export default {
-  name: "DashboardApi",
+  name: 'DashboardApi',
   data() {
     return {
       rpcCount: 0,
-      serverStatus: "checking server...",
+      serverStatus: 'checking server...',
       ip: null,
       q: null,
       fpp: null,
@@ -105,16 +109,16 @@ export default {
       this.onStartRPC();
       // create the server
       try {
-        let host = await api.createServer();
+        const host = await api.createServer();
         // wait for server to boot
         await this.waitForReady(host);
         this.serverStatus =
-          "Installing dependencies (will take approx. 10mins)";
+          'Installing dependencies (will take approx. 10mins)';
         // extra wait to be safe
         await new Promise((r) => setTimeout(r, 120000));
         await api.uploadScripts(host);
         // extra wait while rebooting
-        this.serverStatus = "Installation complete, rebooting server";
+        this.serverStatus = 'Installation complete, rebooting server';
         await new Promise((r) => setTimeout(r, 240000));
       } catch (error) {
         this.serverStatus = error.message;
@@ -130,7 +134,12 @@ export default {
         this.fpp = null;
         this.q = null;
         this.ip = await api.getServerIP();
-        const { ip, fpp, q, serverStatus } = await api.fetchServerDetails();
+        const {
+          ip,
+          fpp,
+          q,
+          serverStatus,
+        } = await api.fetchServerDetails();
         this.fpp = fpp;
         this.q = q;
         this.serverStatus = serverStatus;
@@ -141,14 +150,16 @@ export default {
       }
     },
     async waitForReady(host, interval = 5000, attempts = 20) {
-      let response,
-        count = 0;
-      while (response !== "running") {
+      let response;
+      let count = 0;
+      while (response !== 'running') {
         count++;
         response = await api.getServerStatus(host);
         this.serverStatus = response;
         if (count == attempts) {
-          throw new Error("Timeout, waited too long for server to boot.");
+          throw new Error(
+            'Timeout, waited too long for server to boot.',
+          );
         }
         await new Promise((r) => setTimeout(r, interval));
       }
@@ -183,7 +194,7 @@ export default {
         this.ip = null;
         this.fpp = null;
         this.q = null;
-        this.serverStatus = "Server deleted";
+        this.serverStatus = 'Server deleted';
       } catch (error) {
         this.serverStatus = error.message;
       } finally {
@@ -201,14 +212,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "@/scss/_variables.scss";
-@import "@/scss/_common.scss";
+@import '@/scss/_variables.scss';
+@import '@/scss/_common.scss';
 @include api-style;
 
 .api-container {
   display: flex;
   flex-direction: column;
-  color: map-get($colors, "bright");
+  color: map-get($colors, 'bright');
   height: 100%;
 }
 

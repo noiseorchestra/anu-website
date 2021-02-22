@@ -1,5 +1,9 @@
 <template>
-  <nav id="desktop-nav" aria-label="standard-nav-bar" role="navigation">
+  <nav
+    id="desktop-nav"
+    aria-label="standard-nav-bar"
+    role="navigation"
+  >
     <ul>
       <li
         v-for="route in routes"
@@ -61,16 +65,16 @@
 
 <script>
 export default {
-  name: "NavBar",
+  name: 'NavBar',
   props: {
     routes: {
       type: Array,
       default: function () {
         return [
           {
-            name: "Home",
-            slug: "home",
-            nav_parents: "",
+            name: 'Home',
+            slug: 'home',
+            nav_parents: '',
           },
         ];
       },
@@ -80,7 +84,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "@/scss/_variables.scss";
+@import '@/scss/_variables.scss';
 
 ul {
   list-style: none;
@@ -130,10 +134,10 @@ ul li ul li {
 }
 
 .nonav:hover {
-  background-color: map-get($colors, "highlight");
+  background-color: map-get($colors, 'highlight');
 }
 
-@media (min-width: map-get($breakpoints, "medium")) {
+@media (min-width: map-get($breakpoints, 'medium')) {
   #desktop-nav {
     display: block;
   }

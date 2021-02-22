@@ -5,10 +5,10 @@
 </template>
 
 <script>
-import PageContent from "@/components/PageContent.vue";
+import PageContent from '@/components/PageContent.vue';
 
 export default {
-  name: "Page",
+  name: 'Page',
   components: {
     PageContent,
   },
@@ -17,7 +17,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "../scss/_variables.scss";
+@import '../scss/_variables.scss';
 
 .page-content {
   /* width */
@@ -27,20 +27,20 @@ export default {
 
   /* Track */
   &::-webkit-scrollbar-track {
-    background: map-get($colors, "dark");
+    background: map-get($colors, 'dark');
   }
 
   /* Handle */
   &::-webkit-scrollbar-thumb {
-    background: map-get($colors, "bright");
+    background: map-get($colors, 'bright');
   }
 
   /* Handle on hover */
   &::-webkit-scrollbar-thumb:hover {
-    background: map-get($colors, "highlight");
+    background: map-get($colors, 'highlight');
   }
 
-  color: map-get($colors, "bright");
+  color: map-get($colors, 'bright');
   overflow-y: auto;
   // max-height: 100%;
 }

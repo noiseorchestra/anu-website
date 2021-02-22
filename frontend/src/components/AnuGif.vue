@@ -10,12 +10,12 @@
 
 <script>
 export default {
-  name: "AnuGif",
+  name: 'AnuGif',
   data() {
     return {
       rand: 2 * Math.random(),
-      image: require("../../assets/anu-line-small.png"),
-      gif: require("../../assets/anu.gif"),
+      image: require('../../assets/anu-line-small.png'),
+      gif: require('../../assets/anu.gif'),
     };
   },
   computed: {
@@ -44,7 +44,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "@/scss/_variables.scss";
+@import '@/scss/_variables.scss';
 
 .anu-img {
   z-index: 100;

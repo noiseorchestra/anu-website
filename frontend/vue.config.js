@@ -1,23 +1,26 @@
 module.exports = {
-    publicPath: process.env.NODE_ENV === 'production' ? 'https://sandreae-storage.fra1.digitaloceanspaces.com/anu-website/dist/' : 'http://127.0.0.1:8080',
-    outputDir: '../server/static/dist',
+  publicPath:
+    process.env.NODE_ENV === 'production'
+      ? 'https://sandreae-storage.fra1.digitaloceanspaces.com/anu-website/dist/'
+      : 'http://127.0.0.1:8080',
+  outputDir: '../server/static/dist',
 
+  pages: {
     pages: {
-      pages: {
-        entry: "src/apps/pages/main.js", // matching the new paths created above
-        template: "public/index.html",
-        filename: '../../templates/pages/_vue_base.html', // relative to outputDir!
-        chunks: ["chunk-vendors", "pages"],
-      },
-      dashboard: {
-        entry: "src/apps/dashboard/main.js", // matching the new paths created above
-        template: "public/index.html",
-        filename: '../../templates/dashboard/_vue_base.html', // relative to outputDir!
-        chunks: ["chunk-vendors", "dashboard"],
-      },
+      entry: 'src/apps/pages/main.js', // matching the new paths created above
+      template: 'public/index.html',
+      filename: '../../templates/pages/_vue_base.html', // relative to outputDir!
+      chunks: ['chunk-vendors', 'pages'],
     },
-    chainWebpack: config => {
-        /*
+    dashboard: {
+      entry: 'src/apps/dashboard/main.js', // matching the new paths created above
+      template: 'public/index.html',
+      filename: '../../templates/dashboard/_vue_base.html', // relative to outputDir!
+      chunks: ['chunk-vendors', 'dashboard'],
+    },
+  },
+  chainWebpack: (config) => {
+    /*
         The arrow function in writeToDisk(...) tells the dev server to write
         only index.html to the disk.
 
@@ -31,10 +34,10 @@ module.exports = {
         https://cli.vuejs.org/config/#indexpath
         https://webpack.js.org/configuration/dev-server/#devserverwritetodisk-
         */
-        config.devServer
-            .public('http://127.0.0.1:8080')
-            .hotOnly(true)
-            .headers({"Access-Control-Allow-Origin": "*"})
-            .writeToDisk(filePath => filePath.endsWith('.html'));
-    }
-}
+    config.devServer
+      .public('http://127.0.0.1:8080')
+      .hotOnly(true)
+      .headers({ 'Access-Control-Allow-Origin': '*' })
+      .writeToDisk((filePath) => filePath.endsWith('.html'));
+  },
+};

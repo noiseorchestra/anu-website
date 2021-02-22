@@ -6,24 +6,24 @@
 
 <script>
 export default {
-  name: "BackgroundLogo",
+  name: 'BackgroundLogo',
   data() {
     return {
-      image: require("../../assets/WEB_LOGO_TEXT.png"),
+      image: require('../../assets/WEB_LOGO_TEXT.png'),
     };
   },
 };
 </script>
 
 <style scoped lang="scss">
-@import "@/scss/_variables.scss";
+@import '@/scss/_variables.scss';
 
 #background-logo {
   max-height: 85vh;
   padding-bottom: 40px;
 }
 
-@media (min-width: map-get($breakpoints, "medium")) {
+@media (min-width: map-get($breakpoints, 'medium')) {
   #background-logo {
     padding-bottom: 20px;
   }

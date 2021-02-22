@@ -12,11 +12,11 @@
 </template>
 
 <script>
-import BackgroundLogo from "@/components/BackgroundLogo.vue";
-import AnuSkyGod from "@/components/AnuSkyGod.vue";
+import BackgroundLogo from '@/components/BackgroundLogo.vue';
+import AnuSkyGod from '@/components/AnuSkyGod.vue';
 
 export default {
-  name: "Home",
+  name: 'Home',
   components: {
     BackgroundLogo,
     AnuSkyGod,

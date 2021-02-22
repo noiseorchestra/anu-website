@@ -23,10 +23,10 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
 export default {
-  name: "ListenRecordings",
+  name: 'ListenRecordings',
   data() {
     return {
       recordings: null,
@@ -34,13 +34,13 @@ export default {
   },
   mounted() {
     axios
-      .get("/sounds/recordings")
+      .get('/sounds/recordings')
       .then((response) => this.set_recordings(response.data));
   },
   methods: {
     set_recordings(recordings) {
       recordings.forEach((recording, i) => {
-        let date = new Date(recording.date);
+        const date = new Date(recording.date);
         recordings[i].date = date.toLocaleDateString();
       });
       this.recordings = recordings;
@@ -50,12 +50,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "@/scss/_variables.scss";
+@import '@/scss/_variables.scss';
 
 .recordings-container {
   display: flex;
   flex-direction: column;
-  color: map-get($colors, "bright");
+  color: map-get($colors, 'bright');
   overflow-y: scroll;
   height: 100%;
   width: 100%;

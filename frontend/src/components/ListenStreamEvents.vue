@@ -1,7 +1,11 @@
 <template>
   <div class="stream-events-container">
     <h2>Upcomming Live-Streams</h2>
-    <div v-for="event in events" :key="event.date" class="stream-events-item">
+    <div
+      v-for="event in events"
+      :key="event.date"
+      class="stream-events-item"
+    >
       <div class="stream-events-item-content with-player">
         <div class="stream-events-item-content-child player">
           <a :href="event.link">{{ event.title }}</a
@@ -19,10 +23,10 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios';
 
 export default {
-  name: "ListenStreamEvents",
+  name: 'ListenStreamEvents',
   data() {
     return {
       events: null,
@@ -30,13 +34,13 @@ export default {
   },
   mounted() {
     axios
-      .get("/sounds/events")
+      .get('/sounds/events')
       .then((response) => this.set_stream_events(response.data));
   },
   methods: {
     set_stream_events(events) {
       events.forEach((event, i) => {
-        let date = new Date(event.date);
+        const date = new Date(event.date);
         events[i].date = date.toLocaleString();
       });
       this.events = events;
@@ -46,12 +50,12 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import "@/scss/_variables.scss";
+@import '@/scss/_variables.scss';
 
 .stream-events-container {
   display: flex;
   flex-direction: column;
-  color: map-get($colors, "bright");
+  color: map-get($colors, 'bright');
   overflow-y: scroll;
   height: 100%;
   width: 100%;

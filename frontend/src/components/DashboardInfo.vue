@@ -14,16 +14,16 @@
 
 <script>
 export default {
-  name: "DashboardInfo",
+  name: 'DashboardInfo',
   props: {
     naw: {
       type: Object,
       default: function () {
         return {
-          name: "Name",
-          owner: "Owner",
-          about: "about",
-          stream_address: "Stream Address",
+          name: 'Name',
+          owner: 'Owner',
+          about: 'about',
+          stream_address: 'Stream Address',
         };
       },
     },
@@ -32,9 +32,9 @@ export default {
 </script>
 
 <style lang="scss">
-@import "@/scss/_variables.scss";
+@import '@/scss/_variables.scss';
 .dashboard-info {
-  color: map-get($colors, "bright");
+  color: map-get($colors, 'bright');
   width: 100%;
   overflow-wrap: anywhere;
 }
