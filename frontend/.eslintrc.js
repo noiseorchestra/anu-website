@@ -9,6 +9,7 @@ module.exports = {
     rules: {
         // override/add rules settings here, such as:
         //   'vue/no-unused-vars': 'error'
-        "global-require": 0  
+        "global-require": 0,
+        "vue/no-use-v-if-with-v-for": "off"
     }
   }

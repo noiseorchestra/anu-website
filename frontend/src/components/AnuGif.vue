@@ -13,15 +13,21 @@ export default {
   name: "AnuGif",
   data() {
     return {
-      blink: false,
+      rand: 2 * Math.random(),
       image: require("../../assets/anu-line-small.png"),
       gif: require("../../assets/anu.gif"),
     };
   },
   computed: {
+    blink() {
+      if (this.rand < 1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
     src() {
-      if (2 * Math.random() < 1) {
-        this.blink = true;
+      if (this.rand < 1) {
         return this.image;
       } else {
         return this.gif;
