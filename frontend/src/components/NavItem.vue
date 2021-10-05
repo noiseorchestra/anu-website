@@ -32,15 +32,10 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 @import '@/scss/_variables.scss';
-
 .nonav:hover {
   background-color: map-get($colors, 'highlight') !important;
   cursor: default !important;
-}
-
-.nav-link:hover {
-  background-color: map-get($colors, 'bright');
 }
 </style>

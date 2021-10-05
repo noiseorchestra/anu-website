@@ -1,9 +1,19 @@
 <template>
   <span>
-    <nav class="desktop-nav nav" aria-label="desktop-nav-bar">
+    <nav
+      id="desktop-nav"
+      role="navigation"
+      class="desktop-nav nav"
+      aria-label="desktop-nav-bar"
+    >
       <NavBar :pages="mainNav"></NavBar>
     </nav>
-    <nav class="mobile-nav nav" aria-label="mobile-nav-bar">
+    <nav
+      id="mobile-nav"
+      role="navigation"
+      class="mobile-nav nav"
+      aria-label="mobile-nav-bar"
+    >
       <NavBarMobile :pages="mainNav"></NavBarMobile>
     </nav>
   </span>
@@ -40,9 +50,23 @@ export default {
 <style scoped lang="scss">
 @import '@/scss/_variables.scss';
 
-.mobile-nav {
-  display: inline;
-  max-height: 0px;
-  z-index: 1000;
+#mobile-nav {
+  display: block;
+  z-index: 100;
+}
+
+#desktop-nav {
+  display: none;
+  padding-top: 4px;
+  padding-left: 4px;
+}
+
+@media (min-width: map-get($breakpoints, 'medium')) {
+  #mobile-nav {
+    display: none;
+  }
+  #desktop-nav {
+    display: block;
+  }
 }
 </style>

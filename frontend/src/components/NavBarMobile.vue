@@ -1,25 +1,23 @@
 <template>
-  <span class="mobile-nav-wrapper">
-    <Slide :width="width" :close-on-navigation="true">
-      <div id="mobile-nav" aria-label="mobile-nav-bar">
-        <div v-for="page in pages" :key="page.slug" class="nav-item">
-          <NavItem
-            :hasChildren="page.nav_children.length > 0"
-            v-bind="page"
-          />
-          <div v-if="page.nav_children.length > 0">
-            <div
-              class="nav-item"
-              v-for="navChild in page.nav_children"
-              :key="navChild.slug"
-            >
-              <NavItem :hasChildren="false" v-bind="navChild" />
-            </div>
+  <Slide :width="width" :close-on-navigation="true">
+    <div id="mobile-nav" aria-label="mobile-nav-bar">
+      <div v-for="page in pages" :key="page.slug" class="nav-item">
+        <NavItem
+          :hasChildren="page.nav_children.length > 0"
+          v-bind="page"
+        />
+        <div v-if="page.nav_children.length > 0">
+          <div
+            class="nav-item"
+            v-for="navChild in page.nav_children"
+            :key="navChild.slug"
+          >
+            <NavItem :hasChildren="false" v-bind="navChild" />
           </div>
         </div>
       </div>
-    </Slide>
-  </span>
+    </div>
+  </Slide>
 </template>
 <script>
 import { Slide } from 'vue-burger-menu'; // import the CSS transitions you wish to use, in this case we are using `Slide`
@@ -35,13 +33,7 @@ export default {
     pages: {
       type: Array,
       default: function () {
-        return [
-          {
-            name: 'Home',
-            slug: 'home',
-            nav_parents: '',
-          },
-        ];
+        return [];
       },
     },
   },
@@ -60,16 +52,6 @@ export default {
 <style lang="scss">
 @import '@/scss/_variables.scss';
 
-.mobile-nav-wrapper {
-  display: block;
-  z-index: 100;
-}
-@media (min-width: map-get($breakpoints, 'medium')) {
-  .mobile-nav-wrapper {
-    display: none;
-  }
-}
-
 #mobile-nav {
   display: flex;
   flex-direction: column;
@@ -78,11 +60,9 @@ export default {
 .nav-item {
   font-size: 1.5rem;
   margin-left: 10px;
-}
-
-.nonav {
-  font-size: 1rem;
-  margin-left: 0px;
+  a.nonav {
+    font-size: 0.8em;
+  }
 }
 
 // Slide component styles
