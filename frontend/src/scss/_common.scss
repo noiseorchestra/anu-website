@@ -1,113 +1,118 @@
-@import "@/scss/_variables.scss";
+@import '@/scss/_variables.scss';
 @mixin base-style {
-
-	::-webkit-scrollbar {
+  ::-webkit-scrollbar {
     width: 0px;
     background: transparent; /* make scrollbar transparent */
-	}
+  }
 
-	body {
-		background-color: map-get($colors, "dark");
-	}
+  body {
+    background-color: map-get($colors, 'dark');
+  }
 
-	h1, h2, h3, h4 {
-		font-family: map-get($font, "heading-family");
-	}
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: map-get($font, 'heading-family');
+  }
 
-	html, body {
-		margin: 0;
-		font-family: map-get($font, "main-family");
-		min-height: 100vh;
-	}
+  html,
+  body {
+    margin: 0;
+    font-family: map-get($font, 'main-family');
+    min-height: 100vh;
+  }
 }
 
-
 @mixin link-style {
-	a.router-link-exact-active {
-		// text-decoration: underline;
-		font-weight: bold;
-		color: map-get($colors, "dark");
-	}
+  a.router-link-exact-active {
+    // text-decoration: underline;
+    font-weight: bold;
+    color: map-get($colors, 'dark');
+  }
 
-	a {
-		font-family: map-get($font, "main-family");
-		text-decoration: none;
-		font-weight: bold;
-		background-color: map-get($colors, "highlight");
-		color: map-get($colors, "dark");
-	}
-	a:hover {
-	  background-color: map-get($colors, "bright");
-	}
-	.nav-link {
-		font-weight:normal;
-		margin-left: 2px;
-		margin-right: 2px;
-		padding-left: 2px;
-		padding-top: 2px;
-		font-family: map-get($font, "heading-family");
-	}
+  a {
+    font-family: map-get($font, 'main-family');
+    text-decoration: none;
+    font-weight: bold;
+    background-color: map-get($colors, 'highlight');
+    color: map-get($colors, 'dark');
+  }
+  a:hover {
+    background-color: map-get($colors, 'bright');
+  }
+  .nav-link {
+    font-weight: normal;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-left: 2px;
+    padding-top: 2px;
+    font-family: map-get($font, 'heading-family');
+  }
 }
 
 @mixin nav-style {
-	.user {
-	  color: map-get($colors, "bright");
-	  display: block;
-	  position: fixed;
-	  top: 0px;
-	  right: 0px;
-	  z-index: 300;
-	  padding: 4px;
-	  padding-top: 10px;
-		a {font-size: 0.8em;}
-	}
+  .user {
+    color: map-get($colors, 'bright');
+    display: block;
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    z-index: 300;
+    padding: 4px;
+    padding-top: 10px;
+    a {
+      font-size: 0.8em;
+    }
+  }
 
-	.user-name {
-		font-weight: bold;
-	}
-	.mobile-nav {
-	  display: block;
-	}
+  .user-name {
+    font-weight: bold;
+  }
+  .mobile-nav {
+    display: block;
+  }
 
-	@media (min-width: map-get($breakpoints, "medium")) {
-		.user{
-			padding-top: 6px;
-			a {font-size: 1em;}
-		}
-	  .mobile-nav {
-	    display: none;
-	  }
-	}
+  @media (min-width: map-get($breakpoints, 'medium')) {
+    .user {
+      padding-top: 6px;
+      a {
+        font-size: 1em;
+      }
+    }
+    .mobile-nav {
+      display: none;
+    }
+  }
 }
 
 @mixin api-style {
+  .api-button {
+    font-weight: bold;
+    text-decoration: none;
+    padding-left: 2px;
+    padding-right: 2px;
+    margin-left: 2px;
+    margin-right: 2px;
+    color: map-get($colors, 'dark');
+    background-color: map-get($colors, 'highlight');
+    border: none;
+    width: 60px;
+    display: inline-block;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
 
-	.api-button {
-		font-weight: bold;
-		text-decoration: none;
-		padding-left: 2px;
-		padding-right: 2px;
-		margin-left: 2px;
-		margin-right: 2px;
-		color: map-get($colors, "dark");
-		background-color: map-get($colors, "highlight");
-		border: none;
-		width: 60px;
-		display: inline-block;
-		margin: 4px 2px;
-		cursor: pointer;
-	}
+  .selected {
+    font-weight: bold;
+    background-color: map-get($colors, 'bright');
+  }
 
-	.selected {
-		font-weight: bold;
-		background-color: map-get($colors, "bright");
-	}
-
-	.deactivate {
-		& .api-button {
-			cursor: not-allowed;
-			pointer-events: none;
-			background-color: grey;
-		}
-	}
+  .deactivate {
+    & .api-button {
+      cursor: not-allowed;
+      pointer-events: none;
+      background-color: grey;
+    }
+  }
 }
