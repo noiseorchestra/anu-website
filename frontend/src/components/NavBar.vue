@@ -5,78 +5,37 @@
     role="navigation"
   >
     <ul>
-      <li
-        v-for="route in routes"
-        v-if="route.title == 'Home'"
-        :key="route.slug"
-      >
-        <router-link
-          :key="`/${route.slug}`"
-          class="nav-link"
-          :to="`/${route.slug}`"
-        >
-          {{ route.title }}
-        </router-link>
-      </li>
-      <li>
-        <a class="nav-link nonav" href="#"> About </a>
-        <ul class="dropdown">
+      <li v-for="page in pages" :key="page.slug">
+        <NavItem
+          :hasChildren="page.nav_children.length > 0"
+          v-bind="page"
+        />
+        <ul v-if="page.nav_children.length > 0" class="dropdown">
           <li
-            v-for="route in routes"
-            v-if="route.nav_parents == 'About'"
-            :key="route.slug"
+            v-for="navChild in page.nav_children"
+            :key="navChild.slug"
           >
-            <router-link
-              :key="`/${route.slug}`"
-              class="nav-link"
-              :to="`/${route.slug}`"
-            >
-              {{ route.title }}
-            </router-link>
+            <NavItem :hasChildren="false" v-bind="navChild" />
           </li>
         </ul>
       </li>
-      <li>
-        <a class="nav-link nonav" href="#"> How To </a>
-        <ul class="dropdown">
-          <li
-            v-for="route in routes"
-            v-if="route.nav_parents == 'How To'"
-            :key="route.slug"
-          >
-            <router-link
-              :key="`/${route.slug}`"
-              class="nav-link"
-              :to="`/${route.slug}`"
-            >
-              {{ route.title }}
-            </router-link>
-          </li>
-        </ul>
-      </li>
-      <!-- <li v-for="route in routes" v-if="route.title == 'Listen'">
-				<router-link class="nav-link" :key="`/${route.slug}`" :to="`/${route.slug}`">
-					{{route.title}}
-				</router-link>
-			</li> -->
     </ul>
   </nav>
 </template>
 
 <script>
+import NavItem from '@/components/NavItem.vue';
+
 export default {
   name: 'NavBar',
+  components: {
+    NavItem,
+  },
   props: {
-    routes: {
+    pages: {
       type: Array,
       default: function () {
-        return [
-          {
-            name: 'Home',
-            slug: 'home',
-            nav_parents: '',
-          },
-        ];
+        return [];
       },
     },
   },
@@ -85,6 +44,18 @@ export default {
 
 <style scoped lang="scss">
 @import '@/scss/_variables.scss';
+
+#desktop-nav {
+  padding-top: 4px;
+  padding-left: 4px;
+  display: none;
+}
+
+@media (min-width: map-get($breakpoints, 'medium')) {
+  #desktop-nav {
+    display: block;
+  }
+}
 
 ul {
   list-style: none;
@@ -125,21 +96,5 @@ ul li ul:hover {
 ul li ul li {
   clear: both;
   width: 100%;
-}
-
-#desktop-nav {
-  padding-top: 4px;
-  padding-left: 4px;
-  display: none;
-}
-
-.nonav:hover {
-  background-color: map-get($colors, 'highlight');
-}
-
-@media (min-width: map-get($breakpoints, 'medium')) {
-  #desktop-nav {
-    display: block;
-  }
 }
 </style>
