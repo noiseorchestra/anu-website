@@ -98,7 +98,7 @@ export default {
     // a computed getter
     disabled: function () {
       // `this` points to the vm instance
-      return this.rpcCount != 0;
+      return this.rpcCount !== 0;
     },
   },
   mounted() {
@@ -115,11 +115,11 @@ export default {
         this.serverStatus =
           'Installing dependencies (will take approx. 10mins)';
         // extra wait to be safe
-        await new Promise((r) => setTimeout(r, 120000));
+        await new Promise((resolve) => setTimeout(resolve, 120000));
         await api.uploadScripts(host);
         // extra wait while rebooting
         this.serverStatus = 'Installation complete, rebooting server';
-        await new Promise((r) => setTimeout(r, 240000));
+        await new Promise((resolve) => setTimeout(resolve, 240000));
       } catch (error) {
         this.serverStatus = error.message;
       } finally {
@@ -134,8 +134,11 @@ export default {
         this.fpp = null;
         this.q = null;
         this.ip = await api.getServerIP();
-        const { ip, fpp, q, serverStatus } =
-          await api.fetchServerDetails();
+        const {
+          fpp,
+          q,
+          serverStatus,
+        } = await api.fetchServerDetails();
         this.fpp = fpp;
         this.q = q;
         this.serverStatus = serverStatus;
@@ -152,12 +155,12 @@ export default {
         count++;
         response = await api.getServerStatus(host);
         this.serverStatus = response;
-        if (count == attempts) {
+        if (count === attempts) {
           throw new Error(
             'Timeout, waited too long for server to boot.',
           );
         }
-        await new Promise((r) => setTimeout(r, interval));
+        await new Promise((resolve) => setTimeout(resolve, interval));
       }
       return response;
     },
