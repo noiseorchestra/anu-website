@@ -134,11 +134,8 @@ export default {
         this.fpp = null;
         this.q = null;
         this.ip = await api.getServerIP();
-        const {
-          fpp,
-          q,
-          serverStatus,
-        } = await api.fetchServerDetails();
+        const { fpp, q, serverStatus } =
+          await api.fetchServerDetails();
         this.fpp = fpp;
         this.q = q;
         this.serverStatus = serverStatus;

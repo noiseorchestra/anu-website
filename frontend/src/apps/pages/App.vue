@@ -21,6 +21,7 @@ import Footer from '@/components/Footer.vue';
 import P5jsBackground from '@/components/P5jsBackground.vue';
 import PageView from '../../views/page.vue';
 import Home from '@/components/Home.vue';
+import Listen from '@/components/Listen.vue';
 
 export default {
   name: 'App',
@@ -52,6 +53,10 @@ export default {
       for (const page of this.data.pages) {
         if (page.slug === 'home') {
           this.generate_route(page, Home);
+          continue;
+        }
+        if (page.slug === 'listen') {
+          this.generate_route(page, Listen);
           continue;
         }
         this.generate_route(page, PageView);

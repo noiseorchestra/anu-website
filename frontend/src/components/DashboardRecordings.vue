@@ -19,7 +19,7 @@
       </div>
       <div v-else class="recordings-item-content no-player">
         <div class="recordings-item-content-child">
-          <a href="#0" @click="get_download_url(recording.file)">{{
+          <a href="#0" @click="getDownloadUrl(recording.file)">{{
             recording.dateTime
           }}</a>
         </div>
@@ -43,39 +43,39 @@ export default {
     axios
       .get('/dashboard/recordings')
       .then((response) =>
-        this.set_recordings(response.data.recordings),
+        this.setRecording(response.data.recordings),
       );
   },
   methods: {
-    set_recordings(recordings) {
+    setRecording(recordings) {
       this.recordings = recordings;
       this.recordings.forEach((item, i) => {
-        this.recordings[i].dateTime = this.get_date_time(item.file);
+        this.recordings[i].dateTime = this.getDateTime(item.file);
       });
     },
-    get_download_url(file) {
+    getDownloadUrl(file) {
       axios
         .get('/dashboard/recordings/' + file)
         .then((response) =>
-          this.show_player(response.data.file_download),
+          this.showPlayer(response.data.fileDownload),
         );
     },
-    show_player(file_download) {
-      this.download_links.push(file_download);
+    showPlayer(fileDownload) {
+      this.download_links.push(fileDownload);
       let x, y;
       for (x in this.download_links) {
         for (y in this.recordings) {
           if (
-            this.download_links[x].file == this.recordings[y].file
+            this.download_links[x].file === this.recordings[y].file
           ) {
             this.recordings[y].url = this.download_links[x].url;
           }
         }
       }
     },
-    get_date_time(file_string) {
-      const date_string = file_string.split('-');
-      const units = date_string[1].split('_');
+    getDateTime(fileString) {
+      const dateString = fileString.split('-');
+      const units = dateString[1].split('_');
       const date = new Date(
         units[0],
         units[1] - 1,
@@ -83,7 +83,6 @@ export default {
         units[3].slice(0, 2),
         units[3].slice(2, 4),
       );
-      console.log(date.toLocaleString());
       return date.toLocaleString();
     },
   },

@@ -148,12 +148,13 @@ export default {
       };
       this.sketch = s;
     };
+    // eslint-disable-next-line no-unused-vars
     const canvas = new P5(sketch, 'canvas');
   },
   mounted() {
     window.addEventListener('resize', this.handleResize);
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener('resize', this.handleResize);
   },
   methods: {

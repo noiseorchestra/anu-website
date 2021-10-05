@@ -45,6 +45,15 @@ def get_pages():
         'nav_parents': 'none',
         'nav_children': []
     })
+    
+    pages.append({
+        'slug': 'listen',
+        'title': 'Listen',
+        'body': '',
+        'nav_position': '01',
+        'nav_parents': 'none',
+        'nav_children': []
+    })
     for page in pages_data:            
         pages.append({
             'slug': page.slug,
