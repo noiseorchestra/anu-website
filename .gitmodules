@@ -1,3 +1,6 @@
 [submodule "server/pypatcher-ansible"]
 	path = server/pypatcher-ansible
 	url = https://github.com/sandreae/pypatcher-ansible
+[submodule "frontend/pypatcher-ansible"]
+	path = frontend/pypatcher-ansible
+	url = https://github.com/sandreae/pypatcher-ansible
