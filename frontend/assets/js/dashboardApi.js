@@ -39,10 +39,14 @@ const dashboardApi = {
     const requestObj = jsonrpc.request('1', 'create_server');
     return dashboardApi.executeRPC(requestObj);
   },
-  uploadScripts(host) {
-    const requestObj = jsonrpc.request('1', 'upload_scripts', {
+  setupServer(host) {
+    const requestObj = jsonrpc.request('1', 'setup_server', {
       host: host,
     });
+    return dashboardApi.executeRPC(requestObj);
+  },
+  installPypatcher() {
+    const requestObj = jsonrpc.request('1', 'install_pypatcher');
     return dashboardApi.executeRPC(requestObj);
   },
   deleteServer() {
@@ -52,14 +56,14 @@ const dashboardApi = {
   setQ(host, qValue) {
     const requestObj = jsonrpc.request('1', 'set_q', {
       host: host,
-      qValue: qValue,
+      q_value: qValue,
     });
     return dashboardApi.executeRPC(requestObj);
   },
   setFpp(host, fppValue) {
     const requestObj = jsonrpc.request('1', 'set_fpp', {
       host: host,
-      fppValue: fppValue,
+      fpp_value: fppValue,
     });
     return dashboardApi.executeRPC(requestObj);
   },
