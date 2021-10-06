@@ -14,7 +14,7 @@ COPY . /code/
 
 WORKDIR /code/server
 
-FROM node:15-slim AS frontend-base
+FROM node:14 AS frontend-base
 
 WORKDIR /code
 
@@ -24,7 +24,7 @@ WORKDIR /code/frontend
 
 RUN npm install
 
-COPY . /code/
+COPY /frontend/* /code/frontend/
 
 FROM frontend-base AS frontend-prod
 
