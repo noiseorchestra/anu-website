@@ -14,7 +14,7 @@ COPY . /code/
 
 WORKDIR /code/server
 
-FROM node:14-slim AS frontend-base
+FROM node:15-slim AS frontend-base
 
 WORKDIR /code
 
