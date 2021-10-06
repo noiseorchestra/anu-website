@@ -6,21 +6,21 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+boto3 = "~=1.11.12"
 django = "~=3.1.0"
-psycopg2-binary = "==2.8.5"
-environs = {extras = ["django"], version = "==8.0.0"}
-whitenoise = "==5.1.0"
-gunicorn = "==20.0.4"
-django-ckeditor = "==6.0.0"
-django-storages = "*"
-boto3 = "==1.11.12"
+django-ckeditor = "~=6.0.0"
+django-modern-rpc = "~=0.12.1"
+django-storages = "~=1.11.1"
 djangorestframework = "*"
-pillow = "*"
-django-modern-rpc = "*"
-fabric = "*"
-linode_api4 = "*"
-schedule = "*"
-paramiko = "*"
+environs = {extras = ["django"], version = "==8.0.0"}
+fabric = "~=2.6.0"
+gunicorn = "~=20.0.4"
+linode_api4 = "~=3.0.4"
+paramiko = "~=2.7.2"
+pillow = "~=8.1.0"
+psycopg2-binary = "~=2.8.5"
+schedule = "~=1.0.0"
+whitenoise = "~=5.1.0"
 
 [requires]
 python_version = "3.8"
