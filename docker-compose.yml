@@ -37,7 +37,6 @@ services:
       - 8080:8080
     volumes:
       - .:/code
-      - /code/frontend/node_modules
     working_dir: /code/frontend
     command: npm run serve
   db:
