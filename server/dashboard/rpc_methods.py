@@ -5,9 +5,8 @@ import paramiko
 from invoke import Responder
 from environs import Env
 from linode_api4 import LinodeClient
-import schedule
-import time
 import os
+import io
 
 env = Env()
 env.read_env()
@@ -16,11 +15,12 @@ env.read_env()
 SERVER_SCRIPTS_PATH = "/app/storage/jacktrip-server-automation"
 LINODE_PAT = env("LINODE_PAT", default="")
 MAX_LINODES = env("MAX_LINODES", default=0)
+PRIVATE_KEY = env("PRIVATE_KEY", default="")
 
 client = LinodeClient('{}'.format(LINODE_PAT))
 
 def _get_fabric_client(host):
-    private_key = paramiko.rsakey.RSAKey.from_private_key_file(filename="/root/.ssh/id_rsa")
+    private_key = paramiko.RSAKey.from_private_key(io.StringIO(PRIVATE_KEY))
     return Connection(host, "root", connect_kwargs={
         "pkey": private_key,
         },
