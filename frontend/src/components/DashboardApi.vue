@@ -114,7 +114,7 @@ export default {
         await this.waitForReady(host);
         this.serverStatus =
           'Installing dependencies (will take approx. 10mins)';
-        await api.setupServer(host);
+        await api.setupServer();
         await api.installPypatcher();
         this.serverStatus = 'Installation complete, rebooting server';
         await this.waitForReady(host);

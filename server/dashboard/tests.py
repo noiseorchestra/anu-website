@@ -62,13 +62,6 @@ class DashboardTests(TestCase):
 
 # API tests
 
-    def test_upload_files(self):
-        c = Mock(spec=["put"])
-        path = "/app/storage/jacktrip-server-automation/scripts"
-        filename = "file1"
-        _upload_files(c, path, [filename])
-        c.put.assert_called_with('{}/{}'.format(path, filename))
-
     def test_check_max_linode_instances(self):
         self.assertRaises(RuntimeError, _check_max_linode_instances, ["one", "two"], 1)
         self.assertRaises(RuntimeError, _check_max_linode_instances, ["one", "two"], 2)
@@ -110,12 +103,6 @@ class DashboardTests(TestCase):
         response = _delete_one_server([linode1], "123.123.123.123")
         self.assertEqual(response, "deleted 123.123.123.123")
         linode1.delete.assert_called()
-
-    def test_check_exit_string(self):
-        result_zero = Mock(exited=0)
-        self.assertTrue(_check_exit_string(result_zero))
-        result_non_zero = Mock(exited=1)
-        self.assertFalse(_check_exit_string(result_non_zero))
 
     def test_read_config_file(self):
         result = Mock(stdout="first_key=1\nsecond_key=2\nthird_key=3")

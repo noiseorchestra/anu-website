@@ -22,40 +22,54 @@ ICECAST_PORT = env("ICECAST_PORT", default="")
 ICECAST_MOUNT = env("ICECAST_MOUNT", default="")
 ICECAST_PASSWORD = env("ICECAST_PASSWORD", default="")
 
-# Create .ssh folder in root if it doesn't exist
-try:
-    os.mkdir("/root/.ssh")
-except FileExistsError:
-    pass
+CLIENT = LinodeClient("{}".format(LINODE_PAT))
 
-# Initiate linode client with LINODE_PAT code
-client = LinodeClient("{}".format(LINODE_PAT))
-# Create RSA keypair from PRIVATE_KEY string
-private_key = paramiko.RSAKey.from_private_key(io.StringIO(PRIVATE_KEY))
-# Write private key to file
-private_key.write_private_key_file("/root/.ssh/id_rsa")
-# Retrieve public key string
-public_key = "ssh-rsa " + private_key.get_base64()
-# Write public key to file
-f = open("/root/.ssh/id_rsa.pub", "wt")
-f.write(public_key)
-f.close()
 
-# Check if there are any already running linode instances and if so fetch the ip
-# We can only create one instance, so we just take the first ip present
-ip = ""
-linodes = client.linode.instances()
-if len(linodes) > 0:
-    ip = linodes[0].ipv4[0]
+def _client():
+    CLIENT
 
-# The ip string to the ansible inventory file
-f = open("/code/server/pypatcher-ansible/inventory", "wt")
-f.write(ip)
-f.close()
+
+def _setup_server_ip():
+    # Remove any existing inventory file
+    os.remove("/code/server/pypatcher-ansible/inventory")
+
+    # Check if there are any already running linode instances and if so fetch the ip
+    # We can only create one instance, so we just take the first ip present
+    linodes = _client().linode.instances()
+    if len(linodes) > 0:
+        f = open("/code/server/pypatcher-ansible/inventory", "wt")
+        f.write(linodes[0].ipv4[0])
+        f.close()
+
+
+def _setup_keys():
+    # Create .ssh folder in root if it doesn't exist
+    try:
+        os.mkdir("/root/.ssh")
+    except FileExistsError:
+        pass
+
+    # Write private key to file
+    _private_key().write_private_key_file("/root/.ssh/id_rsa")
+    # Write public key to file
+    f = open("/root/.ssh/id_rsa.pub", "wt")
+    f.write(_public_key())
+    f.close()
+
+
+def _private_key():
+    # RSA keypair from PRIVATE_KEY string
+    paramiko.RSAKey.from_private_key(io.StringIO(PRIVATE_KEY))
+
+
+def _public_key():
+    # Retrieve the public key of the keypair
+    "ssh-rsa " + _private_key().get_base64()
 
 
 def _get_fabric_client(host):
-    return Connection(host, "root", connect_kwargs={"pkey": private_key,},)
+    # Return a fabric connection
+    return Connection(host, "root", connect_kwargs={"pkey": _private_key(),},)
 
 
 def _init_linode_instance():
@@ -64,8 +78,8 @@ def _init_linode_instance():
     region_id = "eu-west"
     image = "linode/ubuntu20.04"
 
-    linode, password = client.linode.instance_create(
-        type_id, region_id, image=image, authorized_keys=public_key
+    linode, password = _client().linode.instance_create(
+        type_id, region_id, image=image, authorized_keys=_public_key()
     )
     return linode
 
@@ -133,19 +147,27 @@ def create_server():
     Create a py_patcher server on Linode.
     """
 
-    linodes = client.linode.instances()
+    linodes = _client().linode.instances()
     _check_max_linode_instances(linodes, MAX_LINODES)
     linode = _init_linode_instance()
 
     if not linode:
         raise RuntimeError("Could not create server")
 
+    f = open("/code/server/pypatcher-ansible/inventory", "wt")
+    f.write(linode.ipv4[0])
+    f.close()
+
     return linode.ipv4[0]
 
 
 @http_basic_auth_login_required
 @rpc_method
-def setup_server(host):
+def setup_server():
+
+    if not os.path.exists("/code/server/pypatcher-ansible/inventory"):
+        raise RuntimeError("Server ip address not found (no inventroy file")
+
     # Change this to genuine file and pass in ENV vars or strings from NAW db entry
     out, err, rc = ansible_runner.run_command(
         executable_cmd="ansible-playbook",
@@ -169,12 +191,15 @@ def setup_server(host):
     print("out: {}".format(out))
     print("err: {}".format(err))
 
-    return "successfully uploaded and installed scripts to {}".format(host)
+    return 'rc: {} \nout: {}\nerr: {}'.format(rc, out, err)
 
 
 @http_basic_auth_login_required
 @rpc_method
 def install_pypatcher():
+    if not os.path.exists("/code/server/pypatcher-ansible/inventory"):
+        raise RuntimeError("Server ip address not found (no inventroy file")
+
     # Change this to genuine file and pass in ENV vars or strings from NAW db entry
     out, err, rc = ansible_runner.run_command(
         executable_cmd="ansible-playbook",
@@ -204,7 +229,7 @@ def install_pypatcher():
     print("out: {}".format(out))
     print("err: {}".format(err))
 
-    return "successfully uploaded and installed scripts to {}".format(host)
+    return 'rc: {} \nout: {}\nerr: {}'.format(rc, out, err)
 
 
 @http_basic_auth_login_required
@@ -214,7 +239,7 @@ def fetch_all_servers():
     Fetch all linode server instances
     """
     # Right now this just returns the first linode as there should only be one
-    linodes = client.linode.instances()
+    linodes = _client().linode.instances()
     if len(linodes) == 0:
         RuntimeError("No servers created yet")
     ips = _get_all_ips(linodes)
@@ -228,7 +253,7 @@ def delete_one_server(host):
     """
     Delete all linode server instances
     """
-    linodes = client.linode.instances()
+    linodes = _client().linode.instances()
     message = _delete_one_server(linodes, host)
     return message
 
@@ -239,7 +264,7 @@ def delete_all_servers():
     """
     Delete all linode server instances
     """
-    linodes = client.linode.instances()
+    linodes = _client().linode.instances()
     message = _delete_all_servers(linodes)
     return message
 
@@ -251,7 +276,7 @@ def get_server_status(host):
     Get the status of our linode server.
     """
 
-    linodes = client.linode.instances()
+    linodes = _client().linode.instances()
     status = _check_server_status(linodes, host)
     return status
 
@@ -343,3 +368,9 @@ def restart_jackd(host):
     """
     result = _get_fabric_client(host).run("sudo systemctl restart jackd.service")
     return result.exited
+
+
+## Run setup commands
+
+_setup_keys()
+_setup_server_ip()

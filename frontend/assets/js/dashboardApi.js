@@ -40,9 +40,7 @@ const dashboardApi = {
     return dashboardApi.executeRPC(requestObj);
   },
   setupServer(host) {
-    const requestObj = jsonrpc.request('1', 'setup_server', {
-      host: host,
-    });
+    const requestObj = jsonrpc.request('1', 'setup_server');
     return dashboardApi.executeRPC(requestObj);
   },
   installPypatcher() {
