@@ -1,18 +1,18 @@
 <template>
   <span>
     <nav
-      id="desktop-nav"
+      id="desktop-nav-wrapper"
       role="navigation"
       class="desktop-nav nav"
-      aria-label="desktop-nav-bar"
+      aria-label="navigation-1"
     >
       <NavBar :pages="mainNav"></NavBar>
     </nav>
     <nav
-      id="mobile-nav"
+      id="mobile-nav-wrapper"
       role="navigation"
       class="mobile-nav nav"
-      aria-label="mobile-nav-bar"
+      aria-label="navigation-2"
     >
       <NavBarMobile :pages="mainNav"></NavBarMobile>
     </nav>
@@ -50,22 +50,22 @@ export default {
 <style scoped lang="scss">
 @import '@/scss/_variables.scss';
 
-#mobile-nav {
+#mobile-nav-wrapper {
   display: block;
   z-index: 100;
 }
 
-#desktop-nav {
+#desktop-nav-wrapper {
   display: none;
   padding-top: 4px;
   padding-left: 4px;
 }
 
 @media (min-width: map-get($breakpoints, 'medium')) {
-  #mobile-nav {
+  #mobile-nav-wrapper {
     display: none;
   }
-  #desktop-nav {
+  #desktop-nav-wrapper {
     display: block;
   }
 }

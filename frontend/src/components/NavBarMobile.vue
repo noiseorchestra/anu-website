@@ -1,6 +1,6 @@
 <template>
   <Slide :width="width" :close-on-navigation="true">
-    <div id="mobile-nav" aria-label="mobile-nav-bar">
+    <div id="mobile-nav">
       <div v-for="page in pages" :key="page.slug" class="nav-item">
         <NavItem
           :hasChildren="page.nav_children.length > 0"
@@ -42,7 +42,7 @@ export default {
       if (window.innerWidth < 400) {
         return window.innerWidth;
       } else {
-        return 400;
+        return '400';
       }
     },
   },
