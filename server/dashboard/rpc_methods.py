@@ -26,20 +26,19 @@ CLIENT = LinodeClient("{}".format(LINODE_PAT))
 
 
 def _client():
-    CLIENT
+    return CLIENT
 
 
 def _setup_server_ip():
-    # Remove any existing inventory file
-    os.remove("/code/server/pypatcher-ansible/inventory")
-
     # Check if there are any already running linode instances and if so fetch the ip
     # We can only create one instance, so we just take the first ip present
     linodes = _client().linode.instances()
+    f = open("/code/server/pypatcher-ansible/inventory", "wt")
     if len(linodes) > 0:
-        f = open("/code/server/pypatcher-ansible/inventory", "wt")
         f.write(linodes[0].ipv4[0])
-        f.close()
+    else:
+        f.write("")        
+    f.close()
 
 
 def _setup_keys():
@@ -59,12 +58,12 @@ def _setup_keys():
 
 def _private_key():
     # RSA keypair from PRIVATE_KEY string
-    paramiko.RSAKey.from_private_key(io.StringIO(PRIVATE_KEY))
+    return paramiko.RSAKey.from_private_key(io.StringIO(PRIVATE_KEY))
 
 
 def _public_key():
     # Retrieve the public key of the keypair
-    "ssh-rsa " + _private_key().get_base64()
+    return "ssh-rsa " + _private_key().get_base64()
 
 
 def _get_fabric_client(host):
