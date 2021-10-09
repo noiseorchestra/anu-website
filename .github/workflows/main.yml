@@ -22,5 +22,5 @@ jobs:
           docker-compose exec -T server python manage.py test
       - name: Frontend tests
         run: |
-          sleep 20s
-          docker-compose exec -T frontend npm run test:unit
+          sleep 30s
+          docker ps
