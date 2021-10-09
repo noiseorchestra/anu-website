@@ -22,3 +22,4 @@ jobs:
           docker-compose exec -T server python manage.py test
       - name: Vue tests
         run: docker-compose exec -T frontend ls
+        run: docker-compose exec -T frontend npm run test:unit
