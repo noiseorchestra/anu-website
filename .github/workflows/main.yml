@@ -20,5 +20,7 @@ jobs:
           docker-compose exec -T server python manage.py collectstatic --noinput
           docker-compose exec -T server python manage.py migrate
           docker-compose exec -T server python manage.py test
-      - name: Vue tests
-        run: docker ps
+      - name: Frontend tests
+        run: |
+          sleep 20s
+          docker-compose exec -T frontend npm run test:unit
