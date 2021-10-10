@@ -33,7 +33,7 @@ def _setup_server_ip():
     # Check if there are any already running linode instances and if so fetch the ip
     # We can only create one instance, so we just take the first ip present
     linodes = _client().linode.instances()
-    f = open("/code/server/pypatcher-ansible/inventory", "wt")
+    f = open("/server/pypatcher-ansible/inventory", "wt")
     if len(linodes) > 0:
         f.write(linodes[0].ipv4[0])
     else:
@@ -153,7 +153,7 @@ def create_server():
     if not linode:
         raise RuntimeError("Could not create server")
 
-    f = open("/code/server/pypatcher-ansible/inventory", "wt")
+    f = open("/server/pypatcher-ansible/inventory", "wt")
     f.write(linode.ipv4[0])
     f.close()
 
@@ -164,16 +164,16 @@ def create_server():
 @rpc_method
 def setup_server():
 
-    if not os.path.exists("/code/server/pypatcher-ansible/inventory"):
+    if not os.path.exists("/server/pypatcher-ansible/inventory"):
         raise RuntimeError("Server ip address not found (no inventroy file")
 
     # Change this to genuine file and pass in ENV vars or strings from NAW db entry
     out, err, rc = ansible_runner.run_command(
         executable_cmd="ansible-playbook",
         cmdline_args=[
-            "/code/server/pypatcher-ansible/setup-server.yml",
+            "/server/pypatcher-ansible/setup-server.yml",
             "-i",
-            "/code/server/pypatcher-ansible/inventory",
+            "/server/pypatcher-ansible/inventory",
             "-vvvv",
             "--private-key",
             "/root/.ssh/id_rsa",
@@ -196,16 +196,16 @@ def setup_server():
 @http_basic_auth_login_required
 @rpc_method
 def install_pypatcher():
-    if not os.path.exists("/code/server/pypatcher-ansible/inventory"):
+    if not os.path.exists("/server/pypatcher-ansible/inventory"):
         raise RuntimeError("Server ip address not found (no inventroy file")
 
     # Change this to genuine file and pass in ENV vars or strings from NAW db entry
     out, err, rc = ansible_runner.run_command(
         executable_cmd="ansible-playbook",
         cmdline_args=[
-            "/code/server/pypatcher-ansible/install-pypatcher.yml",
+            "/server/pypatcher-ansible/install-pypatcher.yml",
             "-i",
-            "/code/server/pypatcher-ansible/inventory",
+            "/server/pypatcher-ansible/inventory",
             "-vvvv",
             "--private-key",
             "/root/.ssh/id_rsa",
