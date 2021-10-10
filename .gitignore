@@ -1,9 +1,8 @@
-frontend/node_modules/
-server/staticfiles/
 .env
-docker-compose-prod.yml
-docker-compose-dev.yml
-heroku.yml
-venv
-jacktrip-server-automation
 .vscode
+frontend/node_modules/
+frontend/build/*
+server/staticfiles/*
+server/static/dist/*
+server/templates/vue_build/*
+jacktrip-server-automation
