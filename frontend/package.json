@@ -3,7 +3,9 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "rm -rf ../server/static/dist/* && vue-cli-service build --no-clean",
+    "build": "rm -rf build/* && vue-cli-service build --no-clean",
+    "build:dev": "rm -rf build/* && vue-cli-service build --no-clean --mode development",
+    "build:copy": "cp build/templates/* ../server/templates/vue_build",
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {

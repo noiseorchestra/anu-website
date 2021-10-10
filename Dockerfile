@@ -4,27 +4,25 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 EXPOSE 8000
 
-WORKDIR /code
-COPY /server/Pipfile /server/Pipfile.lock /code/server/
+WORKDIR /server
+COPY /server/Pipfile /server/Pipfile.lock /server/
 
-WORKDIR /code/server
+WORKDIR /server
 RUN pip install pipenv && pipenv install --system
 
-COPY . /code/
+COPY /server /server
 
-WORKDIR /code/server
+WORKDIR /server
 
 FROM node:14 AS frontend-base
 
-WORKDIR /code
+WORKDIR /frontend
 
-COPY /frontend/package* /code/frontend/
-
-WORKDIR /code/frontend
+COPY /frontend/package* /frontend/
 
 RUN npm install
 
-COPY /frontend/* /code/frontend/
+COPY /frontend/ /frontend/
 
 FROM frontend-base AS frontend-prod
 
@@ -34,8 +32,13 @@ RUN npm run build
 
 FROM server-base AS server-prod
 
-COPY --from=frontend-prod /code/server/static/dist /code/server/static/dist
-COPY --from=frontend-prod /code/server/templates/pages/_vue_base.html /code/server/templates/pages/_vue_base.html
-COPY --from=frontend-prod /code/server/templates/dashboard/_vue_base.html /code/server/templates/dashboard/_vue_base.html
+COPY --from=frontend-prod /frontend/build/dist /server/static/dist
+COPY --from=frontend-prod /frontend/build/templates/ /server/templates/vue_build/
 
-WORKDIR /code/server
+WORKDIR /server
+
+FROM server-base AS server-dev
+
+COPY --from=frontend-prod /frontend/build/templates/ /server/templates/vue_build/
+
+WORKDIR /server

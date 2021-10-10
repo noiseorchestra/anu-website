@@ -4,11 +4,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: server-base
-    working_dir: /code/server
+      target: server-dev
+    working_dir: /server
     command: sh launch-dev.sh
     volumes:
-      - .:/code
+      - ./server:/server
       - ./jacktrip-server-automation:/app/storage/jacktrip-server-automation
     ports:
       - 8000:8000
@@ -36,8 +36,8 @@ services:
     ports:
       - 8080:8080
     volumes:
-      - .:/code
-    working_dir: /code/frontend
+      - ./frontend/src:/frontend/src
+    working_dir: /frontend
     command: npm run serve
   db:
     image: postgres:11
