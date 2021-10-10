@@ -5,24 +5,22 @@ ENV PYTHONUNBUFFERED 1
 EXPOSE 8000
 
 WORKDIR /server
-COPY /server/Pipfile /server/Pipfile.lock /server/
 
-WORKDIR /server
+COPY /server/Pipfile /server/Pipfile.lock ./
+
 RUN pip install pipenv && pipenv install --system
 
-COPY /server /server
-
-WORKDIR /server
+COPY /server ./
 
 FROM node:14 AS frontend-base
 
 WORKDIR /frontend
 
-COPY /frontend/package* /frontend/
+COPY /frontend/package* ./
 
 RUN npm install
 
-COPY /frontend/ /frontend/
+COPY /frontend/ ./
 
 FROM frontend-base AS frontend-prod
 
