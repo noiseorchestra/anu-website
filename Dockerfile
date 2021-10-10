@@ -30,6 +30,12 @@ ENV NODE_ENV=production
 
 RUN npm run build
 
+FROM frontend-base AS frontend-dev
+
+ENV NODE_ENV=development
+
+RUN npm run build:dev
+
 FROM server-base AS server-prod
 
 COPY --from=frontend-prod /frontend/build/dist /server/static/dist
@@ -39,6 +45,6 @@ WORKDIR /server
 
 FROM server-base AS server-dev
 
-COPY --from=frontend-prod /frontend/build/templates/ /server/templates/vue_build/
+COPY --from=frontend-dev /frontend/build/templates/ /server/templates/vue_build/
 
 WORKDIR /server
