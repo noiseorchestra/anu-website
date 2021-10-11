@@ -4,7 +4,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      target: server-dev
+      target: server
+      args:
+        - VUE_BUILD_MODE=development
+
     working_dir: /server
     command: sh launch-dev.sh
     volumes:
@@ -17,14 +20,14 @@ services:
       - db
       - frontend
     env_file:
-      - .env-dev
+      - .env
   frontend:
     build:
       context: .
       dockerfile: Dockerfile
-      target: frontend-dev
-    environment:
-      - "NODE_ENV=development"
+      target: frontend
+      args:
+        - VUE_BUILD_MODE=development
     ports:
       - 8080:8080
     volumes:

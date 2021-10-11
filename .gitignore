@@ -2,7 +2,8 @@
 .env-dev
 .vscode
 frontend/node_modules/
-frontend/build/*
+frontend/build/dist/*
+frontend/build/templates/*
 server/staticfiles/*
 server/static/dist/*
 server/templates/vue_build/*
