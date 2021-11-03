@@ -4,7 +4,7 @@ from unittest.mock import Mock
 from .views import dashboard
 from .models import NoiseAudioWeb
 from django.contrib.auth import get_user_model
-from  .rpc_methods import (_check_exit_string, _upload_files, _check_max_linode_instances, _get_all_ips, _check_server_status, _delete_all_servers, _delete_one_server, _read_config_file)
+from  .rpc_methods import (_check_max_linode_instances, _get_all_ips, _check_server_status, _delete_all_servers, _delete_one_server, _read_config_file)
 import os
 
 class DashboardTests(TestCase):
