@@ -27,7 +27,6 @@ export default {
       height: auto !important;
       max-width: 100% !important;
       width: auto !important;
-      max-height: 400px !important;
     }
   }
   overflow-x: hidden;
