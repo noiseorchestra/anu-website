@@ -9,7 +9,7 @@ export default {
   name: 'BackgroundLogo',
   data() {
     return {
-      image: require('../../assets/WEB_LOGO_TEXT.png'),
+      image: require('../../assets/ANU_FEST_BIG.png'),
     };
   },
 };
@@ -20,12 +20,13 @@ export default {
 
 #background-logo {
   max-height: 85vh;
-  padding-bottom: 40px;
+  max-width: 100vw;
+  padding-bottom: 0px;
 }
 
 @media (min-width: map-get($breakpoints, 'medium')) {
   #background-logo {
-    padding-bottom: 20px;
+    padding-bottom: 0px;
   }
 }
 </style>

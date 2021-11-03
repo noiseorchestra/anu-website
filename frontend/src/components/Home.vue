@@ -8,6 +8,7 @@
         </div>
       </div>
     </div>
+    <div id="home-text"><h2>**** LISTEN TO THE LIVESTREAM HERE****</h2></div>
   </div>
 </template>
 
@@ -22,15 +23,36 @@ export default {
     AnuSkyGod,
   },
   data() {
-    return { shouldShowLogo: true };
+    return { 
+      shouldShowLogo: true };
   },
 };
 </script>
 
 <style scoped lang="scss">
+@import '@/scss/_variables.scss';
+
 .home-container {
   display: flex;
-  align-items: flex-end;
+  flex-direction: column;
   justify-content: center;
 }
+
+#home-text {
+  color: map-get($colors, 'highlight');
+  text-align: center;
+  padding-bottom: 40px;
+  h2 {
+    font-size: 0.7em;
+  }
+}
+
+@media (min-width: map-get($breakpoints, 'medium')) {
+  #home-text {
+    h2 {
+      font-size: 1.5em;
+    }
+  }
+}
+
 </style>
