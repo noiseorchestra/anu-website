@@ -20,7 +20,7 @@ services:
       - db
       - frontend
     env_file:
-      - .env
+      - .env-default
   frontend:
     build:
       context: .
