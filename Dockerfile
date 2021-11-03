@@ -18,6 +18,7 @@ ENV PYTHONUNBUFFERED 1
 EXPOSE 8000
 
 WORKDIR /server
+
 COPY /server/Pipfile /server/Pipfile.lock ./
 
 RUN pip install pipenv && pipenv install --system

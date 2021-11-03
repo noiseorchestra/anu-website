@@ -114,12 +114,11 @@ export default {
         await this.waitForReady(host);
         this.serverStatus =
           'Installing dependencies (will take approx. 10mins)';
-        // extra wait to be safe
-        await new Promise((resolve) => setTimeout(resolve, 120000));
-        await api.uploadScripts(host);
-        // extra wait while rebooting
+        await new Promise(resolve => setTimeout(resolve, 30000));
+        await api.setupServer();
+        await api.installPypatcher();
         this.serverStatus = 'Installation complete, rebooting server';
-        await new Promise((resolve) => setTimeout(resolve, 240000));
+        await this.waitForReady(host);
       } catch (error) {
         this.serverStatus = error.message;
       } finally {
