@@ -167,14 +167,12 @@ def setup_server():
     if not os.path.exists("/server/pypatcher-ansible/inventory"):
         raise RuntimeError("Server ip address not found (no inventroy file")
 
-    # Change this to genuine file and pass in ENV vars or strings from NAW db entry
     out, err, rc = ansible_runner.run_command(
         executable_cmd="ansible-playbook",
         cmdline_args=[
             "/server/pypatcher-ansible/setup-server.yml",
             "-i",
             "/server/pypatcher-ansible/inventory",
-            "-vvvv",
             "--private-key",
             "/root/.ssh/id_rsa",
             "-u",
@@ -206,7 +204,6 @@ def install_pypatcher():
             "/server/pypatcher-ansible/install-pypatcher.yml",
             "-i",
             "/server/pypatcher-ansible/inventory",
-            "-vvvv",
             "--private-key",
             "/root/.ssh/id_rsa",
             "-u",
