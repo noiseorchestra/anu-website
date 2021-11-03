@@ -22,14 +22,16 @@ ICECAST_PORT = env("ICECAST_PORT", default="")
 ICECAST_MOUNT = env("ICECAST_MOUNT", default="")
 ICECAST_PASSWORD = env("ICECAST_PASSWORD", default="")
 
-CLIENT = LinodeClient("{}".format(LINODE_PAT))
-
 
 def _client():
-    return CLIENT
-
+    return LinodeClient("{}".format(LINODE_PAT))
+    
 
 def _setup_server_ip():
+    if LINODE_PAT == "":
+        print("An invalid Linode PAT string was provided, not attempting server communication.")
+        return
+
     # Check if there are any already running linode instances and if so fetch the ip
     # We can only create one instance, so we just take the first ip present
     linodes = _client().linode.instances()
@@ -42,6 +44,10 @@ def _setup_server_ip():
 
 
 def _setup_keys():
+    if PRIVATE_KEY == "":
+        print("An invalid PrivateKey string was provided, not initializing keys")
+        return
+    
     # Create .ssh folder in root if it doesn't exist
     try:
         os.mkdir("/root/.ssh")
