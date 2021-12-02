@@ -64,20 +64,23 @@ export default {
 }
 
 .page-body {
-  .text {
-    display: flex;
-    flex-direction: column;
-    /deep/img {
-      border: 2px solid map-get($colors, 'bright');
-      align-self: center;
-      height: auto !important;
-      max-width: 100% !important;
-      width: auto !important;
-    }
-  }
   overflow-x: hidden;
   background-color: map-get($colors, 'dark');
   min-height: 100%;
+  color: map-get($colors, 'bright');
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+  &::-webkit-scrollbar-track {
+    background: map-get($colors, 'dark');
+  }
+  &::-webkit-scrollbar-thumb {
+    background: map-get($colors, 'bright');
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: map-get($colors, 'highlight');
+  }
 }
 
 .text-wrapper {
