@@ -46,6 +46,15 @@ def get_pages():
         'nav_children': []
     })
     
+    pages.append({
+        'slug': 'stream',
+        'title': 'Live Stream',
+        'body': '',
+        'nav_position': '01',
+        'nav_parents': 'none',
+        'nav_children': []
+    })
+    
     # pages.append({
     #     'slug': 'listen',
     #     'title': 'Listen',

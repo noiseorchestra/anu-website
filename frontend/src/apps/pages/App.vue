@@ -19,9 +19,9 @@
 import NavBarWrapper from '@/components/NavBarWrapper.vue';
 import Footer from '@/components/Footer.vue';
 import P5jsBackground from '@/components/P5jsBackground.vue';
-import PageView from '../../views/page.vue';
+import PageView from '@/views/page.vue';
 import Home from '@/components/Home.vue';
-import Listen from '@/components/Listen.vue';
+import Stream from '@/components/Stream.vue';
 
 export default {
   name: 'App',
@@ -55,8 +55,8 @@ export default {
           this.generate_route(page, Home);
           continue;
         }
-        if (page.slug === 'listen') {
-          this.generate_route(page, Listen);
+        if (page.slug === 'stream') {
+          this.generate_route(page, Stream);
           continue;
         }
         this.generate_route(page, PageView);
