@@ -8,7 +8,7 @@
         </div>
       </div>
     </div>
-    <div id="home-text"><h2>**** LISTEN TO THE LIVESTREAM HERE****</h2></div>
+    <div id="home-text"><h2>**** LISTEN TO THE LIVESTREAM <a href="/stream/">HERE</a>****</h2></div>
   </div>
 </template>
 
@@ -32,6 +32,10 @@ export default {
 <style scoped lang="scss">
 @import '@/scss/_variables.scss';
 
+a {
+  font-family: map-get($font, 'heading-family');
+  padding: 4px;
+}
 .home-container {
   display: flex;
   flex-direction: column;
