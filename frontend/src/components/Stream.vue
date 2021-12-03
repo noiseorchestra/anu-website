@@ -8,7 +8,7 @@
         </p>
         
         <p>More info on all artists <a href="/anu-fest/">here</a>.</p>
-        <p>More info about ANU <a href="/about/">here</a>.</p>
+        <p>More info about ANU <a href="/about-anu/">here</a>.</p>
         
         <h2>live stream</h2>
         <audio
