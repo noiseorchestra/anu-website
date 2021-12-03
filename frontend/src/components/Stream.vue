@@ -22,7 +22,6 @@
           Sasha Elina (Moscow)<br>
           Aziz Lewandowski (Berlin)<br> 
           Maggie Nicols (Carmarthenshire)<br>
-
         </p>
         <p>
           Greta Buitkute (Newcastle)<br>
@@ -34,6 +33,7 @@
           Yan Jun (Beijing)<br>
           Dirar Kalash (Ramallah) <br>
           Kae San (Japan)
+          Sam Andreae (London)
         </p>
 
         <p><strong>Sunday 5th December 3-5pm GMT</strong></p>
